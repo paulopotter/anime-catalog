@@ -12,5 +12,5 @@ cria um arquivo _json_ lido por um _html_ formatado.
 
 ## Como usar:
 
-1. Com a virtualenv levantada rode os comandos `make setup` e depois `make catalogo`
+1. Com a virtualenv levantada rode os comandos `make setup` e depois `make catalogar`
 2. Abra o arquivo **catalogo.html** e visualize o seu catalogo.
