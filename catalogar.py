@@ -19,6 +19,15 @@ def get_description(folder, file_name):
     return description
 
 
+def break_folders_by_letter(folders):
+    letters = {}
+
+    for folder in folders:
+        letters.setdefault(folder[:1], []).append(folder)
+
+    return letters
+
+
 get_all_folders_names = os.listdir(get_folder_to_catalog())
 current_folder = get_folder_to_catalog()
 catalog_descriptions = {}
@@ -27,5 +36,6 @@ for folder_name in get_all_folders_names:
     folder = current_folder + '/' + folder_name
     catalog_descriptions[folder_name] = get_description(folder, 'descricao.json')
 
+break_by_letters = break_folders_by_letter(get_all_folders_names)
 
-print catalog_descriptions
+print break_by_letters
