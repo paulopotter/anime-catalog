@@ -12,5 +12,6 @@ cria um arquivo _json_ lido por um _html_ formatado.
 
 ## Como usar:
 
-1. Com a virtualenv levantada rode os comandos `make setup` e depois `make catalogar`
-2. Abra o arquivo **catalogo.html** e visualize o seu catalogo.
+1. Baixe o projeto na mesma pasta onde estarão os animes.
+2. Com a virtualenv levantada rode os comandos `make setup` e depois `make catalogar`
+3. Abra o arquivo **catalogo.html** e visualize o seu catalogo.
