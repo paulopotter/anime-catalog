@@ -5,51 +5,62 @@ import os
 import simplejson as json
 
 
-def get_folder_to_catalog():
-    parent_folder = os.path.dirname(os.getcwd())
 
-    return parent_folder + '/Animes'
+class Cataloguer():
 
 
-def get_description(folder, file_name):
-    file = folder + '/' + file_name
-    with open(file) as data:
-        description = json.load(data)
+    def __init__(self):
+        current_folder = self.get_folder_to_catalog('Animes')
+        get_all_folders_names = self.get_all_folders(os.listdir(current_folder), current_folder)
+        catalog_descriptions = {}
 
-    return description
+        for folder_name in get_all_folders_names:
+            folder = current_folder + '/' + folder_name
+            catalog_descriptions[folder_name] = self.get_description(folder, 'description.json')
 
+        break_by_letters = self.break_folders_by_letter(get_all_folders_names)
 
-def break_folders_by_letter(folders):
-    letters = {}
-
-    for folder in folders:
-        letters.setdefault(folder[:1], []).append(folder)
-
-    return letters
-
-
-def is_folder(folder_path, folder_name):
-     return os.path.isdir(folder_path + '/' + folder_name)
-
-
-def get_all_folders(folder_content, folder_path):
-    all_folders = []
-    for content_name in folder_content:
-        if is_folder(folder_path, content_name):
-            all_folders.append(content_name)
-
-    return all_folders
+        print break_by_letters
 
 
 
-current_folder = get_folder_to_catalog()
-get_all_folders_names = get_all_folders(os.listdir(get_folder_to_catalog()), current_folder)
-catalog_descriptions = {}
+    def get_folder_to_catalog(self, folder):
+        parent_folder = os.path.dirname(os.getcwd())
 
-for folder_name in get_all_folders_names:
-    folder = current_folder + '/' + folder_name
-    catalog_descriptions[folder_name] = get_description(folder, 'description.json')
+        return parent_folder + '/' + folder
 
-break_by_letters = break_folders_by_letter(get_all_folders_names)
 
-print break_by_letters
+    def get_description(self, folder, file_name):
+        file = folder + '/' + file_name
+        with open(file) as data:
+            description = json.load(data)
+
+        return description
+
+
+    def break_folders_by_letter(self, folders):
+        letters = {}
+
+        for folder in folders:
+            letters.setdefault(folder[:1], []).append(folder)
+
+        return letters
+
+
+    def is_folder(self, folder_path, folder_name):
+         return os.path.isdir(folder_path + '/' + folder_name)
+
+
+    def get_all_folders(self, folder_content, folder_path):
+        all_folders = []
+        for content_name in folder_content:
+            if self.is_folder(folder_path, content_name):
+                all_folders.append(content_name)
+
+        return all_folders
+
+
+
+
+if __name__ == "__main__":
+    Cataloguer()
