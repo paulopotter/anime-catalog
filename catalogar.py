@@ -5,9 +5,7 @@ import os
 import simplejson as json
 
 
-
 class Cataloguer():
-
 
     def __init__(self, folder_to_catalog, description_file):
         self.current_folder = self.get_folder_to_catalog(folder_to_catalog)
@@ -28,12 +26,10 @@ class Cataloguer():
                 print catalog_descriptions[all_content_in_this_letter[i]]
                 print '\n'
 
-
     def get_folder_to_catalog(self, folder):
         parent_folder = os.path.dirname(os.getcwd())
 
         return parent_folder + '/' + folder
-
 
     def get_description(self, folder, file_name):
         file = folder + '/' + file_name
@@ -41,7 +37,6 @@ class Cataloguer():
             description = json.load(data)
 
         return description
-
 
     def break_alphabetically(self, folders):
         letters = {}
@@ -51,10 +46,8 @@ class Cataloguer():
 
         return letters
 
-
     def is_folder(self, folder_path, folder_name):
-         return os.path.isdir(folder_path + '/' + folder_name)
-
+        return os.path.isdir(folder_path + '/' + folder_name)
 
     def get_all_folders(self, folder_content, folder_path):
         all_folders = []
@@ -63,7 +56,6 @@ class Cataloguer():
                 all_folders.append(content_name)
 
         return all_folders
-
 
 
 if __name__ == "__main__":
