@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*- #
 
 import os
+import io
 import simplejson as json
 
 
@@ -30,7 +31,10 @@ class Cataloguer():
 
             content[letter] = description
 
-        print content
+        print 'Write in file...'
+        with io.open('data.json', 'w', encoding='utf-8') as f:
+            f.write(json.dumps(content, ensure_ascii=False))
+        print 'Write complete'
 
     def get_folder_to_catalog(self, folder):
         parent_folder = os.path.dirname(os.getcwd())
