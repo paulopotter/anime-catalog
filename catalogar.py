@@ -51,8 +51,12 @@ class Cataloguer():
 
     def get_description(self, folder, file_name):
         file = folder + '/' + file_name
-        with open(file) as data:
-            description = json.load(data)
+        try:
+            with open(file) as data:
+                description = json.load(data)
+        except Exception as e:
+            print '< ' + folder.split('/')[-1] + ' > do not exist'
+            description = {}
 
         return description
 
