@@ -18,13 +18,19 @@ class Cataloguer():
 
         folders_by_letters = self.break_alphabetically(get_all_folders_names)
 
+        content = {}
         for letter in folders_by_letters.keys():
+            description = []
             all_content_in_this_letter = folders_by_letters[letter]
             size_of_content_in_this_letter = len(all_content_in_this_letter)
+            order_alphabetically = sorted(all_content_in_this_letter)
 
             for i in range(size_of_content_in_this_letter):
-                print catalog_descriptions[all_content_in_this_letter[i]]
-                print '\n'
+                description.append(catalog_descriptions[order_alphabetically[i]])
+
+            content[letter] = description
+
+        print content
 
     def get_folder_to_catalog(self, folder):
         parent_folder = os.path.dirname(os.getcwd())
