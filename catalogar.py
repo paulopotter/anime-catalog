@@ -54,9 +54,12 @@ class Cataloguer():
         try:
             with open(file) as data:
                 description = json.load(data)
-        except Exception as e:
-            print '< ' + folder.split('/')[-1] + ' > do not exist'
-            description = {}
+        except:
+            name = folder.split('/')[-1]
+            print '< ' + name + ' > do not exist'
+            description = {
+                "name": name
+            }
 
         return description
 
