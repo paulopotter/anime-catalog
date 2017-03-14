@@ -9,37 +9,45 @@ import simplejson as json
 class Cataloguer():
 
     def __init__(self, folder_to_catalog, description_file):
+        self.description_file = description_file
         self.current_folder = self.get_folder_to_catalog(folder_to_catalog)
+
+    def create_json_file(self, filename):
+        content = self.prepared_content()
+        print 'Writing in the file...'
+        with io.open('data.json', 'w', encoding='utf-8') as f:
+            f.write(json.dumps(content, ensure_ascii=False))
+        print 'Writing completed!'
+
+    def prepared_content(self):
+        content = {}
+
         get_all_folders_names = self.get_all_folders(os.listdir(self.current_folder), self.current_folder)
-        catalog_descriptions = {}
-
-        for folder_name in get_all_folders_names:
-            folder = self.current_folder + '/' + folder_name
-            catalog_descriptions[folder_name] = self.get_description(folder, description_file)
-
+        all_descriptions = self.get_all_descriptions(get_all_folders_names)
         folders_by_letters = self.break_alphabetically(get_all_folders_names)
 
-        content = {}
         for letter in folders_by_letters.keys():
             description = []
-            all_content_in_this_letter = folders_by_letters[letter]
-            size_of_content_in_this_letter = len(all_content_in_this_letter)
-            order_alphabetically = sorted(all_content_in_this_letter)
+            order_alphabetically = sorted(folders_by_letters[letter])
 
-            for i in range(size_of_content_in_this_letter):
-                description.append(catalog_descriptions[order_alphabetically[i]])
+            for i in range(len(order_alphabetically)):
+                description.append(all_descriptions[order_alphabetically[i]])
 
             content[letter] = description
 
-        print 'Write in file...'
-        with io.open('data.json', 'w', encoding='utf-8') as f:
-            f.write(json.dumps(content, ensure_ascii=False))
-        print 'Write complete'
+        return content
 
     def get_folder_to_catalog(self, folder):
         parent_folder = os.path.dirname(os.getcwd())
 
         return parent_folder + '/' + folder
+
+    def get_all_descriptions(self, folders):
+        all_descriptions = {}
+        for folder_name in folders:
+            folder = self.current_folder + '/' + folder_name
+            all_descriptions[folder_name] = self.get_description(folder, self.description_file)
+        return all_descriptions
 
     def get_description(self, folder, file_name):
         file = folder + '/' + file_name
@@ -69,4 +77,5 @@ class Cataloguer():
 
 
 if __name__ == "__main__":
-    Cataloguer('Animes', 'description.json')
+    cataloguer = Cataloguer('Animes', 'description.json')
+    cataloguer.create_json_file('data')
