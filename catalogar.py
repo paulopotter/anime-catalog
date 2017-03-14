@@ -15,8 +15,8 @@ class Cataloguer():
     def create_json_file(self, filename):
         content = self.prepared_content()
         print 'Writing in the file...'
-        with io.open('data.json', 'w', encoding='utf-8') as f:
-            f.write(json.dumps(content, ensure_ascii=False))
+        with io.open('data-json.js', 'w', encoding='utf-8') as f:
+            f.write('var data=' + json.dumps(content, ensure_ascii=False) + ';')
         print 'Writing completed!'
 
     def prepared_content(self):
