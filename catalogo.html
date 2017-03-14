@@ -7,12 +7,86 @@
         *{
             margin: 0;
             padding: 0;
+            list-style: none;
         }
+
+    #ruler{
+        background-color: rgba(13, 13, 13, 0.5);
+        display: block;
+        right: 0;
+        line-height: 2em;
+        position:  fixed;
+        text-align: center;
+        height: 50px;
+        width: 100%;
+        z-index: 1;
+        overflow: auto;
+    }
+    #ruler span {
+        margin: 5px;
+        font-size: 1.5em;
+    }
+    #anime-list {
+        position: absolute;
+    }
+
+    .poster {
+        width: 174px;
+        height: 245px;
+    }
+    .anime-name {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 3px 1px;
+    }
+    .anime {
+        background: #aaa;
+        float: left;
+        height: 220px;
+        margin-bottom: 10px;
+        margin-left: 20px;
+        overflow: hidden;
+        padding: 3px 0;
+        position: relative;
+        text-align: center;
+        vertical-align: baseline;
+        width: 150px;
+        font-family: sans-serif;
+    }
+    .anime:nth-child(2n) {
+        background: #ddd;
+    }
+
+    .anime:hover{
+        background-color: rgba(0, 0, 0, 0.7);
+        cursor: pointer;
+    }
+    .anime:hover .poster{
+        box-shadow: 5px 0px 40px 11px rgba(200, 200, 200, 0.4) inset
+    }
+
+    .anime-name {
+        display: none;
+    }
+    .anime:hover .anime-name {
+        display: block;
+        background-color: rgba(255, 255, 255, 0.7);
+    }
+    .sector-title {
+        font-size: 3em;
+    }
+    .sector{
+        padding-top: 50px;
+        clear: both;
+    }
     </style>
 </head>
 <body>
     <div id="wrapper">
         <div id="ruler"></div>
+        <div id="anime-list"></div>
     </div>
 </body>
     <script type="text/javascript"  src='./data-json.js'></script>
@@ -22,20 +96,27 @@
             rulerDiv.innerHTML += '<span><a href="#' + key + '">' + key + '</a></span>';
             var el = document.createElement("div");
             el.id = key;
+            el.className = 'sector';
+            el.innerHTML += '<p class="sector-title">' + key + '</p>';
             for( var i = 0; i < Object(data[key]).length; i++){
                 el.innerHTML += tmpl_content(data[key][i]);
             }
-            document.body.appendChild(el);
+            document.getElementById('anime-list').appendChild(el);
         }
 
-        function tmpl_content(data){
-            var content = '<div class="item">';
-
-            content += '<span class="title">' + data['name'] + '</span>';
-            content += '<img src="../Animes/' +data['name']+ '/thumb.jpg" width="174" height="245"/>';
-            content += '<p>' + data['description']+ '</p>';
-
-            content += '</div>';
+        function tmpl_content(arr){
+            var content =  '<li class="anime">' +
+                        '<img src="../Animes/' +arr['name'] + '/thumb.jpg" class="poster" />' +
+                        '<span class="anime-name">' + arr['name'] + '</span>' +
+                        '<ul class="plus">'+
+                            '<li class="description">' +arr['description'] +'</li>' +
+                            '<li class="season">' +arr['season'] +'</li>' +
+                            '<li class="episodes">' +arr['totalEpisodes'] +'</li>' +
+                            '<li class="genre">' +arr['genre'] +'</li>' +
+                            '<li class="rate">' +arr['rate'] +'</li>' +
+                            '<li class="obs">' +arr['obs'] +'</li>' +
+                        '</ul>'+
+                    '</li>';
 
             return content
         }
