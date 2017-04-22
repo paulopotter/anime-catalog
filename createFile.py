@@ -18,12 +18,11 @@ class CreateFile():
         if create_folder:
             self.create_folder(folder_name)
 
-        print 'Writing in the file < {} >...'.format(file_name)
+        print '\tWriting in the file < {}.{} >...'.format(file_name, file_type)
 
         with io.open(file_path, 'w', encoding='utf-8') as f:
             f.write(content)
-
-        print 'Writing completed!'
+        print '\tWriting completed!'
 
     def create_js_file(self, content,
                        folder_name='.',

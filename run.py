@@ -3,6 +3,46 @@
 import argparse
 import inspect
 
+from slugify import slugify
+
+
+def try_parse(host, uris, anime):
+    from parseUrl import Parse
+
+    parse = Parse(host, uris[0] + anime)
+    print '\t{}{}{}'.format(host, uris[0], anime)
+    if parse.parse_name() in [u'A página não foi encontrada', 'Animes']:
+        if len(uris[1::]) > 0:
+            try_parse(host, uris[1::], anime)
+        else:
+            print u'\t[ERROR]: Pagina do anime < {} > não encontrado!'.format(anime)
+            return False
+    else:
+        return parse
+
+
+def make_parse(parse, anime_name, path, create_folder):
+
+    data = {"name": parse.parse_name(),
+            "description": parse.parse_description(),
+            "totalEpisodes": parse.parse_total_ep(),
+            "genre": parse.parse_genres()
+            }
+
+    try:
+        from createFile import CreateFile
+
+        anime_name = slugify(anime_name, separator=' ')
+        anime_name = anime_name[0].upper() + anime_name[1::]
+        full_path = path + anime_name
+        create_file = CreateFile()
+        create_file.create_json_file(data,
+                                     folder_name=full_path,
+                                     create_folder=create_folder)
+        parse.get_image(full_path)
+    except Exception as e:
+        print u'\t< {} > não pode ser realizado. \n\t[ERROR]: {} \n'.format(data['name'], e)
+
 
 def cataloguer(folder_name, description_file):
     from cataloguer import Cataloguer
@@ -22,67 +62,31 @@ def parse(list_type, file, path, create_folder):
     # Import only necessary
     import io
 
-    from slugify import slugify
-
-    from createFile import CreateFile
-    from parseUrl import Parse
-
     host = 'https://www.anbient.com/'
+    uris = ['anime/', 'tv/']
 
     if list_type == 'list':
-
         with io.open(file, 'r', encoding='utf-8') as anime_list:
             for anime in anime_list.readlines():
+                anime_name = anime.split('/', 4)[-1][:-1]
+                print '\n- {}:'.format(anime_name)
+                parse = try_parse(host, uris, slugify(anime_name))
 
-                uri = anime.split('/', 3)[-1][:-1]
-                parse = Parse(host, uri)
-
-                data = {"name": parse.parse_name(),
-                        "description": parse.parse_description(),
-                        "totalEpisodes": parse.parse_total_ep(),
-                        "genre": parse.parse_genres()
-                        }
-                try:
-                    anime_name = slugify(uri.split('/')[1], separator=' ')
-                    anime_name = anime_name[0].upper() + anime_name[1::]
-                    full_path = path + anime_name
-                    create_file = CreateFile()
-                    create_file.create_json_file(data,
-                                                 folder_name=full_path,
-                                                 create_folder=create_folder)
-                    parse.get_image(full_path)
-                except Exception as e:
-                    print '< {} > nao pode ser realizado. \n[ERROR]: {} \n'.format(data['name'], e)
+                if parse:
+                    make_parse(parse, anime_name, path, create_folder)
 
     elif list_type == 'folder':
-
         from cataloguer import Cataloguer
 
         cataloguer = Cataloguer(path, 'dummy')
         anime_list = cataloguer.get_all_folders(path)
-        for anime in anime_list:
-                print anime + '\n'
-                uri = 'tv/' + slugify(anime)
-                parse = Parse(host, uri)
+        for anime_name in anime_list:
+            print '\n- {}:'.format(anime_name)
+            parse = try_parse(host, uris, slugify(anime_name))
 
-                if parse.parse_name() == u'A página não foi encontrada':
-                    uri = 'animes/' + slugify(anime)
-                    print ">>>>" + uri
-                    parse = Parse(host, uri)
+            if parse:
+                make_parse(parse, anime_name, path, create_folder)
 
-                data = {"name": parse.parse_name(),
-                        "description": parse.parse_description(),
-                        "totalEpisodes": parse.parse_total_ep(),
-                        "genre": parse.parse_genres()
-                        }
-                try:
-                    create_file = CreateFile()
-                    create_file.create_json_file(data,
-                                                 folder_name=path + anime,
-                                                 create_folder=create_folder)
-                    parse.get_image(path + anime)
-                except Exception as e:
-                    print '< {} > nao pode ser realizado. \n[ERROR]: {} \n'.format(anime, e)
     else:
         print '[ERROR] unrecognized list type. Please use < list > or < folder >'
         return False
