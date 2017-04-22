@@ -36,3 +36,17 @@ class CreateFile():
         else:
             os.mkdir(folder_name)
             print '{} created!'.format(folder_name)
+
+    def format_file(self, get_infos):
+        data = {
+            'name': get_infos['name'],
+            'description': get_infos['description'],
+            'totalEpisodes': get_infos['total_ep'],
+            'genre': get_infos['genres'],
+            "season": get_infos['season'],
+            "othersSeasons": get_infos['othersSeasons'],
+            "rate": get_infos['rate'],
+            "obs": get_infos['obs`']
+        }
+
+        return data
