@@ -11,7 +11,7 @@ def cataloguer(folder_name, description_file):
     cataloguer = Cataloguer(folder_name, description_file)
     create_file = CreateFile()
     data = cataloguer.prepared_content()
-    create_file.create_json_file(data)
+    create_file.create_js_file(data)
 
 
 def parse(list_type, file, path, create_folder):
