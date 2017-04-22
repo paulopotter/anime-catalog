@@ -18,7 +18,7 @@ class CreateFile():
         if create_folder:
             self.create_folder(folder_name)
 
-        print 'Writing in the file...'
+        print 'Writing in the file < {} >...'.format(file_name)
 
         with io.open(file_path, 'w', encoding='utf-8') as f:
             f.write('var data=' + json.dumps(content, ensure_ascii=False) + ';')
