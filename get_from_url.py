@@ -4,7 +4,6 @@ import io
 import urllib
 
 import requests
-import simplejson as json
 from BeautifulSoup import BeautifulSoup
 
 
@@ -83,15 +82,6 @@ class CreateFile():
         }
 
         return data
-
-    def create_json_file(self, parse, folder_name):
-        content = self.format_file(parse)
-        print 'Writing in the file...'
-        with io.open(folder_name + '/description.js', 'w', encoding='utf-8') as f:
-            f.write('var data=' + json.dumps(content, ensure_ascii=False) + ';')
-        print 'Writing completed!'
-
-        # Parse().get_image()
 
 
 class MakeTheMagic():
