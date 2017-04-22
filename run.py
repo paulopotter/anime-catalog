@@ -96,8 +96,6 @@ def parse(list_type, file, path, create_folder, override):
                 parse = try_parse(host, uris, slugify(anime_name))
 
                 if parse:
-                    if 'rokoujouma-no-shinryakusha' == slugify(anime_name):
-                        import ipdb; ipdb.set_trace()
                     make_parse(parse, anime_name, path, create_folder, override)
 
     elif list_type == 'folder':
