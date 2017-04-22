@@ -22,6 +22,8 @@ def parse(list_type, file, path, create_folder):
     # Import only necessary
     import io
 
+    from slugify import slugify
+
     from createFile import CreateFile
     from parseUrl import Parse
 
@@ -32,8 +34,8 @@ def parse(list_type, file, path, create_folder):
         with io.open(file, 'r', encoding='utf-8') as anime_list:
             for anime in anime_list.readlines():
 
-                uri = anime.split('/', 3)[-1]
-                parse = Parse(host, uri[:-1])
+                uri = anime.split('/', 3)[-1][:-1]
+                parse = Parse(host, uri)
 
                 data = {"name": parse.parse_name(),
                         "description": parse.parse_description(),
@@ -41,22 +43,25 @@ def parse(list_type, file, path, create_folder):
                         "genre": parse.parse_genres()
                         }
                 try:
+                    anime_name = slugify(uri.split('/')[1], separator=' ')
+                    anime_name = anime_name[0].upper() + anime_name[1::]
+                    full_path = path + anime_name
                     create_file = CreateFile()
                     create_file.create_json_file(data,
-                                                 folder_name=path + data['name'],
+                                                 folder_name=full_path,
                                                  create_folder=create_folder)
-                    parse.get_image(path + data['name'])
+                    parse.get_image(full_path)
                 except Exception as e:
                     print '< {} > nao pode ser realizado. \n[ERROR]: {} \n'.format(data['name'], e)
-    elif list_type == 'folder':
 
-        from slugify import slugify
+    elif list_type == 'folder':
 
         from cataloguer import Cataloguer
 
         cataloguer = Cataloguer(path, 'dummy')
         anime_list = cataloguer.get_all_folders(path)
         for anime in anime_list:
+                print anime + '\n'
                 uri = 'tv/' + slugify(anime)
                 parse = Parse(host, uri)
 
