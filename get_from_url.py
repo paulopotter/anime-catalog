@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import io
+# import io
 import urllib
 
 import requests
@@ -9,11 +9,12 @@ from BeautifulSoup import BeautifulSoup
 
 class Parse():
 
-    def __init__(self, url):
-        self.url = url
-        # self.url = 'https://www.anbient.com/anime/seikon-no-qwaser'
-        self.tree = self.bs_page()
-        # self.name = 'seikon-no-qwaser'
+    def __init__(self, host, uri):
+        self.host = host
+        # host = 'https://www.anbient.com/'
+        # uri = 'anime/seikon-no-qwaser'
+        url = host + uri
+        self.tree = self.beautifulSoup_page(url)
 
     def getPage(self, url):
         request_get = requests.get(url)
@@ -21,8 +22,8 @@ class Parse():
 
         return requests_response
 
-    def bs_page(self):
-        return BeautifulSoup(self.getPage(self.url))
+    def beautifulSoup_page(self, url):
+        return BeautifulSoup(self.getPage(url))
 
     def parse_description(self):
         for node in self.tree.findAll('div', {"class": 'field field-body'}):
@@ -34,7 +35,7 @@ class Parse():
         for node in self.tree.findAll('div', {"class": 'anime-info'}):
 
             img = node.find('img')
-            url_img = 'https://www.anbient.com' + img.attrs[0][1]
+            url_img = self.host[:-1] + img.attrs[0][1]
 
             urllib.urlretrieve(url_img, self.name + '/thumb.png')
             return url_img
@@ -61,44 +62,21 @@ class Parse():
             return txt
 
 
-# #####
+# class MakeTheMagic():
+
+#     def __init__(self):
+#         with io.open('blo.txt', 'r', encoding='utf-8') as lista_de_animes:
+#             for anime in lista_de_animes.readlines():
+
+#                 create_file = CreateFile()
+#                 parse = Parse(anime[:-1])
+#                 name = parse.parse_name()
+
+#                 try:
+#                     create_file.create_json_file(parse, name)
+#                     parse.get_image(name)
+#                 except Exception as e:
+#                     print '<{}> nao pode ser realizado. \n'.format(name, e)
 
 
-class CreateFile():
-
-    def __init__(self):
-        pass
-
-    def format_file(self, get_infos):
-        data = {
-            'name': get_infos.parse_name(),
-            'description': get_infos.parse_description(),
-            'totalEpisodes': get_infos.parse_total_ep(),
-            'genre': get_infos.parse_genres(),
-            "season": "1",
-            "othersSeason": [],
-            "rate": "0",
-            "obs": ""
-        }
-
-        return data
-
-
-class MakeTheMagic():
-
-    def __init__(self):
-        with io.open('blo.txt', 'r', encoding='utf-8') as lista_de_animes:
-            for anime in lista_de_animes.readlines():
-
-                create_file = CreateFile()
-                parse = Parse(anime[:-1])
-                name = parse.parse_name()
-
-                try:
-                    create_file.create_json_file(parse, name)
-                    parse.get_image(name)
-                except Exception as e:
-                    print '<{}> nao pode ser realizado. \n'.format(name, e)
-
-
-MakeTheMagic()
+# MakeTheMagic()
