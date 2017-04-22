@@ -11,9 +11,9 @@ class CreateFile():
     def __init__(self):
         pass
 
-    def create_json_file(self, content, folder_name='.', file_name='description.js', create_folder=False):
+    def create_file(self, file_type, content, folder_name='.', file_name='description.js', create_folder=False):
 
-        file_path = folder_name + '/' + file_name
+        file_path = folder_name + '/' + file_name + '.' + file_type
 
         if create_folder:
             self.create_folder(folder_name)
@@ -21,9 +21,24 @@ class CreateFile():
         print 'Writing in the file < {} >...'.format(file_name)
 
         with io.open(file_path, 'w', encoding='utf-8') as f:
-            f.write('var data=' + json.dumps(content, ensure_ascii=False) + ';')
+            f.write(content)
 
         print 'Writing completed!'
+
+    def create_js_file(self, content,
+                       folder_name='.',
+                       file_name='data-json',
+                       create_folder=False):
+
+        data = 'var data=' + json.dumps(content, ensure_ascii=False) + ';'
+        self.create_file('js', data, folder_name, file_name, create_folder)
+
+    def create_json_file(self, content,
+                         folder_name='.',
+                         file_name='description',
+                         create_folder=False):
+
+        self.create_file('json', content, folder_name, file_name, create_folder)
 
     def is_folder(self, folder_path='.', folder_name=''):
         return os.path.isdir(folder_path + '/' + folder_name)
@@ -38,7 +53,7 @@ class CreateFile():
             print '{} created!'.format(folder_name)
 
     def format_file(self, get_infos):
-        data = {
+        return {
             'name': get_infos['name'],
             'description': get_infos['description'],
             'totalEpisodes': get_infos['total_ep'],
@@ -48,5 +63,3 @@ class CreateFile():
             "rate": get_infos['rate'],
             "obs": get_infos['obs`']
         }
-
-        return data
