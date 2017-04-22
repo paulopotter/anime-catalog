@@ -66,9 +66,10 @@ class Cataloguer():
         return letters
 
     def get_all_folders(self, folder_content, folder_path):
+        create_file = CreateFile()
         all_folders = []
         for content_name in folder_content:
-            if self.is_folder(folder_path, content_name):
+            if create_file.is_folder(folder_path, content_name):
                 all_folders.append(content_name)
 
         return all_folders
