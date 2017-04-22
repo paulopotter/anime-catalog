@@ -4,12 +4,18 @@ import argparse
 import inspect
 
 
-def cataloguer():
-    pass
+def cataloguer(folder_name, description_file):
+    from cataloguer import Cataloguer
+    from createFile import CreateFile
+
+    cataloguer = Cataloguer(folder_name, description_file)
+    create_file = CreateFile()
+    data = cataloguer.prepared_content()
+    create_file.create_json_file(data)
 
 
-def parse(list_type, file_or_path, create_folder):
-    if list_type == '' or file_or_path == '':
+def parse(list_type, file, path, create_folder):
+    if list_type == '' or file == '':
         print '[ Error ]: list type or file/path is empty'
         return False
 
@@ -23,7 +29,7 @@ def parse(list_type, file_or_path, create_folder):
 
     if list_type == 'list':
 
-        with io.open(file_or_path, 'r', encoding='utf-8') as anime_list:
+        with io.open(file, 'r', encoding='utf-8') as anime_list:
             for anime in anime_list.readlines():
 
                 uri = anime.split('/', 3)[-1]
@@ -37,9 +43,9 @@ def parse(list_type, file_or_path, create_folder):
                 try:
                     create_file = CreateFile()
                     create_file.create_json_file(data,
-                                                 folder_name=data['name'],
+                                                 folder_name=path + data['name'],
                                                  create_folder=create_folder)
-                    parse.get_image(data['name'])
+                    parse.get_image(path + data['name'])
                 except Exception as e:
                     print '< {} > nao pode ser realizado. \n[ERROR]: {} \n'.format(data['name'], e)
     elif list_type == 'folder':
@@ -48,9 +54,8 @@ def parse(list_type, file_or_path, create_folder):
 
         from cataloguer import Cataloguer
 
-        cataloguer = Cataloguer(file_or_path, 'dummy')
-        anime_list = cataloguer.get_all_folders(file_or_path)
-        anime_list.pop(0)
+        cataloguer = Cataloguer(path, 'dummy')
+        anime_list = cataloguer.get_all_folders(path)
         for anime in anime_list:
                 uri = 'tv/' + slugify(anime)
                 parse = Parse(host, uri)
@@ -63,12 +68,11 @@ def parse(list_type, file_or_path, create_folder):
                 try:
                     create_file = CreateFile()
                     create_file.create_json_file(data,
-                                                 folder_name=anime,
+                                                 folder_name=path + anime,
                                                  create_folder=create_folder)
-                    parse.get_image(data['name'])
+                    parse.get_image(path + data['name'])
                 except Exception as e:
                     print '< {} > nao pode ser realizado. \n[ERROR]: {} \n'.format(anime, e)
-
     else:
         print '[ERROR] unrecognized list type. Please use < list > or < folder >'
         return False
@@ -82,13 +86,14 @@ if __name__ == "__main__":
     subparsers = parser.add_subparsers(title="subcommand")
 
     parser_cataloguer = subparsers.add_parser('cataloguer')
-    # parser_cataloguer.add_argument("--list_type", default='list')
-    # parser_cataloguer.add_argument("--file_or_path", default='blo.txt')
-    parser_cataloguer.set_defaults(func=parse)
+    parser_cataloguer.add_argument("--folder_name", default='Animes')
+    parser_cataloguer.add_argument("--description_file", default='description.json')
+    parser_cataloguer.set_defaults(func=cataloguer)
 
     parser_parse = subparsers.add_parser('parse')
     parser_parse.add_argument("--list_type", default='list')
-    parser_parse.add_argument("--file_or_path", default='list.txt')
+    parser_parse.add_argument("--file", default='list.txt')
+    parser_parse.add_argument("--path", default='./')
     parser_parse.add_argument("--create_folder", default=False)
     parser_parse.set_defaults(func=parse)
 
