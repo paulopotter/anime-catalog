@@ -16,7 +16,7 @@ class Cataloguer():
     def prepared_content(self):
         content = {}
 
-        get_all_folders_names = self.get_all_folders(os.listdir(self.current_folder), self.current_folder)
+        get_all_folders_names = self.get_all_folders(self.current_folder)
         all_descriptions = self.get_all_descriptions(get_all_folders_names)
         folders_by_letters = self.break_alphabetically(get_all_folders_names)
 
@@ -65,10 +65,10 @@ class Cataloguer():
 
         return letters
 
-    def get_all_folders(self, folder_content, folder_path):
+    def get_all_folders(self, folder_path):
         create_file = CreateFile()
         all_folders = []
-        for content_name in folder_content:
+        for content_name in os.listdir(folder_path):
             if create_file.is_folder(folder_path, content_name):
                 all_folders.append(content_name)
 

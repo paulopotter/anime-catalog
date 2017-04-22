@@ -11,7 +11,6 @@ class Parse():
 
     def __init__(self, host, uri):
         self.host = host
-        # host = 'https://www.anbient.com/'
         # uri = 'anime/seikon-no-qwaser'
         url = host + uri
         self.tree = self.beautifulSoup_page(url)
@@ -32,13 +31,13 @@ class Parse():
             description = node.find('div', attrs={'class': 'item '})
             return description.getText()
 
-    def get_image(self):
+    def get_image(self, path='.'):
         for node in self.tree.findAll('div', {"class": 'anime-info'}):
 
             img = node.find('img')
             url_img = self.host[:-1] + img.attrs[0][1]
 
-            urllib.urlretrieve(url_img, self.name + '/thumb.png')
+            urllib.urlretrieve(url_img, path + '/thumb.png')
             return url_img
 
     def parse_total_ep(self):

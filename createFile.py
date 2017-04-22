@@ -38,7 +38,8 @@ class CreateFile():
                          file_name='description',
                          create_folder=False):
 
-        self.create_file('json', content, folder_name, file_name, create_folder)
+        data = json.dumps(content, ensure_ascii=False)
+        self.create_file('json', data, folder_name, file_name, create_folder)
 
     def is_folder(self, folder_path='.', folder_name=''):
         return os.path.isdir(folder_path + '/' + folder_name)
@@ -58,8 +59,8 @@ class CreateFile():
             'description': get_infos['description'],
             'totalEpisodes': get_infos['total_ep'],
             'genre': get_infos['genres'],
-            "season": get_infos['season'],
-            "othersSeasons": get_infos['othersSeasons'],
-            "rate": get_infos['rate'],
-            "obs": get_infos['obs`']
+            "season": get_infos.get('season', 1),
+            "othersSeasons": get_infos.get('othersSeasons', []),
+            "rate": get_infos.get('rate', 0),
+            "obs": get_infos.get('obs', '')
         }
