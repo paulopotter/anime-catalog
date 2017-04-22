@@ -1,6 +1,6 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*- #
 
-# import io
 import urllib
 
 import requests
@@ -23,6 +23,7 @@ class Parse():
         return requests_response
 
     def beautifulSoup_page(self, url):
+
         return BeautifulSoup(self.getPage(url))
 
     def parse_description(self):
@@ -60,23 +61,3 @@ class Parse():
                 txt.append(value.getText())
 
             return txt
-
-
-# class MakeTheMagic():
-
-#     def __init__(self):
-#         with io.open('blo.txt', 'r', encoding='utf-8') as lista_de_animes:
-#             for anime in lista_de_animes.readlines():
-
-#                 create_file = CreateFile()
-#                 parse = Parse(anime[:-1])
-#                 name = parse.parse_name()
-
-#                 try:
-#                     create_file.create_json_file(parse, name)
-#                     parse.get_image(name)
-#                 except Exception as e:
-#                     print '<{}> nao pode ser realizado. \n'.format(name, e)
-
-
-# MakeTheMagic()
