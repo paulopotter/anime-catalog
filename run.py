@@ -13,7 +13,7 @@ def try_parse(host, uris, anime):
     print '\t{}{}{}'.format(host, uris[0], anime)
     if parse.parse_name() in [u'A página não foi encontrada', 'Animes']:
         if len(uris[1::]) > 0:
-            try_parse(host, uris[1::], anime)
+            return try_parse(host, uris[1::], anime)
         else:
             print u'\t[ERROR]: Pagina do anime < {} > não encontrado!'.format(anime)
             return False
@@ -50,17 +50,24 @@ def make_parse(parse, anime_name, path, create_folder, override):
                 creating_file()
                 getting_img()
         else:
+
             import os
 
-            if 'description.json' in os.listdir(path + anime_name):
-                print '\t< description.json > Alread exists!'
-            else:
+            try:
+                if 'description.json' in os.listdir(path + anime_name):
+                    print '\t< description.json > Alread exists!'
+                else:
+                    creating_file()
+            except OSError:
                 creating_file()
 
-            if 'thumb.png' in os.listdir(path + anime_name):
-                print '\t< thumb.png > Alread exists!'
-            else:
-                getting_img()
+            try:
+                if 'thumb.png' in os.listdir(path + anime_name):
+                    print '\t< thumb.png > Alread exists!'
+                else:
+                    getting_img()
+            except OSError:
+                    getting_img()
 
     except Exception as e:
         print u'\t< {} > não pode ser realizado. \n\t[ERROR]: {} \n'.format(data['name'], e)
@@ -92,7 +99,6 @@ def parse(list_type, file, path, create_folder, override):
             for anime in anime_list.readlines():
                 anime_name = anime.split('/', 4)[-1][:-1]
                 print '\n- {}:'.format(anime_name)
-
                 parse = try_parse(host, uris, slugify(anime_name))
 
                 if parse:
