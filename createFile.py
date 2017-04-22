@@ -47,10 +47,10 @@ class CreateFile():
         folder_exists = self.is_folder(folder_name)
 
         if folder_exists:
-            print '{} exists'.format(folder_name)
+            print '\t{} exists'.format(folder_name)
         else:
             os.mkdir(folder_name)
-            print '{} created!'.format(folder_name)
+            print '\t{} created!'.format(folder_name)
 
     def format_file(self, get_infos):
         return {

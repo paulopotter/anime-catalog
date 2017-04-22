@@ -21,7 +21,7 @@ def try_parse(host, uris, anime):
         return parse
 
 
-def make_parse(parse, anime_name, path, create_folder):
+def make_parse(parse, anime_name, path, create_folder, override):
 
     data = {"name": parse.parse_name(),
             "description": parse.parse_description(),
@@ -30,16 +30,38 @@ def make_parse(parse, anime_name, path, create_folder):
             }
 
     try:
-        from createFile import CreateFile
 
         anime_name = slugify(anime_name, separator=' ')
         anime_name = anime_name[0].upper() + anime_name[1::]
         full_path = path + anime_name
-        create_file = CreateFile()
-        create_file.create_json_file(data,
-                                     folder_name=full_path,
-                                     create_folder=create_folder)
-        parse.get_image(full_path)
+
+        def creating_file():
+            from createFile import CreateFile
+
+            create_file = CreateFile()
+            create_file.create_json_file(data,
+                                         folder_name=full_path,
+                                         create_folder=create_folder)
+
+        def getting_img():
+            parse.get_image(full_path)
+
+        if override:
+                creating_file()
+                getting_img()
+        else:
+            import os
+
+            if 'description.json' in os.listdir(path + anime_name):
+                print '\t< description.json > Alread exists!'
+            else:
+                creating_file()
+
+            if 'thumb.png' in os.listdir(path + anime_name):
+                print '\t< thumb.png > Alread exists!'
+            else:
+                getting_img()
+
     except Exception as e:
         print u'\t< {} > não pode ser realizado. \n\t[ERROR]: {} \n'.format(data['name'], e)
 
@@ -54,7 +76,7 @@ def cataloguer(folder_name, description_file):
     create_file.create_js_file(data)
 
 
-def parse(list_type, file, path, create_folder):
+def parse(list_type, file, path, create_folder, override):
     if list_type == '' or file == '':
         print '[ Error ]: list type or file/path is empty'
         return False
@@ -70,10 +92,13 @@ def parse(list_type, file, path, create_folder):
             for anime in anime_list.readlines():
                 anime_name = anime.split('/', 4)[-1][:-1]
                 print '\n- {}:'.format(anime_name)
+
                 parse = try_parse(host, uris, slugify(anime_name))
 
                 if parse:
-                    make_parse(parse, anime_name, path, create_folder)
+                    if 'rokoujouma-no-shinryakusha' == slugify(anime_name):
+                        import ipdb; ipdb.set_trace()
+                    make_parse(parse, anime_name, path, create_folder, override)
 
     elif list_type == 'folder':
         from cataloguer import Cataloguer
@@ -108,7 +133,8 @@ if __name__ == "__main__":
     parser_parse.add_argument("--list_type", default='list')
     parser_parse.add_argument("--file", default='list.txt')
     parser_parse.add_argument("--path", default='./')
-    parser_parse.add_argument("--create_folder", default=False)
+    parser_parse.add_argument("--override", action='store_true', default=False)
+    parser_parse.add_argument("--create_folder", action='store_true', default=False)
     parser_parse.set_defaults(func=parse)
 
     args = parser.parse_args()
