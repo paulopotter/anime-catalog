@@ -65,6 +65,11 @@ def parse(list_type, file, path, create_folder):
                 uri = 'tv/' + slugify(anime)
                 parse = Parse(host, uri)
 
+                if parse.parse_name() == u'A página não foi encontrada':
+                    uri = 'animes/' + slugify(anime)
+                    print ">>>>" + uri
+                    parse = Parse(host, uri)
+
                 data = {"name": parse.parse_name(),
                         "description": parse.parse_description(),
                         "totalEpisodes": parse.parse_total_ep(),
@@ -75,7 +80,7 @@ def parse(list_type, file, path, create_folder):
                     create_file.create_json_file(data,
                                                  folder_name=path + anime,
                                                  create_folder=create_folder)
-                    parse.get_image(path + data['name'])
+                    parse.get_image(path + anime)
                 except Exception as e:
                     print '< {} > nao pode ser realizado. \n[ERROR]: {} \n'.format(anime, e)
     else:

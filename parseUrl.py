@@ -11,7 +11,6 @@ class Parse():
 
     def __init__(self, host, uri):
         self.host = host
-        # uri = 'anime/seikon-no-qwaser'
         url = host + uri
         self.tree = self.beautifulSoup_page(url)
 
