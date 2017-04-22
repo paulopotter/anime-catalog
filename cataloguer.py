@@ -73,10 +73,3 @@ class Cataloguer():
                 all_folders.append(content_name)
 
         return all_folders
-
-
-if __name__ == "__main__":
-    cataloguer = Cataloguer('Animes', 'description.json')
-    create_file = CreateFile()
-    data = cataloguer.prepared_content()
-    create_file.create_json_file(data)
