@@ -20,12 +20,14 @@ class Cataloguer():
         all_descriptions = self.get_all_descriptions(get_all_folders_names)
         folders_by_letters = self.break_alphabetically(get_all_folders_names)
 
+        cf = CreateFile()
         for letter in folders_by_letters.keys():
             description = []
             order_alphabetically = sorted(folders_by_letters[letter])
 
             for i in range(len(order_alphabetically)):
-                description.append(all_descriptions[order_alphabetically[i]])
+                dt = cf.format_file(all_descriptions[order_alphabetically[i]])
+                description.append(dt)
 
             content[letter] = description
 

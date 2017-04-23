@@ -56,8 +56,8 @@ class CreateFile():
         return {
             'name': get_infos['name'],
             'description': get_infos['description'],
-            'totalEpisodes': get_infos['total_ep'],
-            'genre': get_infos['genres'],
+            'totalEpisodes': ''.join(c for c in get_infos.get('totalEpisodes', 0) if c.isdigit()),
+            'genre': get_infos['genre'],
             "season": get_infos.get('season', 1),
             "othersSeasons": get_infos.get('othersSeasons', []),
             "rate": get_infos.get('rate', 0),
