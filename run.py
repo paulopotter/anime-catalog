@@ -114,7 +114,7 @@ def parse(list_type, file, path, create_folder, override):
             parse = try_parse(host, uris, slugify(anime_name))
 
             if parse:
-                make_parse(parse, anime_name, path, create_folder)
+                make_parse(parse, anime_name, path, create_folder, override)
 
     else:
         print '[ERROR] unrecognized list type. Please use < list > or < folder >'
