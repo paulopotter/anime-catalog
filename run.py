@@ -21,7 +21,7 @@ def try_parse(host, uris, anime):
         return parse
 
 
-def make_parse(parse, anime_name, path, create_folder, override):
+def make_parse(parse, anime_name, path, create_folder, override, list_or_folder='list'):
 
     data = {"name": parse.parse_name(),
             "description": parse.parse_description(),
@@ -30,10 +30,10 @@ def make_parse(parse, anime_name, path, create_folder, override):
             }
 
     try:
-
-        anime_name = slugify(anime_name, separator=' ')
-        anime_name = anime_name[0].upper() + anime_name[1::]
-        full_path = path + anime_name
+        slugify_name = slugify(anime_name, separator=' ')
+        slugify_name = anime_name[0].upper() + anime_name[1::]
+        anime_dir = anime_name if (list_or_folder == 'folder') else slugify_name
+        full_path = path + slugify_name
 
         def creating_file():
             from createFile import CreateFile
@@ -54,7 +54,7 @@ def make_parse(parse, anime_name, path, create_folder, override):
             import os
 
             try:
-                if 'description.json' in os.listdir(path + anime_name):
+                if 'description.json' in os.listdir(path + anime_dir):
                     print '\t< description.json > Alread exists!'
                 else:
                     creating_file()
@@ -62,7 +62,7 @@ def make_parse(parse, anime_name, path, create_folder, override):
                 creating_file()
 
             try:
-                if 'thumb.png' in os.listdir(path + anime_name):
+                if 'thumb.png' in os.listdir(path + anime_dir):
                     print '\t< thumb.png > Alread exists!'
                 else:
                     getting_img()
@@ -114,7 +114,7 @@ def parse(list_type, file, path, create_folder, override):
             parse = try_parse(host, uris, slugify(anime_name))
 
             if parse:
-                make_parse(parse, anime_name, path, create_folder, override)
+                make_parse(parse, anime_name, path, create_folder, override, 'folder')
 
     else:
         print '[ERROR] unrecognized list type. Please use < list > or < folder >'
