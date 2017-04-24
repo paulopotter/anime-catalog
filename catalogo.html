@@ -106,7 +106,7 @@
 
         function tmpl_content(arr){
             var content =  '<li class="anime">' +
-                        '<object data="../Animes/' + arr['name'].toString().toLowerCase().trim().replace(/&/g, '-and-').replace(/[\s\W-]+/g, ' ').trim() + '/thumb.png" class="poster">' +
+                        '<object data="../' + arr['path'] + '/thumb.png" class="poster">' +
                             '<img src="./img-not-found.gif" class="poster"/>' +
                         '</object>' +
                         '<span class="anime-name">' + arr['name'] + '</span>' +

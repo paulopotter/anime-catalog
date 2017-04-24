@@ -26,8 +26,10 @@ class Cataloguer():
             order_alphabetically = sorted(folders_by_letters[letter])
 
             for i in range(len(order_alphabetically)):
-                dt = cf.format_file(all_descriptions[order_alphabetically[i]])
-                description.append(dt)
+                data = all_descriptions[order_alphabetically[i]]
+                data['path'] = self.current_folder.rsplit('/', 1)[-1] + '/' + order_alphabetically[i]
+                formated_data = cf.format_file(data)
+                description.append(formated_data)
 
             content[letter] = description
 

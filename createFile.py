@@ -57,9 +57,11 @@ class CreateFile():
             'name': get_infos['name'],
             'description': get_infos['description'],
             'totalEpisodes': ''.join(c for c in get_infos.get('totalEpisodes', 0) if c.isdigit()),
+            'episodesDownloaded': get_infos.get('episodesDownloaded', 0),
             'genre': get_infos['genre'],
             "season": get_infos.get('season', 1),
             "othersSeasons": get_infos.get('othersSeasons', []),
             "rate": get_infos.get('rate', 0),
-            "obs": get_infos.get('obs', '')
+            "obs": get_infos.get('obs', ''),
+            "path": get_infos.get('path', '')
         }
