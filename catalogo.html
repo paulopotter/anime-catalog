@@ -7,7 +7,6 @@
             <object class="poster img-object">
                 <img src="./img-not-found.gif" class="poster img-fallback"/>
             </object>
-            <span class="anime-name"></span>
             <ul class="plus"></ul>
     </script>
     <style>
@@ -41,25 +40,18 @@
             width: 174px;
             height: 245px;
         }
-        .anime-name {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 3px 1px;
-        }
         .anime {
             background: #aaa;
             float: left;
-            height: 220px;
+            height: 245px;
             margin-bottom: 10px;
-            margin-left: 20px;
+            margin-left: 5px;
             overflow: hidden;
             padding: 3px 0;
             position: relative;
             text-align: center;
             vertical-align: baseline;
-            width: 150px;
+            width: 190px;
             font-family: sans-serif;
         }
         .anime:nth-child(2n) {
@@ -74,18 +66,25 @@
             box-shadow: 5px 0px 40px 11px rgba(200, 200, 200, 0.4) inset
         }
 
-        .anime-name {
+        .name {
             display: none;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 3px 1px;
         }
-        .anime:hover .anime-name {
+        .anime:hover .name {
             display: block;
             background-color: rgba(255, 255, 255, 0.7);
         }
         .sector-title {
             font-size: 3em;
+            margin-left: -15px;
         }
         .sector{
             padding-top: 50px;
+            margin-left: 25px;
             clear: both;
         }
     </style>
