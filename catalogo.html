@@ -3,6 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Catálogo dos Animes</title>
+    <script id="tmpl" type="x-template">
+            <object class="poster img-object">
+                <img src="./img-not-found.gif" class="poster img-fallback"/>
+            </object>
+            <span class="anime-name"></span>
+            <ul class="plus"></ul>
+    </script>
     <style>
         *{
             margin: 0;
@@ -10,77 +17,77 @@
             list-style: none;
         }
 
-    #ruler{
-        background-color: rgba(13, 13, 13, 0.5);
-        display: block;
-        right: 0;
-        line-height: 2em;
-        position:  fixed;
-        text-align: center;
-        height: 50px;
-        width: 100%;
-        z-index: 1;
-        overflow: auto;
-    }
-    #ruler span {
-        margin: 5px;
-        font-size: 1.5em;
-    }
-    #anime-list {
-        position: absolute;
-    }
+        #ruler{
+            background-color: rgba(13, 13, 13, 0.5);
+            display: block;
+            right: 0;
+            line-height: 2em;
+            position:  fixed;
+            text-align: center;
+            height: 50px;
+            width: 100%;
+            z-index: 1;
+            overflow: auto;
+        }
+        #ruler span {
+            margin: 5px;
+            font-size: 1.5em;
+        }
+        #anime-list {
+            position: absolute;
+        }
 
-    .poster {
-        width: 174px;
-        height: 245px;
-    }
-    .anime-name {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        padding: 3px 1px;
-    }
-    .anime {
-        background: #aaa;
-        float: left;
-        height: 220px;
-        margin-bottom: 10px;
-        margin-left: 20px;
-        overflow: hidden;
-        padding: 3px 0;
-        position: relative;
-        text-align: center;
-        vertical-align: baseline;
-        width: 150px;
-        font-family: sans-serif;
-    }
-    .anime:nth-child(2n) {
-        background: #ddd;
-    }
+        .poster {
+            width: 174px;
+            height: 245px;
+        }
+        .anime-name {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 3px 1px;
+        }
+        .anime {
+            background: #aaa;
+            float: left;
+            height: 220px;
+            margin-bottom: 10px;
+            margin-left: 20px;
+            overflow: hidden;
+            padding: 3px 0;
+            position: relative;
+            text-align: center;
+            vertical-align: baseline;
+            width: 150px;
+            font-family: sans-serif;
+        }
+        .anime:nth-child(2n) {
+            background: #ddd;
+        }
 
-    .anime:hover{
-        background-color: rgba(0, 0, 0, 0.7);
-        cursor: pointer;
-    }
-    .anime:hover .poster{
-        box-shadow: 5px 0px 40px 11px rgba(200, 200, 200, 0.4) inset
-    }
+        .anime:hover{
+            background-color: rgba(0, 0, 0, 0.7);
+            cursor: pointer;
+        }
+        .anime:hover .poster{
+            box-shadow: 5px 0px 40px 11px rgba(200, 200, 200, 0.4) inset
+        }
 
-    .anime-name {
-        display: none;
-    }
-    .anime:hover .anime-name {
-        display: block;
-        background-color: rgba(255, 255, 255, 0.7);
-    }
-    .sector-title {
-        font-size: 3em;
-    }
-    .sector{
-        padding-top: 50px;
-        clear: both;
-    }
+        .anime-name {
+            display: none;
+        }
+        .anime:hover .anime-name {
+            display: block;
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+        .sector-title {
+            font-size: 3em;
+        }
+        .sector{
+            padding-top: 50px;
+            clear: both;
+        }
     </style>
 </head>
 <body>
@@ -98,29 +105,34 @@
             el.id = key;
             el.className = 'sector';
             el.innerHTML += '<p class="sector-title">' + key + '</p>';
-            for( var i = 0; i < Object(data[key]).length; i++){
-                el.innerHTML += tmpl_content(data[key][i]);
-            }
             document.getElementById('anime-list').appendChild(el);
+            for( var i = 0; i < Object(data[key]).length; i++){
+                tmpl_content(data[key][i], el);
+            }
         }
 
-        function tmpl_content(arr){
-            var content =  '<li class="anime">' +
-                        '<object data="../' + arr['path'] + '/thumb.png" class="poster">' +
-                            '<img src="./img-not-found.gif" class="poster"/>' +
-                        '</object>' +
-                        '<span class="anime-name">' + arr['name'] + '</span>' +
-                        '<ul class="plus">'+
-                            '<li class="description">' +arr['description'] +'</li>' +
-                            '<li class="season">' +arr['season'] +'</li>' +
-                            '<li class="episodes">' +arr['totalEpisodes'] +'</li>' +
-                            '<li class="genre">' +arr['genre'] +'</li>' +
-                            '<li class="rate">' +arr['rate'] +'</li>' +
-                            '<li class="obs">' +arr['obs'] +'</li>' +
-                        '</ul>'+
-                    '</li>';
+        function tmpl_content(arr, dad){
+            var template = document.getElementById("tmpl").innerHTML,
+                      el = document.createElement('li');
+                      el.className = 'anime'
+            el.innerHTML = template;
 
-            return content
+            for (var dataKey in arr){
+                if(el.getElementsByClassName(dataKey).length > 0){
+                        el.getElementsByClassName(dataKey)[0].innerHTML = arr[dataKey];
+                }else {
+                    if( dataKey == 'path'){
+                        el.getElementsByClassName("img-object")[0].data = '../' + arr.path + '/thumb.png';
+                    }else{
+                        child = document.createElement('li');
+                        child.className = dataKey;
+                        child.innerHTML = arr[dataKey];
+                        el.getElementsByClassName('plus')[0].append(child);
+                    }
+                }
+            }
+
+            dad.appendChild(el);
         }
     </script>
 </html>
