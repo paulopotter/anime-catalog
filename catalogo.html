@@ -15,9 +15,15 @@
             padding: 0;
             list-style: none;
         }
-
+        .hidden {
+            display: none !important;
+        }
+        #settings {
+            display: inline-block;
+            float: left;
+        }
         #ruler{
-            background-color: rgba(13, 13, 13, 0.5);
+            background-color: rgba(13, 13, 13, 0.7);
             display: block;
             right: 0;
             line-height: 2em;
@@ -34,6 +40,17 @@
         }
         #anime-list {
             position: absolute;
+            margin-top: 10px;
+        }
+
+        #switch-sector {
+            height: 2.0em;
+            font-size: 1em;
+            background-color: rgba(200, 200, 200, 0.08);
+            border: none;
+            padding: 0.4em;
+            margin: 10px ;
+            display: inline-block;
         }
 
         .poster {
@@ -81,17 +98,22 @@
         .sector-title {
             font-size: 3em;
             margin-left: -15px;
-        }
-        .sector{
-            padding-top: 50px;
-            margin-left: 25px;
+            padding-top: 40px;
             clear: both;
         }
+        .sector{
+            margin-left: 25px;
+        }
+
     </style>
 </head>
 <body>
     <div id="wrapper">
-        <div id="ruler"></div>
+        <div id="ruler">
+            <div id="settings">
+                <button id="switch-sector"> Switch sector title</button>
+            </div>
+        </div>
         <div id="anime-list"></div>
     </div>
 </body>
@@ -99,11 +121,11 @@
     <script type="text/javascript">
         var rulerDiv = document.getElementById('ruler');
         for(var key in data){
-            rulerDiv.innerHTML += '<span><a href="#' + key + '">' + key + '</a></span>';
+            rulerDiv.innerHTML += '<span class="ruler-letter hidden"><a href="#' + key + '">' + key + '</a></span>';
             var el = document.createElement("div");
             el.id = key;
             el.className = 'sector';
-            el.innerHTML += '<p class="sector-title">' + key + '</p>';
+            el.innerHTML += '<p class="sector-title hidden">' + key + '</p>';
             document.getElementById('anime-list').appendChild(el);
             for( var i = 0; i < Object(data[key]).length; i++){
                 tmpl_content(data[key][i], el);
@@ -133,5 +155,20 @@
 
             dad.appendChild(el);
         }
+    </script>
+    <script type="text/javascript">
+        var button = document.getElementById("switch-sector");
+        button.addEventListener("click",function(e){
+            var sectorTitles = document.getElementsByClassName('sector-title');
+            for(var i = 0 ; i < sectorTitles.length; i++){
+                if(sectorTitles[i].className.indexOf('hidden') > -1){
+                    sectorTitles[i].classList.remove('hidden');
+                    document.getElementsByClassName('ruler-letter')[i].classList.remove('hidden');
+                }else{
+                    sectorTitles[i].classList.add('hidden');
+                    document.getElementsByClassName('ruler-letter')[i].classList.add('hidden');
+                }
+            }
+        },false);
     </script>
 </html>
