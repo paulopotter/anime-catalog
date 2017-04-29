@@ -1,0 +1,510 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>My Animes</title>
+        <style id="style--reset">
+            *{
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+            body {
+                background-color: rgba(224, 241, 249, 0.5);
+                font-family: sans-serif;
+            }
+            #wrapper {
+                margin-top: 65px;
+            }
+            .hidden {
+                display: none !important;
+            }
+        </style>
+        <style id="style--menu">
+            .menu--button{
+                position: fixed;
+                z-index: 10;
+                top: 0;
+                width: 100%;
+            }
+            .has-regua .menu--button {
+                background-color: rgba(103, 181, 209, 0.5);
+            }
+            .c-menu {
+              position: fixed;
+              z-index: 200;
+              background-color: #67b5d1;
+              transition: transform 0.3s;
+              width: 100%;
+            }
+
+            .c-menu__close,
+            .c-button {
+              color: #fff;
+              background-color: #3184a1;
+              font-size: 14px;
+              border: none;
+              box-shadow: none;
+              border-radius: none;
+              -webkit-appearance: none;
+              -moz-appearance: none;
+              appearance: none;
+              cursor: pointer;
+              width: 100px;
+            }
+            .c-button:focus,
+            .c-menu__close:focus {
+              outline: none;
+            }
+
+            body.has-active-menu {
+              overflow: hidden;
+            }
+
+            .c-mask {
+              position: fixed;
+              z-index: 100;
+              top: 0;
+              left: 0;
+              overflow: hidden;
+              width: 0;
+              height: 0;
+              background-color: #000;
+              opacity: 0;
+              transition: opacity 0.3s, width 0s 0.3s, height 0s 0.3s;
+            }
+
+            .c-mask.is-active {
+              width: 100%;
+              height: 100%;
+              opacity: 0.7;
+              transition: opacity 0.3s;
+            }
+            .c-menu--slide-top
+            .c-menu--push-top {
+              vertical-align: middle;
+              width: 100%;
+              height: 60px;
+              text-align: center;
+              overflow-x: scroll;
+            }
+
+            .c-menu--slide-top .c-menu__items,
+            .c-menu--push-top .c-menu__items {
+              display: inline-block;
+              text-align: center;
+            }
+
+            .c-menu--slide-top .c-menu__item,
+            .c-menu--push-top .c-menu__item {
+              display: inline-block;
+              line-height: 60px;
+            }
+
+            .c-menu--slide-top .c-menu__link,
+            .c-menu--push-top .c-menu__link {
+              display: block;
+              padding: 0 4px;
+              color: #fff;
+            }
+
+            .c-menu--slide-top .c-menu__close,
+            .c-menu--push-top .c-menu__close,
+            .c-button{
+              display: inline-block;
+              margin-right: 12px;
+              padding: 0 24px;
+              height: 60px;
+              line-height: 60px;
+            }
+            .c-menu--slide-top .c-menu__close{
+                margin-right: 100px;
+            }
+
+            .c-menu--slide-top,
+            .c-menu--push-top {
+              top: 0;
+              left: 0;
+              transform: translateY(-160px);
+            }
+
+            .c-menu--slide-top.is-active,
+            .c-menu--push-top.is-active {
+              transform: translateY(0);
+            }
+            .o-wrapper.has-push-top {
+              transform: translateY(60px);
+            }
+        </style>
+        <style id="style--button-switch">
+            .switch__container {
+                display: inline-block;
+                vertical-align: middle;
+            }
+            .switch {
+              position: absolute;
+              margin-left: -9999px;
+              visibility: hidden;
+            }
+
+            .switch + label {
+              display: block;
+              position: relative;
+              cursor: pointer;
+              outline: none;
+              user-select: none;
+            }
+
+            .switch--shadow + label {
+              padding: 2px;
+              width: 40px;
+              height: 24px;
+              background-color: #dddddd;
+              border-radius: 60px;
+            }
+            .switch--shadow + label:before,
+            .switch--shadow + label:after {
+              display: block;
+              position: absolute;
+              top: 1px;
+              left: 1px;
+              bottom: 1px;
+              content: "";
+            }
+            .switch--shadow + label:before {
+              right: 1px;
+              background-color: #f1f1f1;
+              border-radius: 60px;
+              transition: all 0.4s;
+            }
+            .switch--shadow + label:after {
+              width: 24px;
+              background-color: #fff;
+              border-radius: 100%;
+              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+              transition: all 0.4s;
+            }
+            .switch--shadow:checked + label:before {
+              background-color: #8ce196;
+            }
+            .switch--shadow:checked + label:after {
+              transform: translateX(20px);
+            }
+            .button-label--title {
+                color: #fff;
+                cursor: pointer;
+                display: block;
+                position: absolute;
+                right: 46px;
+                width: 100px;
+                top: 7px;
+                padding-right: 5px;
+                text-align: right;
+            }
+        </style>
+        <style id="style--ruler">
+            #ruler{
+                display: inline-block;
+                line-height: 2em;
+                text-align: center;
+                overflow: auto;
+                vertical-align: middle;
+            }
+            #ruler span {
+                margin: 5px;
+                font-size: 1.5em;
+            }
+            #ruler a {
+                color: #fff;
+                text-decoration: none;
+                text-shadow: 1px 1px #163d4a;
+            }
+        </style>
+        <style id="style--catalog">
+            .poster {
+                width: 174px;
+                height: 245px;
+            }
+            .anime {
+                background: #aaa;
+                float: left;
+                height: 245px;
+                margin-bottom: 10px;
+                margin-left: 5px;
+                overflow: hidden;
+                padding: 3px 0;
+                position: relative;
+                text-align: center;
+                vertical-align: baseline;
+                width: 190px;
+                font-family: sans-serif;
+            }
+            .anime:nth-child(2n) {
+                background: #ddd;
+            }
+
+            .anime:hover{
+                background-color: rgba(0, 0, 0, 0.7);
+                cursor: pointer;
+            }
+            .anime:hover .poster{
+                box-shadow: 5px 0px 40px 11px rgba(200, 200, 200, 0.4) inset
+            }
+
+            .name {
+                display: none;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                padding: 3px 1px;
+            }
+            .anime:hover .name {
+                display: block;
+                background-color: rgba(255, 255, 255, 0.7);
+            }
+            .sector-title {
+                font-size: 3em;
+                margin-left: -15px;
+                clear: both;
+            }
+            .sector{
+                margin-left: 25px;
+            }
+            .sector-title:not(.hidden) + .anime-list {
+                border-bottom: 1px solid rgba(0,0,0,0.1);
+                width: 100%;
+                display: inline-block;
+                padding-left: 25px;
+                padding-top: 15px;
+                margin-left: -25px;
+            }
+        </style>
+    </head>
+    <body>
+    <div class="menu--button">
+        <button id="c-button--slide-top" class="c-button">Menu</button>
+        <div id="ruler"></div>
+    </div>
+    <section id="wrapper">
+        <div id="anime-wrapper"></div> <!-- List -->
+    </section>
+
+
+    <nav id="c-menu--slide-top" class="c-menu c-menu--slide-top"> <!-- Menu -->
+        <button class="c-menu__close">Close</button> <!-- Close menu -->
+        <div class="switch__container">
+            <input id="switch-shadow" class="switch switch--shadow" type="checkbox">
+            <label for="switch-shadow">
+                <span class="button-label--title">Show Index</span>
+            </label>
+        </div>
+
+    </nav>
+
+    <div id="c-mask" class="c-mask"></div>
+    <!-- EOF  -->
+        <script type="text/javascript"  src='./data-json.js' id="js-all-data"></script>
+        <script id="template_item" type="x-template">
+            <object class="poster img-object">
+                <img src="./img-not-found.gif" class="poster img-fallback"/>
+            </object>
+            <ul class="plus"></ul>
+        </script>
+
+        <script id="js-menu">
+            (function(window) {
+
+              'use strict';
+
+              /**
+               * Extend Object helper function.
+               */
+              function extend(a, b) {
+                for(var key in b) {
+                  if(b.hasOwnProperty(key)) {
+                    a[key] = b[key];
+                  }
+                }
+                return a;
+              }
+
+              /**
+               * Each helper function.
+               */
+              function each(collection, callback) {
+                for (var i = 0; i < collection.length; i++) {
+                  var item = collection[i];
+                  callback(item);
+                }
+              }
+
+              /**
+               * Menu Constructor.
+               */
+              function Menu(options) {
+                this.options = extend({}, this.options);
+                extend(this.options, options);
+                this._init();
+              }
+
+              /**
+               * Menu Options.
+               */
+              Menu.prototype.options = {
+                wrapper: '#o-wrapper',          // The content wrapper
+                type: 'slide-left',             // The menu type
+                menuOpenerClass: '.c-button',   // The menu opener class names (i.e. the buttons)
+                maskId: '#c-mask'               // The ID of the mask
+              };
+
+              /**
+               * Initialise Menu.
+               */
+              Menu.prototype._init = function() {
+                this.body = document.body;
+                this.wrapper = document.querySelector(this.options.wrapper);
+                this.mask = document.querySelector(this.options.maskId);
+                this.menu = document.querySelector('#c-menu--' + this.options.type);
+                this.closeBtn = this.menu.querySelector('.c-menu__close');
+                this.menuOpeners = document.querySelectorAll(this.options.menuOpenerClass);
+                this._initEvents();
+              };
+
+              /**
+               * Initialise Menu Events.
+               */
+              Menu.prototype._initEvents = function() {
+                // Event for clicks on the close button inside the menu.
+                this.closeBtn.addEventListener('click', function(e) {
+                  e.preventDefault();
+                  this.close();
+                }.bind(this));
+
+                // Event for clicks on the mask.
+                this.mask.addEventListener('click', function(e) {
+                  e.preventDefault();
+                  this.close();
+                }.bind(this));
+              };
+
+              /**
+               * Open Menu.
+               */
+              Menu.prototype.open = function() {
+                this.body.classList.add('has-active-menu');
+                this.wrapper.classList.add('has-' + this.options.type);
+                this.menu.classList.add('is-active');
+                this.mask.classList.add('is-active');
+                this.disableMenuOpeners();
+              };
+
+              /**
+               * Close Menu.
+               */
+              Menu.prototype.close = function() {
+                this.body.classList.remove('has-active-menu');
+                this.wrapper.classList.remove('has-' + this.options.type);
+                this.menu.classList.remove('is-active');
+                this.mask.classList.remove('is-active');
+                this.enableMenuOpeners();
+              };
+
+              /**
+               * Disable Menu Openers.
+               */
+              Menu.prototype.disableMenuOpeners = function() {
+                each(this.menuOpeners, function(item) {
+                  item.disabled = true;
+                });
+              };
+
+              /**
+               * Enable Menu Openers.
+               */
+              Menu.prototype.enableMenuOpeners = function() {
+                each(this.menuOpeners, function(item) {
+                  item.disabled = false;
+                });
+              };
+
+              /**
+               * Add to global namespace.
+               */
+              window.Menu = Menu;
+
+            })(window);
+
+            var slideTop = new Menu({
+              wrapper: '#wrapper',
+              type: 'slide-top',
+              menuOpenerClass: '.c-button',
+              maskId: '#c-mask'
+            });
+
+            var slideTopBtn = document.querySelector('#c-button--slide-top');
+
+            slideTopBtn.addEventListener('click', function(e) {
+              e.preventDefault;
+              slideTop.open();
+            });
+        </script>
+
+        <script type="text/javascript" id="js-create-catalog">
+            var rulerDiv = document.getElementById('ruler');
+            for(var key in data){
+                rulerDiv.innerHTML += '<span class="ruler-letter hidden"><a href="#' + key + '">' + key + '</a></span>';
+                var el = document.createElement("div");
+                el.id = key;
+                el.className = 'sector';
+                el.innerHTML += '<p class="sector-title hidden">' + key + '</p>';
+                el.innerHTML += '<div class="anime-list"></div>'
+                document.getElementById('anime-wrapper').appendChild(el);
+                for( var i = 0; i < Object(data[key]).length; i++){
+                    tmpl_content(data[key][i], el.getElementsByClassName('anime-list')[0    ]);
+                }
+            }
+
+            function tmpl_content(arr, dad){
+                var template = document.getElementById("template_item").innerHTML,
+                          el = document.createElement('li');
+                          el.className = 'anime'
+                el.innerHTML = template;
+
+                for (var dataKey in arr){
+                    if(el.getElementsByClassName(dataKey).length > 0){
+                            el.getElementsByClassName(dataKey)[0].innerHTML = arr[dataKey];
+                    }else {
+                        if( dataKey == 'path'){
+                            el.getElementsByClassName("img-object")[0].data = '../' + arr.path + '/thumb.png';
+                        }else{
+                            child = document.createElement('li');
+                            child.className = dataKey;
+                            child.innerHTML = arr[dataKey];
+                            el.getElementsByClassName('plus')[0].append(child);
+                        }
+                    }
+                }
+
+                dad.appendChild(el);
+            }
+        </script>
+        <script type="text/javascript" id="js-switch-index">
+            var button = document.getElementById("switch-shadow");
+            button.addEventListener("change",function(e){
+                var sectorTitles = document.getElementsByClassName('sector-title');
+                for(var i = 0 ; i < sectorTitles.length; i++){
+                    if(sectorTitles[i].className.indexOf('hidden') > -1){
+                        sectorTitles[i].classList.remove('hidden');
+                        document.getElementsByClassName('ruler-letter')[i].classList.remove('hidden');
+                        document.getElementsByTagName('body')[0].classList.add('has-regua');
+                    }else{
+                        sectorTitles[i].classList.add('hidden');
+                        document.getElementsByClassName('ruler-letter')[i].classList.add('hidden');
+                        document.getElementsByTagName('body')[0].classList.remove('has-regua');
+                    }
+                }
+            },false);
+        </script>
+
+    </body>
+</html>
