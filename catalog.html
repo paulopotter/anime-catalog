@@ -483,10 +483,20 @@
                             el.getElementsByClassName('plus')[0].append(child);
                         }
                     }
+
+                  if(el.getElementsByTagName('object')[0].data == ''){
+                      el.getElementsByTagName('object')[0].data = '../Animes/' + toTitleCase(arr['name']) + '/thumb.png';
+                  }
                 }
 
                 dad.appendChild(el);
-            }
+            };
+
+            function toTitleCase(str){
+                str2 = str.toLowerCase()
+                str3 = str.charAt(0).toUpperCase() + str2.slice(1);
+                return str3.replace(/\?/gi, '');
+            };
         </script>
         <script type="text/javascript" id="js-switch-index">
             var switchFunction = function(e){
@@ -501,10 +511,6 @@
                         document.getElementsByClassName('ruler-letter')[i].classList.add('hidden');
                         document.getElementsByTagName('body')[0].classList.remove('has-regua');
                     }
-                }
-
-                if(el.getElementsByTagName('object')[0].data == ''){
-                    el.getElementsByTagName('object')[0].data = '../' + arr['name'] + '/thumb.png';
                 }
             };
 
