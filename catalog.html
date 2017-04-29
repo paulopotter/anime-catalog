@@ -489,8 +489,7 @@
             }
         </script>
         <script type="text/javascript" id="js-switch-index">
-            var button = document.getElementById("switch-shadow");
-            button.addEventListener("change",function(e){
+            var switchFunction = function(e){
                 var sectorTitles = document.getElementsByClassName('sector-title');
                 for(var i = 0 ; i < sectorTitles.length; i++){
                     if(sectorTitles[i].className.indexOf('hidden') > -1){
@@ -503,7 +502,14 @@
                         document.getElementsByTagName('body')[0].classList.remove('has-regua');
                     }
                 }
-            },false);
+            };
+
+            var button = document.getElementById("switch-shadow");
+            button.addEventListener("change",switchFunction,false);
+            if(window.location.hash != ""){
+                switchFunction();
+                document.getElementById('switch-shadow').checked = true;
+            }
         </script>
 
     </body>
