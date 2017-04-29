@@ -502,6 +502,10 @@
                         document.getElementsByTagName('body')[0].classList.remove('has-regua');
                     }
                 }
+
+                if(el.getElementsByTagName('object')[0].data == ''){
+                    el.getElementsByTagName('object')[0].data = '../' + arr['name'] + '/thumb.png';
+                }
             };
 
             var button = document.getElementById("switch-shadow");
