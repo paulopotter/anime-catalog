@@ -565,19 +565,19 @@
                         break;
                         case 37:
                             // 37 - left
-                            // var sibling = showInfo.previousElementSibling;
-                            var sibling = bla(animeItem, showInfo, 37);
+                            var sibling = findSibling(animeItem, showInfo, 37);
                             if(sibling != null){
                                 sibling.classList.add('show-info');
+                                smoothScrollTo(sibling.offsetTop)
                                 showInfo.classList.remove('show-info');
                             }
                         break;
                         case 39:
                             // 39 - right
-                            // var sibling = showInfo.nextElementSibling;
-                            var sibling = bla(animeItem, showInfo, 39);
+                            var sibling = findSibling(animeItem, showInfo, 39);
                             if(sibling != null){
                                 sibling.classList.add('show-info');
+                                smoothScrollTo(sibling.offsetTop)
                                 showInfo.classList.remove('show-info');
                             }
                         break;
@@ -585,7 +585,7 @@
                 }
             };
 
-            function bla(animeItem, showInfo, key){
+            function findSibling(animeItem, showInfo, key){
                 var found = false;
                 for(var animeKey in animeItem){
                     if(animeItem[animeKey] == showInfo){
@@ -596,7 +596,6 @@
 
                 if(found){
                     if(key == 39){
-                        // debugger;
                         return animeItem[parseInt(animeKey) + 1];
                     }else{
                         return animeItem[parseInt(animeKey) - 1];
@@ -604,6 +603,40 @@
                 }
                 return null;
             };
+        </script>
+
+        <!-- Smooth Scroll -->
+        <script type="text/javascript" id="js-smooth-scroll">
+            window.smoothScrollTo = (function () {
+              var timer, start, factor;
+
+              return function (target, duration) {
+                var offset = window.pageYOffset,
+                    delta  = target - window.pageYOffset; // Y-offset difference
+                duration = duration || 1000;              // default 1 sec animation
+                start = Date.now();                       // get start time
+                factor = 0;
+
+                if( timer ) {
+                  clearInterval(timer); // stop any running animations
+                }
+
+                function step() {
+                  var y;
+                  factor = (Date.now() - start) / duration; // get interpolation factor
+                  if( factor >= 1 ) {
+                    clearInterval(timer); // stop animation
+                    factor = 1;           // clip to max 1.0
+                  }
+                  y = factor * delta + offset;
+                  window.scrollBy(0, y - window.pageYOffset);
+                }
+
+                timer = setInterval(step, 10);
+                return timer;
+              };
+            }());
+
         </script>
 
         <!-- Js Menu -->
