@@ -2,6 +2,7 @@
     <head>
         <meta charset="UTF-8">
         <title>My Animes</title>
+
         <style id="style--reset">
             *{
                 margin: 0;
@@ -19,14 +20,15 @@
                 display: none !important;
             }
         </style>
+
         <style id="style--menu">
             .menu--button{
                 position: fixed;
                 z-index: 10;
                 top: 0;
-                width: 100%;
             }
             .has-regua .menu--button {
+                width: 100%;
                 background-color: rgba(103, 181, 209, 0.5);
             }
             .c-menu {
@@ -135,6 +137,7 @@
               transform: translateY(60px);
             }
         </style>
+
         <style id="style--button-switch">
             .switch__container {
                 display: inline-block;
@@ -201,6 +204,7 @@
                 text-align: right;
             }
         </style>
+
         <style id="style--ruler">
             #ruler{
                 display: inline-block;
@@ -219,99 +223,391 @@
                 text-shadow: 1px 1px #163d4a;
             }
         </style>
-        <style id="style--catalog">
-            .poster {
-                width: 174px;
-                height: 245px;
-            }
-            .anime {
-                background: #aaa;
-                float: left;
-                height: 245px;
-                margin-bottom: 10px;
-                margin-left: 5px;
-                overflow: hidden;
-                padding: 3px 0;
-                position: relative;
-                text-align: center;
-                vertical-align: baseline;
-                width: 190px;
-                font-family: sans-serif;
-            }
-            .anime:nth-child(2n) {
-                background: #ddd;
-            }
 
-            .anime:hover{
-                background-color: rgba(0, 0, 0, 0.7);
+        <style id="style--catalog">
+            .anime-wrapper {
+                position: relative;
+                overflow-x: hidden;
+            }
+            .anime-list {
+                display: flex;
+                width: 100%;
+                flex-wrap: wrap;
+            }
+            .anime-item {
+                display: block;
+                width: 200px;
+                height: 295px;
+                overflow: hidden;
+                margin: 5px;
                 cursor: pointer;
             }
-            .anime:hover .poster{
-                box-shadow: 5px 0px 40px 11px rgba(200, 200, 200, 0.4) inset
+
+            .anime-item:hover .name {
+                bottom: 101%;
+                background-color: rgba(235, 235, 235, .5);
+                display: inline-block;
+                width: 100%;
+                text-align: center;
+                color: #fff;
+                text-shadow: 1px 1px #000;
+                position: absolute;
+                padding: 5px 0;
+                border-top: 1px solid;
+                border-bottom: 1px solid;
+            }
+            .anime-item:hover .info-title{
+                display: none;
             }
 
-            .name {
-                display: none;
+            .plus-wrapper {
+                position: relative;
+            }
+
+            .poster {
+                width: 200px;
+                height: 295px;
+            }
+        </style>
+
+        <style id="style--catalog-info">
+            .show-info {
+                overflow: visible;
+            }
+
+            .show-info .plus li {
+                line-height: 1.7rem;
+            }
+
+            .show-info.anime-item:hover .name {
+                all: unset;
+            }
+
+            .show-info.anime-item:hover .name,
+            .show-info .name {
+                float: left;
+                width: 70%;
+                font-size: 2em;
+                line-height: 1.7rem;
+                padding-top: 10px;
+            }
+
+            .show-info:hover .info-title {
+                display: inline-block;
+            }
+            .show-info .info-title {
+                display: inline-block;
+                content: "Nome: ";
+                font-weight: bold;
+                color: rgba(235, 235, 235, .5);
+                font-size: 1rem;
+                vertical-align: middle;
+                padding-right: 10px;
+            }
+
+            .show-info .poster {
+                outline: 6px solid #88b7d5;
+                outline-offset: -6px;
+            }
+
+            .show-info .plus-wrapper {
                 position: absolute;
-                bottom: 0;
-                left: 0;
-                width: 100%;
-                padding: 3px 1px;
+                left: 0%;
+                background-color: rgba(0, 0, 0, 0.8);
+                color: #fff;
+                width: 98.4%;
+                padding: 10px;
+                margin-top: 4px;
+                overflow: hidden;
             }
-            .anime:hover .name {
-                display: block;
-                background-color: rgba(255, 255, 255, 0.7);
+
+            .plus {
+                max-width: 1000px;
+                margin: 0 auto;
             }
-            .sector-title {
-                font-size: 3em;
-                margin-left: -15px;
+
+            .episodesDownloaded {
+                float: right;
+                width: 30%;
+            }
+
+            .description {
                 clear: both;
+                margin: 5px auto;
+                color: deepskyblue;
+                letter-spacing: 0.5px;
+                font-style: italic;
             }
-            .sector{
+        </style>
+
+        <style id="style--index">
+            .sector {
                 margin-left: 25px;
             }
-            .sector-title:not(.hidden) + .anime-list {
+
+            .sector-title {
+                font-size: 3em;
+                clear: both;
+            }
+
+            .sector-title + .anime-list {
                 border-bottom: 1px solid rgba(0,0,0,0.1);
-                width: 100%;
-                display: inline-block;
                 padding-left: 25px;
                 padding-top: 15px;
-                margin-left: -25px;
+            }
+
+            .sector-wrapper--index .anime-list {
+                width: 98%;
             }
         </style>
     </head>
     <body>
-    <div class="menu--button">
-        <button id="c-button--slide-top" class="c-button">Menu</button>
-        <div id="ruler"></div>
-    </div>
-    <section id="wrapper">
-        <div id="anime-wrapper"></div> <!-- List -->
-    </section>
-
-
-    <nav id="c-menu--slide-top" class="c-menu c-menu--slide-top"> <!-- Menu -->
-        <button class="c-menu__close">Close</button> <!-- Close menu -->
-        <div class="switch__container">
-            <input id="switch-shadow" class="switch switch--shadow" type="checkbox">
-            <label for="switch-shadow">
-                <span class="button-label--title">Show Index</span>
-            </label>
+        <!-- Menu Button -->
+        <div class="menu--button">
+            <button id="c-button--slide-top" class="c-button">Menu</button>
+            <div id="ruler" class="hidden"></div>
         </div>
 
-    </nav>
+        <!-- Content -->
+        <section id="wrapper">
+            <div id="anime-wrapper">
+                <ul class="anime-list"></ul>
+            </div>
+        </section>
 
-    <div id="c-mask" class="c-mask"></div>
-    <!-- EOF  -->
-        <script type="text/javascript"  src='./data-json.js' id="js-all-data"></script>
+        <!-- Menu -->
+        <nav id="c-menu--slide-top" class="c-menu c-menu--slide-top">
+            <button class="c-menu__close">Close</button> <!-- Close menu -->
+            <div class="switch__container">
+                <input id="switch-index" class="switch switch--shadow" type="checkbox">
+                <label for="switch-index">
+                    <span class="button-label--title">Show Index</span>
+                </label>
+            </div>
+        </nav>
+
+        <!-- Mask for Menu -->
+        <div id="c-mask" class="c-mask"></div>
+
+        <!-- ===== EOF ===== -->
+
+        <script type="text/javascript" src="./data-json.js" id="js-all-data"></script>
+
+        <!-- Template -->
         <script id="template_item" type="x-template">
             <object class="poster img-object">
                 <img src="./img-not-found.gif" class="poster img-fallback"/>
             </object>
-            <ul class="plus"></ul>
+            <div class="plus-wrapper">
+                <ul class="plus">
+                    <li class="name"><span class="info-title">Nome: </span></li>
+                    <li class="episodesDownloaded"><span class="info-title">Episodios Baixados: </span></li>
+                    <li class="totalEpisodes"><span class="info-title">Total de Episodios: </span></li>
+                    <li class="description"><span class="info-title">Descrição: </span></li>
+                    <li class="genre"><span class="info-title">Genero: </span></li>
+                    <li class="season"><span class="info-title">Temporada: </span></li>
+                    <li class="othersSeasons"><span class="info-title">Outras Temporadas: </span></li>
+                    <li class="obs"><span class="info-title">Obs: </span></li>
+                    <li class="rate"><span class="info-title">Nota: </span></li>
+                </ul>
+            </div>
         </script>
 
-        <script id="js-menu">
+        <!-- Put all animes on html -->
+        <script type="text/javascript" id="js-create-catalog">
+            var rulerDiv = document.getElementById('ruler');
+
+            for(var key in data){
+                rulerDiv.innerHTML += '<span><a href="#' + key + '">'+ key + '</span></a>';
+                var el = document.getElementsByClassName('anime-list')[0];
+
+                for( var i = 0; i < Object(data[key]).length; i++){
+                    tmpl_content(data[key][i], el, key);
+                }
+            }
+
+            function tmpl_content(arr, dad, dataGroup){
+                var template = document.getElementById("template_item").innerHTML,
+                          el = document.createElement('li');
+                          el.className = 'anime-item'
+                          el.setAttribute('data-group', dataGroup);
+                el.innerHTML = template;
+
+                for (var dataKey in arr){
+                    if(el.getElementsByClassName(dataKey).length > 0){
+                        if(arr[dataKey].length <= 0){
+                            var elDataKey = el.getElementsByClassName(dataKey)[0];
+                            elDataKey.parentElement.removeChild(elDataKey);
+                        }else{
+                            if(dataKey == 'genre'){
+                                var value = '';
+                                for( var genreData in arr[dataKey]){
+                                    value += arr[dataKey][genreData] + ', ';
+                                }
+                                value = value.slice(0, -2);
+                            }else{
+                                var value = arr[dataKey];
+                            }
+
+                            el.getElementsByClassName(dataKey)[0].innerHTML += value;
+                        }
+                    }else {
+                        if( dataKey == 'path'){
+                            el.getElementsByTagName("object")[0].data = '../' + arr.path + '/thumb.png';
+                        }else{
+                            child = document.createElement('li');
+                            child.className = dataKey;
+                            child.innerHTML = dataKey + ': ' + arr[dataKey];
+                            el.getElementsByClassName('plus')[0].append(child);
+                        }
+                    }
+                }
+                if(el.getElementsByTagName('object')[0].data == ''){
+                    el.getElementsByTagName('object')[0].data = '../Animes/' + toTitleCase(arr['name']) + '/thumb.png';
+                }
+
+                el.id = arr['name'];
+
+                dad.appendChild(el);
+            };
+
+            function toTitleCase(str){
+                str2 = str.toLowerCase()
+                str3 = str.charAt(0).toUpperCase() + str2.slice(1);
+                return str3.replace(/\?/gi, '');
+            };
+        </script>
+
+        <!-- Change info view -->
+        <script id="js-show-infos">
+            var animes = document.querySelectorAll('.anime-item');
+
+            animes.forEach(function(element, index, array){
+                element.addEventListener('click', function(e){
+                    if(element.className.indexOf('show-info') > -1){
+                        element.classList.remove('show-info');
+                    }else{
+                        var showInfo = document.querySelector('.show-info');
+                        if(showInfo != null){
+                            showInfo.classList.remove('show-info');
+                        }
+                        element.classList.add('show-info');
+                    }
+                })
+            });
+        </script>
+
+        <!-- Change index view -->
+        <script type="text/javascript" id="js-switch-index">
+            var switchFunction = function(e){
+                var switchButton = e.checked;
+                var ruler = document.getElementById('ruler');
+
+                if(switchButton){
+
+                    document.body.classList.add('has-regua');
+                    ruler.classList.remove('hidden');
+                    var rulerItems = ruler.querySelectorAll('a');
+                    rulerItems.forEach(function(letterDiv){
+                        var letter = letterDiv.innerHTML;
+
+                        var sectorWrapper = document.createElement('div');
+                            sectorWrapper.id = letter;
+                            sectorWrapper.className = 'sector-wrapper sector-wrapper--index';
+                            sectorWrapper.innerHTML = '<span class="sector-title">' + letter + '</span>';
+
+
+                        var groupLetter = document.createElement('ul');
+                        groupLetter.className = 'anime-list';
+                        animes = document.querySelectorAll('[data-group="' + letter + '"]');
+                        animes.forEach(function(anime){
+                            groupLetter.appendChild(anime);
+                        });
+                        sectorWrapper.appendChild(groupLetter);
+                        document.getElementById('anime-wrapper').appendChild(sectorWrapper);
+                    });
+
+                } else {
+
+                    document.body.classList.remove('has-regua');
+                    ruler.classList.add('hidden');
+                    animes = document.querySelectorAll('[data-group]');
+                    animes.forEach(function(anime){
+                        document.getElementsByClassName('anime-list')[0].appendChild(anime);
+                    });
+                    letterGroupWrapper = document.querySelectorAll('.sector-wrapper');
+
+                    letterGroupWrapper.forEach(function(e){
+                        e.parentElement.removeChild(e);
+                    });
+                }
+            };
+
+            var button = document.getElementById("switch-index");
+            button.addEventListener("change", function(e){switchFunction(e.target)}, false);
+            if(window.location.hash != ""){
+                button.checked = true;
+                switchFunction(button);
+            }
+        </script>
+
+        <!-- Keyboard events -->
+        <script type="text/javascript" id="js-keyboard">
+            document.onkeydown = function(evt) {
+                evt = evt || window.event;
+                var showInfo = document.querySelector('.show-info');
+                if(showInfo != null){
+                    var animeItem =  document.querySelectorAll('.anime-item');
+                    switch(evt.keyCode) {
+                        case 27:
+                            // 27 - ESC
+                            showInfo.classList.remove('show-info');
+                        break;
+                        case 37:
+                            // 37 - left
+                            // var sibling = showInfo.previousElementSibling;
+                            var sibling = bla(animeItem, showInfo, 37);
+                            if(sibling != null){
+                                sibling.classList.add('show-info');
+                                showInfo.classList.remove('show-info');
+                            }
+                        break;
+                        case 39:
+                            // 39 - right
+                            // var sibling = showInfo.nextElementSibling;
+                            var sibling = bla(animeItem, showInfo, 39);
+                            if(sibling != null){
+                                sibling.classList.add('show-info');
+                                showInfo.classList.remove('show-info');
+                            }
+                        break;
+                    }
+                }
+            };
+
+            function bla(animeItem, showInfo, key){
+                var found = false;
+                for(var animeKey in animeItem){
+                    if(animeItem[animeKey] == showInfo){
+                        found = true;
+                        break;
+                    }
+                };
+
+                if(found){
+                    if(key == 39){
+                        // debugger;
+                        return animeItem[parseInt(animeKey) + 1];
+                    }else{
+                        return animeItem[parseInt(animeKey) - 1];
+                    }
+                }
+                return null;
+            };
+        </script>
+
+        <!-- Js Menu -->
+        <script type="text/javascript" id="js-menu">
             (function(window) {
 
               'use strict';
@@ -449,78 +745,6 @@
             });
         </script>
 
-        <script type="text/javascript" id="js-create-catalog">
-            var rulerDiv = document.getElementById('ruler');
-            for(var key in data){
-                rulerDiv.innerHTML += '<span class="ruler-letter hidden"><a href="#' + key + '">' + key + '</a></span>';
-                var el = document.createElement("div");
-                el.id = key;
-                el.className = 'sector';
-                el.innerHTML += '<p class="sector-title hidden">' + key + '</p>';
-                el.innerHTML += '<div class="anime-list"></div>'
-                document.getElementById('anime-wrapper').appendChild(el);
-                for( var i = 0; i < Object(data[key]).length; i++){
-                    tmpl_content(data[key][i], el.getElementsByClassName('anime-list')[0    ]);
-                }
-            }
-
-            function tmpl_content(arr, dad){
-                var template = document.getElementById("template_item").innerHTML,
-                          el = document.createElement('li');
-                          el.className = 'anime'
-                el.innerHTML = template;
-
-                for (var dataKey in arr){
-                    if(el.getElementsByClassName(dataKey).length > 0){
-                            el.getElementsByClassName(dataKey)[0].innerHTML = arr[dataKey];
-                    }else {
-                        if( dataKey == 'path'){
-                            el.getElementsByClassName("img-object")[0].data = '../' + arr.path + '/thumb.png';
-                        }else{
-                            child = document.createElement('li');
-                            child.className = dataKey;
-                            child.innerHTML = arr[dataKey];
-                            el.getElementsByClassName('plus')[0].append(child);
-                        }
-                    }
-
-                  if(el.getElementsByTagName('object')[0].data == ''){
-                      el.getElementsByTagName('object')[0].data = '../Animes/' + toTitleCase(arr['name']) + '/thumb.png';
-                  }
-                }
-
-                dad.appendChild(el);
-            };
-
-            function toTitleCase(str){
-                str2 = str.toLowerCase()
-                str3 = str.charAt(0).toUpperCase() + str2.slice(1);
-                return str3.replace(/\?/gi, '');
-            };
-        </script>
-        <script type="text/javascript" id="js-switch-index">
-            var switchFunction = function(e){
-                var sectorTitles = document.getElementsByClassName('sector-title');
-                for(var i = 0 ; i < sectorTitles.length; i++){
-                    if(sectorTitles[i].className.indexOf('hidden') > -1){
-                        sectorTitles[i].classList.remove('hidden');
-                        document.getElementsByClassName('ruler-letter')[i].classList.remove('hidden');
-                        document.getElementsByTagName('body')[0].classList.add('has-regua');
-                    }else{
-                        sectorTitles[i].classList.add('hidden');
-                        document.getElementsByClassName('ruler-letter')[i].classList.add('hidden');
-                        document.getElementsByTagName('body')[0].classList.remove('has-regua');
-                    }
-                }
-            };
-
-            var button = document.getElementById("switch-shadow");
-            button.addEventListener("change",switchFunction,false);
-            if(window.location.hash != ""){
-                switchFunction();
-                document.getElementById('switch-shadow').checked = true;
-            }
-        </script>
-
+        <!-- ===== End of Scripts ===== -->
     </body>
 </html>
