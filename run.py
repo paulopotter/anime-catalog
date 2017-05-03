@@ -7,7 +7,7 @@ from slugify import slugify
 
 
 def try_parse(host, uris, anime):
-    from parseUrl import Parse
+    from src.parseUrl import Parse
 
     parse = Parse(host, uris[0] + anime)
     print '\t{}{}{}'.format(host, uris[0], anime)
@@ -36,7 +36,7 @@ def make_parse(parse, anime_name, path, create_folder, override, list_or_folder=
         full_path = path + slugify_name
 
         def creating_file():
-            from createFile import CreateFile
+            from src.createFile import CreateFile
 
             create_file = CreateFile()
             create_file.create_json_file(data,
@@ -74,8 +74,8 @@ def make_parse(parse, anime_name, path, create_folder, override, list_or_folder=
 
 
 def cataloguer(folder_name, description_file):
-    from cataloguer import Cataloguer
-    from createFile import CreateFile
+    from src.cataloguer import Cataloguer
+    from src.createFile import CreateFile
 
     cataloguer = Cataloguer(folder_name, description_file)
     create_file = CreateFile()
@@ -105,7 +105,7 @@ def parse(list_type, file, path, create_folder, override):
                     make_parse(parse, anime_name, path, create_folder, override)
 
     elif list_type == 'folder':
-        from cataloguer import Cataloguer
+        from src.cataloguer import Cataloguer
 
         cataloguer = Cataloguer(path, 'dummy')
         anime_list = cataloguer.get_all_folders(path)

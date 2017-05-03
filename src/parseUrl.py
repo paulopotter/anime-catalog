@@ -40,10 +40,13 @@ class Parse():
             return url_img
 
     def parse_total_ep(self):
-        for node in self.tree.findAll('div', {"class": 'field-num-episodios inline inline field'}):
-
-            total_ep = node.find('span')
-            return total_ep.getText()
+        if (self.tree.findAll('div', {"class": 'field-num-episodios inline inline field'})):
+            for node in self.tree.findAll('div', {"class": 'field-num-episodios inline inline field'}):
+                total_ep = node.find('span')
+                return total_ep.getText()
+        else:
+            for node in self.tree.findAll('span', {"itemprop": 'numberOfEpisodes'}):
+                return node.getText()
 
     def parse_name(self):
         for node in self.tree.findAll('h1', {"id": 'page-title'}):
