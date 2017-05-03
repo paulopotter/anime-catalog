@@ -567,8 +567,8 @@
                             // 37 - left
                             var sibling = findSibling(animeItem, showInfo, 37);
                             if(sibling != null){
+                                smoothScrollTo(sibling.offsetTop - 10);
                                 sibling.classList.add('show-info');
-                                smoothScrollTo(sibling.offsetTop)
                                 showInfo.classList.remove('show-info');
                             }
                         break;
@@ -576,8 +576,8 @@
                             // 39 - right
                             var sibling = findSibling(animeItem, showInfo, 39);
                             if(sibling != null){
+                                smoothScrollTo(sibling.offsetTop - 10);
                                 sibling.classList.add('show-info');
-                                smoothScrollTo(sibling.offsetTop)
                                 showInfo.classList.remove('show-info');
                             }
                         break;
