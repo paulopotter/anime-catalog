@@ -1,4 +1,4 @@
-# Catalogo de animes _(Ou qualquer outra coisa)_
+# Catalogo de animes
 
 Esse catalogo funciona lendo todas as pastas ede um diretorio atras dos dados do anime e
 cria um arquivo _js_ lido por um _html_ formatado.
