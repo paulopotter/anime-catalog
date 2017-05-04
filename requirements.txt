@@ -3,3 +3,4 @@ pyOpenSSL==16.2.0
 python-slugify==1.2.4
 requests==2.13.0
 simplejson==3.10.0
+PyYAML==3.12

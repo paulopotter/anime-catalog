@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*- #
 import argparse
 import inspect
+import yaml
 
 from slugify import slugify
 
@@ -91,8 +92,13 @@ def parse(list_type, file, path, create_folder, override):
     # Import only necessary
     import io
 
-    host = 'https://www.anbient.com/'
-    uris = ['anime/', 'tv/']
+    with open("config.yaml", 'r') as f:
+        try:
+            config = yaml.load(f)
+            host = config['host']
+            uris = config['uris']
+        except yaml.YAMLError as exc:
+            print(exc)
 
     if list_type == 'list':
         with io.open(file, 'r', encoding='utf-8') as anime_list:
