@@ -35,9 +35,19 @@ class CreateFile():
     def create_json_file(self, content,
                          folder_name='.',
                          file_name='description',
-                         create_folder=False):
+                         create_folder=False,
+                         overrideData=[]):
 
         content['path'] = folder_name
+        if overrideData:
+            with io.open('{}/{}.json'.format(folder_name, file_name), 'r', encoding='utf-8') as f:
+                old_data = json.loads(f.read())
+
+                for new_data in overrideData:
+                    old_data[new_data] = content[new_data]
+
+                content = old_data
+
         data = json.dumps(content, ensure_ascii=False)
         self.create_file('json', data, folder_name, file_name, create_folder)
 
