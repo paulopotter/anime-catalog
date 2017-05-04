@@ -37,6 +37,7 @@ class CreateFile():
                          file_name='description',
                          create_folder=False):
 
+        content['path'] = folder_name
         data = json.dumps(content, ensure_ascii=False)
         self.create_file('json', data, folder_name, file_name, create_folder)
 

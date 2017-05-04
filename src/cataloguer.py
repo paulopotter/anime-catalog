@@ -27,7 +27,11 @@ class Cataloguer():
 
             for i in range(len(order_alphabetically)):
                 data = all_descriptions[order_alphabetically[i]]
-                data['path'] = self.current_folder.rsplit('/', 1)[-1] + '/' + order_alphabetically[i]
+                path = '../{}/{}'.format(self.current_folder.rsplit('/', 2)[-2], order_alphabetically[i])
+
+                if 'path' not in data:
+                    data['path'] = path
+
                 formated_data = cf.format_file(data)
                 description.append(formated_data)
 
