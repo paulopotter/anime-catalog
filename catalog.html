@@ -112,11 +112,11 @@
             .c-menu--slide-top .c-menu__close,
             .c-menu--push-top .c-menu__close,
             .c-button{
-              display: inline-block;
-              margin-right: 12px;
+              margin-right: -12px;
               padding: 0 24px;
               height: 60px;
               line-height: 60px;
+              float: left;
             }
             .c-menu--slide-top .c-menu__close{
                 margin-right: 100px;
@@ -140,8 +140,7 @@
 
         <style id="style--button-switch">
             .switch__container {
-                display: inline-block;
-                vertical-align: middle;
+                margin-top: 14px;
             }
             .switch {
               position: absolute;
@@ -163,7 +162,17 @@
               height: 24px;
               background-color: #dddddd;
               border-radius: 60px;
+              display: inline-block;
             }
+
+            .switch--shadow + label:not(:first-of-type){
+              margin-left: 120px;
+            }
+
+            .switch--shadow + label:not(:first-of-type) span{
+              width: 120px;
+            }
+
             .switch--shadow + label:before,
             .switch--shadow + label:after {
               display: block;
@@ -207,16 +216,18 @@
 
         <style id="style--ruler">
             #ruler{
-                display: inline-block;
+                display: block;
                 line-height: 2em;
                 text-align: center;
                 overflow: auto;
-                vertical-align: middle;
+                margin-top: 14px;
             }
             #ruler span {
                 margin: 5px;
                 font-size: 1.5em;
             }
+
+            #genres a,
             #ruler a {
                 color: #fff;
                 text-decoration: none;
@@ -360,12 +371,29 @@
                 width: 98%;
             }
         </style>
+
+        <style id="style--genres">
+          #genres {
+            margin: 14px auto;
+            width: 80%;
+            text-align: center;
+          }
+          #genres a {
+            display: inline-block;
+            padding: 0 5px;
+          }
+          #genres a:not(:last-of-type)::after {
+            content: " - ";
+            padding-left: 5px;
+          }
+        </style>
     </head>
     <body>
         <!-- Menu Button -->
         <div class="menu--button">
             <button id="c-button--slide-top" class="c-button">Menu</button>
             <div id="ruler" class="hidden"></div>
+            <div id="genres" class="hidden"><a href="#">All</a></div>
         </div>
 
         <!-- Content -->
@@ -382,6 +410,11 @@
                 <input id="switch-index" class="switch switch--shadow" type="checkbox">
                 <label for="switch-index">
                     <span class="button-label--title">Show Index</span>
+                </label>
+
+                <input id="switch-genres" class="switch switch--shadow" type="checkbox">
+                <label for="switch-genres">
+                    <span class="button-label--title">Show by genre</span>
                 </label>
             </div>
         </nav>
@@ -415,9 +448,17 @@
 
         <!-- Put all animes on html -->
         <script type="text/javascript" id="js-create-catalog">
-            var rulerDiv = document.getElementById('ruler');
+            function sortObject(obj) {
+                return Object.keys(obj).sort().reduce(function (result, key) {
+                    result[key] = obj[key];
+                    return result;
+                }, {});
+            }
 
-            for(var key in data){
+            var rulerDiv = document.getElementById('ruler');
+            var dataOdering = sortObject(data);
+            var genresNames = [];
+            for(var key in dataOdering){
                 rulerDiv.innerHTML += '<span><a href="#' + key + '">'+ key + '</span></a>';
                 var el = document.getElementsByClassName('anime-list')[0];
 
@@ -425,6 +466,10 @@
                     tmpl_content(data[key][i], el, key);
                 }
             }
+            genresNames = uniq_fast(window.genresNames).sort();
+            genresNames.forEach(function(f){
+              genres.innerHTML += '<a href="#">' + f + '</a>';
+            });
 
             function tmpl_content(arr, dad, dataGroup){
                 var template = document.getElementById("template_item").innerHTML,
@@ -443,6 +488,7 @@
                                 var value = '';
                                 for( var genreData in arr[dataKey]){
                                     value += arr[dataKey][genreData] + ', ';
+                                    genresNames.push(arr[dataKey][genreData]);
                                 }
                                 value = value.slice(0, -2);
                             }else{
@@ -475,6 +521,21 @@
                 str2 = str.toLowerCase()
                 str3 = str.charAt(0).toUpperCase() + str2.slice(1);
                 return str3.replace(/\?/gi, '');
+            };
+
+            function uniq_fast(a) {
+                var seen = {};
+                var out = [];
+                var len = a.length;
+                var j = 0;
+                for(var i = 0; i < len; i++) {
+                     var item = a[i];
+                     if(seen[item] !== 1) {
+                           seen[item] = 1;
+                           out[j++] = item;
+                     }
+                }
+                return out;
             };
         </script>
 
@@ -530,7 +591,9 @@
 
                 } else {
 
+                  if(window.getComputedStyle(document.getElementById('genres')).display == 'none'){
                     document.body.classList.remove('has-regua');
+                  }
                     ruler.classList.add('hidden');
                     animes = document.querySelectorAll('[data-group]');
                     animes.forEach(function(anime){
@@ -550,6 +613,63 @@
                 button.checked = true;
                 switchFunction(button);
             }
+        </script>
+
+        <!-- Change genre view -->
+        <script type="text/javascript" id="js-switch-genre">
+            var switchFunctionGenre = function(e){
+                var switchButton = e.checked;
+                var genres = document.getElementById('genres');
+
+                if(switchButton){
+
+                    document.body.classList.add('has-regua');
+                    genres.classList.remove('hidden');
+
+                } else {
+                  if(window.getComputedStyle(document.getElementById('ruler')).display == 'none'){
+                    document.body.classList.remove('has-regua');
+                  }
+                    genres.classList.add('hidden');
+                    removeGenreFilter()
+                }
+            };
+
+            var genresButton = document.getElementById("switch-genres");
+            genresButton.addEventListener("change", function(e){switchFunctionGenre(e.target)}, false);
+        </script>
+
+        <!-- Genre click -->
+        <script id="js-genre-click">
+          var allGenresLink = document.getElementById('genres').getElementsByTagName('a');
+          for(var i = 0; i < allGenresLink.length; i++){
+
+            allGenresFunction(allGenresLink[i]);
+
+          };
+
+          function allGenresFunction(genresLink){
+            genresLink.addEventListener('click', function(genreLink){
+              genreLink.preventDefault;
+              var allGenresInfo = document.querySelectorAll('.genre');
+              removeGenreFilter();
+              if(genreLink.target.text != 'All'){
+                allGenresInfo.forEach(function(e){
+                  if(e.innerHTML.indexOf(genreLink.target.text) === -1){
+                    e.parentElement.parentElement.parentElement.classList.add('hidden');
+                  }
+                });
+              }
+
+
+            });
+          };
+
+          function removeGenreFilter(){
+            document.querySelectorAll('.anime-item.hidden').forEach(function(f){
+                f.classList.remove('hidden');
+              });
+          }
         </script>
 
         <!-- Keyboard events -->
