@@ -24,7 +24,7 @@ def try_parse(host, uris, anime, searching=True):
                 from src.findAnime import FindAnime
 
                 search = FindAnime(anime).parse_search()
-                return try_parse(host, search[anime.lower()], '', False)
+                return try_parse(host, uris, search[anime.lower()], False)
             return False
     else:
         return parse
@@ -125,6 +125,9 @@ def parse(list_type, file, path, create_folder, override, only):
 
                 if parse:
                     make_parse(parse, anime_name, path, create_folder, override, 'list', only)
+                else:
+                    with io.open('not-found.log', 'w+', encoding='utf-8') as log:
+                        log.write(u'< {} > não encontrado\n'.format(anime_name))
 
     elif list_type == 'folder':
         from src.cataloguer import Cataloguer
@@ -137,6 +140,9 @@ def parse(list_type, file, path, create_folder, override, only):
 
             if parse:
                 make_parse(parse, anime_name, path, create_folder, override, 'folder', only)
+            else:
+                with io.open('not-found.log', 'w+', encoding='utf-8') as log:
+                    log.write(u'< {} > não encontrado\n'.format(anime_name))
 
     else:
         print '[ERROR] unrecognized list type. Please use < list > or < folder >'

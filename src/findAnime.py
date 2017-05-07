@@ -12,6 +12,7 @@ from slugify import slugify
 class FindAnime():
 
     def __init__(self, anime_name):
+        self.anime_name = anime_name
         host = 'https://www.anbient.com/'
         uri = 'search?search_api_views_fulltext=' + anime_name
         url = host + uri
@@ -28,7 +29,7 @@ class FindAnime():
         return BeautifulSoup(self.getPage(url))
 
     def parse_search(self):
-        founds = {}
+        founds = {self.anime_name: self.anime_name}
         for node in self.tree.findAll('a', {"rel": 'bookmark'}):
             name = slugify(node.string)
             founds[name] = node.attrMap['href']
