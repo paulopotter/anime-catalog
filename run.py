@@ -7,7 +7,7 @@ import yaml
 from slugify import slugify
 
 
-def try_parse(host, uris, anime):
+def try_parse(host, uris, anime, searching=True):
     from src.parseUrl import Parse
 
     parse = Parse(host, uris[0] + anime)
@@ -17,6 +17,14 @@ def try_parse(host, uris, anime):
             return try_parse(host, uris[1::], anime)
         else:
             print u'\t[ERROR]: Pagina do anime < {} > não encontrado!'.format(anime)
+
+            if searching:
+                print u'\tTentando encontrar o anime < {} > '.format(anime)
+
+                from src.findAnime import FindAnime
+
+                search = FindAnime(anime).parse_search()
+                return try_parse(host, search[anime.lower()], '', False)
             return False
     else:
         return parse
@@ -47,7 +55,6 @@ def make_parse(parse, anime_name, path, create_folder, override, list_or_folder=
             from src.createFile import CreateFile
 
             create_file = CreateFile()
-            # import ipdb; ipdb.set_trace()
             create_file.create_json_file(data,
                                          folder_name=full_path,
                                          create_folder=create_folder,
