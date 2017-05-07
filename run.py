@@ -25,7 +25,8 @@ def try_parse(host, uris, anime, searching=True):
 
                 search = FindAnime(anime).parse_search()
                 if search:
-                    return try_parse(host, [''], search[anime.lower()], False)
+                    print '\t' + str(search)
+                    return try_parse(host, [''], search.get(slugify(anime), anime), False)
 
             return False
     else:
