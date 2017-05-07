@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- #
 
-import urllib
-
 import requests
 from BeautifulSoup import BeautifulSoup
 
@@ -29,7 +27,7 @@ class FindAnime():
         return BeautifulSoup(self.getPage(url))
 
     def parse_search(self):
-        founds = {self.anime_name: self.anime_name}
+        founds = {}
         for node in self.tree.findAll('a', {"rel": 'bookmark'}):
             name = slugify(node.string)
             founds[name] = node.attrMap['href']

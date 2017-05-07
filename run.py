@@ -24,7 +24,9 @@ def try_parse(host, uris, anime, searching=True):
                 from src.findAnime import FindAnime
 
                 search = FindAnime(anime).parse_search()
-                return try_parse(host, uris, search[anime.lower()], False)
+                if search:
+                    return try_parse(host, [''], search[anime.lower()], False)
+
             return False
     else:
         return parse
