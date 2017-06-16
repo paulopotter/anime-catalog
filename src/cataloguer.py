@@ -58,7 +58,7 @@ class Cataloguer():
                 description = json.load(data)
         except Exception:
             name = folder.split('/')[-1]
-            print '< ' + name + ' > do not exist'
+            print('< ' + name + ' > do not exist')
             description = {
                 "name": name
             }

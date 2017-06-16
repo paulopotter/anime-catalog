@@ -11,21 +11,21 @@ def try_parse(host, uris, anime, searching=True):
     from src.parseUrl import Parse
 
     parse = Parse(host, uris[0] + anime)
-    print '\t{}{}{}'.format(host, uris[0], anime)
+    print('\t{}{}{}'.format(host, uris[0], anime))
     if parse.parse_name() in [u'A página não foi encontrada', 'Animes']:
         if len(uris[1::]) > 0:
             return try_parse(host, uris[1::], anime)
         else:
-            print u'\t[ERROR]: Pagina do anime < {} > não encontrado!'.format(anime)
+            print('\t[ERROR]: Page  < {} > not found!'.format(anime))
 
             if searching:
-                print u'\tTentando encontrar o anime < {} > '.format(anime)
+                print('\tTrying to find the anime < {} > '.format(anime))
 
                 from src.findAnime import FindAnime
 
                 search = FindAnime(anime).parse_search()
                 if search:
-                    print '\t' + str(search)
+                    print('\t' + str(search))
                     return try_parse(host, [''], search.get(slugify(anime), anime), False)
 
             return False
@@ -35,11 +35,12 @@ def try_parse(host, uris, anime, searching=True):
 
 def make_parse(parse, anime_name, path, create_folder, override, list_or_folder='list', overrideData=[]):
 
-    data = {"name": parse.parse_name(),
-            "description": parse.parse_description(),
-            "totalEpisodes": parse.parse_total_ep(),
-            "genre": parse.parse_genres()
-            }
+    data = {
+        "name": parse.parse_name(),
+        "description": parse.parse_description(),
+        "totalEpisodes": parse.parse_total_ep(),
+        "genre": parse.parse_genres()
+    }
 
     try:
         slugify_name = slugify(anime_name, separator=' ')
@@ -75,7 +76,7 @@ def make_parse(parse, anime_name, path, create_folder, override, list_or_folder=
 
             try:
                 if 'description.json' in os.listdir(path + anime_dir):
-                    print '\t< description.json > Alread exists!'
+                    print('\t< description.json > Alread exists!')
                 else:
                     creating_file()
             except OSError:
@@ -83,14 +84,14 @@ def make_parse(parse, anime_name, path, create_folder, override, list_or_folder=
 
             try:
                 if 'thumb.png' in os.listdir(path + anime_dir):
-                    print '\t< thumb.png > Alread exists!'
+                    print('\t< thumb.png > Alread exists!')
                 else:
                     getting_img()
             except OSError:
                     getting_img()
 
     except Exception as e:
-        print u'\t< {} > não pode ser realizado. \n\t[ERROR]: {} \n'.format(data['name'], e)
+        print('\t< {} > can not be done. \n\t[ERROR]: {} \n'.format(data['name'], e))
 
 
 def cataloguer(folder_name, description_file):
@@ -105,7 +106,7 @@ def cataloguer(folder_name, description_file):
 
 def parse(list_type, file, path, create_folder, override, only):
     if list_type == '' or file == '':
-        print '[ Error ]: list type or file/path is empty'
+        print('[ ERROR ]: list type or file/path is empty')
         return False
 
     # Import only necessary
@@ -123,7 +124,7 @@ def parse(list_type, file, path, create_folder, override, only):
         with io.open(file, 'r', encoding='utf-8') as anime_list:
             for anime in anime_list.readlines():
                 anime_name = anime.split('/', 4)[-1][:-1]
-                print '\n- {}:'.format(anime_name)
+                print('\n- {}:'.format(anime_name))
                 parse = try_parse(host, uris, slugify(anime_name))
 
                 if parse:
@@ -138,7 +139,7 @@ def parse(list_type, file, path, create_folder, override, only):
         cataloguer = Cataloguer(path, 'dummy')
         anime_list = cataloguer.get_all_folders(path)
         for anime_name in anime_list:
-            print '\n- {}:'.format(anime_name)
+            print('\n- {}:'.format(anime_name))
             parse = try_parse(host, uris, slugify(anime_name))
 
             if parse:
@@ -148,7 +149,7 @@ def parse(list_type, file, path, create_folder, override, only):
                     log.write(u'< {} > não encontrado\n'.format(anime_name))
 
     else:
-        print '[ERROR] unrecognized list type. Please use < list > or < folder >'
+        print('[ERROR] unrecognized list type. Please use < list > or < folder >')
         return False
 
 
