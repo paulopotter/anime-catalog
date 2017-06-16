@@ -4,7 +4,7 @@
 import urllib
 
 import requests
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 
 
 class Parse():
@@ -22,7 +22,7 @@ class Parse():
 
     def beautifulSoup_page(self, url):
 
-        return BeautifulSoup(self.getPage(url))
+        return BeautifulSoup(self.getPage(url), 'html.parser')
 
     def parse_description(self):
         for node in self.tree.findAll('div', {"class": 'field field-body'}):
