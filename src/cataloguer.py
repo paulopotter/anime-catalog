@@ -4,7 +4,7 @@
 import os
 import simplejson as json
 
-from createFile import CreateFile
+from src.createFile import CreateFile
 
 
 class Cataloguer():

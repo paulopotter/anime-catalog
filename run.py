@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- #
+
+import io
 import argparse
 import inspect
 import yaml
@@ -109,9 +111,6 @@ def parse(list_type, file, path, create_folder, override, only):
         print('[ ERROR ]: list type or file/path is empty')
         return False
 
-    # Import only necessary
-    import io
-
     with open("config.yaml", 'r') as f:
         try:
             config = yaml.load(f)
@@ -124,14 +123,7 @@ def parse(list_type, file, path, create_folder, override, only):
         with io.open(file, 'r', encoding='utf-8') as anime_list:
             for anime in anime_list.readlines():
                 anime_name = anime.split('/', 4)[-1][:-1]
-                print('\n- {}:'.format(anime_name))
-                parse = try_parse(host, uris, slugify(anime_name))
-
-                if parse:
-                    make_parse(parse, anime_name, path, create_folder, override, 'list', only)
-                else:
-                    with io.open('not-found.log', 'w+', encoding='utf-8') as log:
-                        log.write(u'< {} > não encontrado\n'.format(anime_name))
+                do_parse(anime_name, host, uris, 'list', path, create_folder, override, only)
 
     elif list_type == 'folder':
         from src.cataloguer import Cataloguer
@@ -139,19 +131,22 @@ def parse(list_type, file, path, create_folder, override, only):
         cataloguer = Cataloguer(path, 'dummy')
         anime_list = cataloguer.get_all_folders(path)
         for anime_name in anime_list:
-            print('\n- {}:'.format(anime_name))
-            parse = try_parse(host, uris, slugify(anime_name))
-
-            if parse:
-                make_parse(parse, anime_name, path, create_folder, override, 'folder', only)
-            else:
-                with io.open('not-found.log', 'w+', encoding='utf-8') as log:
-                    log.write(u'< {} > não encontrado\n'.format(anime_name))
+            do_parse(anime_name, host, uris, 'folder', path, create_folder, override, only)
 
     else:
         print('[ERROR] unrecognized list type. Please use < list > or < folder >')
         return False
 
+
+def do_parse(anime_name, host, uris, type_of_parse, path, create_folder, override, only):
+    print('\n- {}:'.format(anime_name))
+    parse = try_parse(host, uris, slugify(anime_name))
+
+    if parse:
+        make_parse(parse, anime_name, path, create_folder, override, type_of_parse, only)
+    else:
+        with io.open('not-found.log', 'w+', encoding='utf-8') as log:
+            log.write(u'< {} > not found!\n'.format(anime_name))
 
 # ####
 
