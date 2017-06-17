@@ -5,7 +5,7 @@ cria um arquivo _js_ lido por um _html_ formatado.
 
 ## Requisitos: ##
 
-- Python
+- Python 3
 - Virtualenv
 
 ## Comandos: ##
