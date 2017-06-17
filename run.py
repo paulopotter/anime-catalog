@@ -111,13 +111,9 @@ def parse(list_type, file, path, create_folder, override, only):
         print('[ ERROR ]: list type or file/path is empty')
         return False
 
-    with open("config.yaml", 'r') as f:
-        try:
-            config = yaml.load(f)
-            host = config['host']
-            uris = config['uris']
-        except yaml.YAMLError as exc:
-            print(exc)
+    configs = get_config()
+    host = configs.get('host', '')
+    uris = configs.get('uris', '')
 
     if list_type == 'list':
         with io.open(file, 'r', encoding='utf-8') as anime_list:
@@ -134,7 +130,7 @@ def parse(list_type, file, path, create_folder, override, only):
             do_parse(anime_name, host, uris, 'folder', path, create_folder, override, only)
 
     else:
-        print('[ERROR] unrecognized list type. Please use < list > or < folder >')
+        print('[ ERROR ] unrecognized list type. Please use < list > or < folder >')
         return False
 
 
@@ -146,7 +142,19 @@ def do_parse(anime_name, host, uris, type_of_parse, path, create_folder, overrid
         make_parse(parse, anime_name, path, create_folder, override, type_of_parse, only)
     else:
         with io.open('not-found.log', 'w+', encoding='utf-8') as log:
-            log.write(u'< {} > not found!\n'.format(anime_name))
+            msg = u'< {} > not found!\n'.format(anime_name)
+            print(msg)
+            log.write(msg)
+
+
+def get_config():
+    with open("config.yaml", 'r') as f:
+        try:
+            config = yaml.load(f)
+        except yaml.YAMLError as exc:
+            print(exc)
+
+    return config
 
 # ####
 
