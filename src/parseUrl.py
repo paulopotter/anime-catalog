@@ -34,9 +34,8 @@ class Parse():
         for node in self.tree.findAll('div', {"class": 'anime-info'}):
 
             img = node.find('img')
-            url_img = self.host[:-1] + img.attrs[0][1]
-
-            urllib.urlretrieve(url_img, path + '/thumb.png')
+            url_img = self.host[:-1] + img.attrs['src']
+            urllib.request.urlretrieve(url_img, path + '/thumb.png')
             return url_img
 
     def parse_total_ep(self):

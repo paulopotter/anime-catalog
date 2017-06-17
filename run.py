@@ -14,7 +14,7 @@ def try_parse(host, uris, anime, searching=True):
 
     parse = Parse(host, uris[0] + anime)
     print('\t{}{}{}'.format(host, uris[0], anime))
-    if parse.parse_name() in [u'A página não foi encontrada', 'Animes']:
+    if (parse.parse_name()).strip() in [u'A página não foi encontrada', 'Animes']:
         if len(uris[1::]) > 0:
             return try_parse(host, uris[1::], anime)
         else:
@@ -48,7 +48,7 @@ def make_parse(parse, anime_name, path, create_folder, override, list_or_folder=
         slugify_name = slugify(anime_name, separator=' ')
         slugify_name = anime_name[0].upper() + anime_name[1::]
         anime_dir = anime_name if (list_or_folder == 'folder') else slugify_name
-        full_path = path + slugify_name
+        full_path = path + anime_dir
 
         if overrideData:
             new_data = {}
@@ -83,6 +83,7 @@ def make_parse(parse, anime_name, path, create_folder, override, list_or_folder=
                     creating_file()
             except OSError:
                 creating_file()
+
 
             try:
                 if 'thumb.png' in os.listdir(path + anime_dir):

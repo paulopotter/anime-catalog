@@ -66,10 +66,10 @@ class CreateFile():
     def format_file(self, get_infos):
         return {
             'name': get_infos['name'],
-            'description': get_infos['description'],
-            'totalEpisodes': ''.join(c for c in get_infos.get('totalEpisodes', 0) if c.isdigit()),
+            'description': get_infos.get('description', ''),
+            'totalEpisodes': get_infos.get('totalEpisodes', 0),
             'episodesDownloaded': get_infos.get('episodesDownloaded', 0),
-            'genre': get_infos['genre'],
+            'genre': get_infos.get('genre', []),
             "season": get_infos.get('season', 1),
             "othersSeasons": get_infos.get('othersSeasons', []),
             "rate": get_infos.get('rate', 0),
