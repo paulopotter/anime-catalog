@@ -15,13 +15,13 @@ class Cataloguer():
 
     def prepared_content(self):
         content = {}
-
         get_all_folders_names = self.get_all_folders(self.current_folder)
         all_descriptions = self.get_all_descriptions(get_all_folders_names)
         folders_by_letters = self.break_alphabetically(get_all_folders_names)
 
         cf = CreateFile()
-        for letter in folders_by_letters.keys():
+        folders_by_letters_sorted = sorted(folders_by_letters.keys())
+        for letter in folders_by_letters_sorted:
             description = []
             order_alphabetically = sorted(folders_by_letters[letter])
 

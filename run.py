@@ -92,7 +92,7 @@ def make_parse(parse, anime_name, path, create_folder, override, list_or_folder=
                     getting_img()
 
     except Exception as e:
-        print('\t< {} > can not be done. \n\t[ERROR]: {} \n'.format(data['name'], e))
+        print('\t< {} > can not be done. \n\t[ERROR]: {} \n'.format(slugify(data['name']), e))
 
 
 def cataloguer(folder_name, description_file):
