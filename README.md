@@ -1,12 +1,27 @@
 # Catalogo de animes #
 
-Esse catalogo funciona lendo todas as pastas ede um diretorio atras dos dados do anime e
+Esse catalogo funciona lendo todas as pastas de um diretorio atras dos dados do anime e
 cria um arquivo _js_ lido por um _html_ formatado.
 
 ## Requisitos: ##
 
 - Python 3
 - Virtualenv
+
+## Como usar: ##
+
+1. Baixe o projeto na pasta irmã da pasta onde estará a pasta com os animes. 
+  ```
+    Ex.:
+      /
+        Animes
+        Animes-catalog
+
+  ```
+2. Com a virtualenv levantada rode o comando `make setup`
+3. rode o comando `python run.py parse` com os parametros necessarios.
+4. rode o comando `python run.py cataloguer` com os parametros necessarios.
+5. Abra o arquivo **catalogo.html** e visualize o seu catalogo.
 
 ## Comandos: ##
 
@@ -26,15 +41,6 @@ O comando `python run.py` possui os seguintes argumentos:
 - `cataloguer`: _utilizado para criar o arquivo com todos as info dos animes_. Esse argumento possui os seguintes parametros:
 
     - `--folder_name <nome da folder>`: nome da folder onde estao todos os animes. Default=Animes
-
-## Como usar: ##
-
-1. Baixe o projeto na mesma pasta onde estará a pasta com os animes.
-2. Com a virtualenv levantada rode o comando `make setup`
-3. rode o comando `python run.py parse` com os parametros necessarios.
-4. rode o comando `python run.py cataloguer` com os parametros necessarios.
-5. Abra o arquivo **catalogo.html** e visualize o seu catalogo.
-
 
 ## Exemplos de uso: ##
 
