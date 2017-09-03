@@ -83,8 +83,6 @@ def make_parse(parse, anime_name, path, create_folder, override, list_or_folder=
                     creating_file()
             except OSError:
                 creating_file()
-
-
             try:
                 if 'thumb.png' in os.listdir(path + anime_dir):
                     print('\t< thumb.png > Alread exists!')
@@ -142,8 +140,8 @@ def do_parse(anime_name, host, uris, type_of_parse, path, create_folder, overrid
     if parse:
         make_parse(parse, anime_name, path, create_folder, override, type_of_parse, only)
     else:
-        with io.open('not-found.log', 'w+', encoding='utf-8') as log:
-            msg = u'< {} > not found!\n'.format(anime_name)
+        with io.open('not-found.log', 'a+', encoding='utf-8') as log:
+            msg = u'< {} > not found!\n'.format(slugify(anime_name))
             print(msg)
             log.write(msg)
 
