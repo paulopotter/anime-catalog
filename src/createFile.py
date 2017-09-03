@@ -64,10 +64,16 @@ class CreateFile():
             print('\t{} created!'.format(folder_name))
 
     def format_file(self, get_infos):
+
+        if get_infos.get('totalEpisodes', 0) is None:
+            totalEpisodes = 0
+        else:
+            totalEpisodes = get_infos.get('totalEpisodes', 0)
+
         return {
             'name': get_infos['name'],
             'description': get_infos.get('description', ''),
-            'totalEpisodes': get_infos.get('totalEpisodes', 0),
+            'totalEpisodes': totalEpisodes,
             'episodesDownloaded': get_infos.get('episodesDownloaded', 0),
             'genre': get_infos.get('genre', []),
             "season": get_infos.get('season', 1),

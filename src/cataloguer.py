@@ -33,7 +33,8 @@ class Cataloguer():
                     data['path'] = path
 
                 formated_data = cf.format_file(data)
-                description.append(formated_data)
+                if formated_data['name'] != u'\n  A p\xe1gina n\xe3o foi encontrada':
+                    description.append(formated_data)
 
             content[letter] = description
 
