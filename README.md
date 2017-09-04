@@ -10,7 +10,7 @@ cria um arquivo _js_ lido por um _html_ formatado.
 
 ## Como usar: ##
 
-1. Baixe o projeto na pasta irmã da pasta onde estará a pasta com os animes. 
+1. Baixe o projeto na pasta irmã da pasta onde estará a pasta com os animes.
   ```
     Ex.:
       /
@@ -22,6 +22,9 @@ cria um arquivo _js_ lido por um _html_ formatado.
 3. rode o comando `python run.py parse` com os parametros necessarios.
 4. rode o comando `python run.py cataloguer` com os parametros necessarios.
 5. Abra o arquivo **catalogo.html** e visualize o seu catalogo.
+
+Nota: Se tiver algum animes que não foi encontrado, o nome do mesmo estará no arquivo *not-found.log*.
+
 
 ## Comandos: ##
 
@@ -50,7 +53,7 @@ O comando `python run.py` possui os seguintes argumentos:
       - Atualizar via arquivo < arquivo.txt >
       - Path onde os animes estarão será '../Animes'
       - **Não** criará folders se não existirem
-      - **Não** subistituirá tudo dos arquivos.
+      - **Não** substituirá tudo dos arquivos.
 
     ```
         python run.py parse --file 'arquivo.txt' --path '../Animes/'
@@ -60,7 +63,7 @@ O comando `python run.py` possui os seguintes argumentos:
       - Atualizar via arquivo < arquivo.txt >
       - Path onde os animes estarão será '../Animes'
       - Criará folders se não existirem
-      - Subistituirá apenas os nomes e descrições dos arquivos.
+      - Substituirá apenas os nomes e descrições dos arquivos.
 
     ```
         python run.py parse --file 'arquivo.txt' --path '../Animes/' --create_folder --override --only 'name' --only 'description'
@@ -70,10 +73,19 @@ O comando `python run.py` possui os seguintes argumentos:
       - Atualizar via arquivo < arquivo.txt >
       - Path onde os animes estarão será '../Animes'
       - Criará folders se não existirem
-      - Subistituirá tudo dos arquivos.
+      - Substituirá tudo dos arquivos.
 
     ```
         python run.py parse --file 'arquivo.txt' --path '../Animes/' --create_folder --override
+    ```
+
+    1.4. Parse com sobreescrita:
+      - Atualizar via folders
+      - Path onde os animes estarão será '../Animes'
+      - Substituirá apenas os nomes, descrições e generos dos arquivos.
+
+    ```
+      python run.py parse --list_type 'folder' --path '../Animes/' --override --only 'name' --only 'description' --only 'genre'
     ```
 
 2. Cataloguer
