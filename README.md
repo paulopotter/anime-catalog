@@ -24,6 +24,7 @@ cria um arquivo _js_ lido por um _html_ formatado.
 5. Abra o arquivo **catalogo.html** e visualize o seu catalogo.
 
 Nota: Se tiver algum animes que não foi encontrado, o nome do mesmo estará no arquivo *not-found.log*.
+
 Nota[2]: Se quiser excluir uma ou mais folders, abra o arquivo *config.yaml* e adicione as folders no _exclude_
 
 
