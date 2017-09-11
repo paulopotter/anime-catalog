@@ -1,4 +1,4 @@
 host: 'https://www.anbient.com'
-uris: ['/animes/', '/tv/', '/anime/', '/ova/']
+uris: ['/animes/', '/tv/', '/TV/', '/anime/', '/ova/']
 
 exclude: []
