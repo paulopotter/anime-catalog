@@ -130,7 +130,7 @@ def cataloguer(folder_name, description_file):
     create_file.create_js_file(data)
 
 
-def parse(list_type, file, path, create_folder, override, only, start_with, end_with):
+def parse(list_type, file, path, create_folder, override, only, starts_with, ends_with, just_with):
     if list_type == '' or file == '':
         print('[ ERROR ]: list type or file/path is empty')
         return False
@@ -156,14 +156,18 @@ def parse(list_type, file, path, create_folder, override, only, start_with, end_
         print('[ ERROR ] unrecognized list type. Please use < list > or < folder >')
         return False
 
-    if start_with or (start_with and end_with):
+    if starts_with or (starts_with and ends_with) or just_with:
+        if just_with:
+            starts_with = just_with
+            ends_with = just_with
+
         anime_list = sorted(anime_list)
         alphanumeric = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-        start_index = alphanumeric.index(start_with)
-        end_index = alphanumeric.index(end_with or "9")
+        starts_index = alphanumeric.index(starts_with)
+        ends_index = alphanumeric.index(ends_with or "9")
 
         for word in anime_list[:]:
-            if not word.lower().startswith(tuple(alphanumeric[start_index:end_index + 1])):
+            if not word.lower().startswith(tuple(alphanumeric[starts_index:ends_index + 1])):
                 anime_list.remove(word)
 
     for anime_name in anime_list:
@@ -222,8 +226,9 @@ if __name__ == "__main__":
     parser_parse.add_argument("--path", default='./')
     parser_parse.add_argument("--override", action='store_true', default=False)
     parser_parse.add_argument("--only", action='append', default=[])
-    parser_parse.add_argument("--start_with", default='')
-    parser_parse.add_argument("--end_with", default='')
+    parser_parse.add_argument("--starts_with", default='')
+    parser_parse.add_argument("--ends_with", default='')
+    parser_parse.add_argument("--just_with", default='')
     parser_parse.add_argument("--create_folder", action='store_true', default=False)
     parser_parse.set_defaults(func=parse)
 
