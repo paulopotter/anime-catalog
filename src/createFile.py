@@ -40,8 +40,15 @@ class CreateFile():
 
         content['path'] = folder_name
         if overrideData:
-            with io.open('{}/{}.json'.format(folder_name, file_name), 'r', encoding='utf-8') as f:
-                old_data = json.loads(f.read())
+
+            if os.path.exists('{}/{}.json'.format(folder_name, file_name)):
+                open_format = 'r'
+            else:
+                open_format = 'w'
+
+            with io.open('{}/{}.json'.format(folder_name, file_name), open_format, encoding='utf-8') as f:
+                file_content = f.read()
+                old_data = json.loads(file_content) if len(file_content) > 0 else {}
 
                 for new_data in overrideData:
                     old_data[new_data] = content[new_data]
