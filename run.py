@@ -130,7 +130,7 @@ def cataloguer(folder_name, description_file):
     create_file.create_js_file(data)
 
 
-def parse(list_type, file, path, create_folder, override, only):
+def parse(list_type, file, path, create_folder, override, only, start_with, end_with):
     if list_type == '' or file == '':
         print('[ ERROR ]: list type or file/path is empty')
         return False
@@ -139,24 +139,32 @@ def parse(list_type, file, path, create_folder, override, only):
     host = configs.get('host', '')
     uris = configs.get('uris', '')
 
+    anime_list = []
     if list_type == 'list':
         with io.open(file, 'r', encoding='utf-8') as anime_list:
             for anime in anime_list.readlines():
                 anime_name = anime.split('/', 4)[-1][:-1]
-                do_parse(anime_name, host, uris, 'list', path, create_folder, override, only)
+                anime_list.append(anime_name)
 
     elif list_type == 'folder':
         from src.cataloguer import Cataloguer
 
         cataloguer = Cataloguer(path, 'dummy')
         anime_list = cataloguer.get_all_folders(path)
-        for anime_name in anime_list:
-            if anime_name not in configs['exclude']:
-                do_parse(anime_name, host, uris, 'folder', path, create_folder, override, only)
 
     else:
         print('[ ERROR ] unrecognized list type. Please use < list > or < folder >')
         return False
+
+    if start_with or (start_with and end_with):
+        anime_list = sorted(anime_list)
+        for word in anime_list[:]:
+            if not word.upper().startswith(start_with.upper()):
+                anime_list.remove(word)
+
+    for anime_name in anime_list:
+            if anime_name not in configs['exclude']:
+                do_parse(anime_name, host, uris, list_type, path, create_folder, override, only)
 
 
 def do_parse(anime_name, host, uris, type_of_parse, path, create_folder, override, only):
@@ -210,6 +218,8 @@ if __name__ == "__main__":
     parser_parse.add_argument("--path", default='./')
     parser_parse.add_argument("--override", action='store_true', default=False)
     parser_parse.add_argument("--only", action='append', default=[])
+    parser_parse.add_argument("--start_with", default='')
+    parser_parse.add_argument("--end_with", default='')
     parser_parse.add_argument("--create_folder", action='store_true', default=False)
     parser_parse.set_defaults(func=parse)
 
