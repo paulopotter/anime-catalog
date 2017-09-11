@@ -74,7 +74,7 @@ class CreateFile():
             'name': get_infos['name'],
             'description': get_infos.get('description', ''),
             'totalEpisodes': totalEpisodes,
-            'episodesDownloaded': get_infos.get('episodesDownloaded', 0),
+            'episodesDownloaded': self.get_episodesDownloaded(get_infos.get('path', False)),
             'genre': get_infos.get('genre', []),
             "season": get_infos.get('season', 1),
             "othersSeasons": get_infos.get('othersSeasons', []),
@@ -82,3 +82,17 @@ class CreateFile():
             "obs": get_infos.get('obs', ''),
             "path": get_infos.get('path', '')
         }
+
+    def get_episodesDownloaded(self, anime_path):
+        i = 0
+        try:
+            if anime_path:
+                list_dir = os.listdir(anime_path)
+                for listed_file in list_dir:
+                    if not listed_file.endswith(".png") or not listed_file.endswith(".json"):
+                        i += 1
+
+        except Exception:
+            return 0
+
+        return i
