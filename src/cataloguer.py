@@ -5,6 +5,7 @@ import os
 import simplejson as json
 
 from src.createFile import CreateFile
+from run import get_config
 
 
 class Cataloguer():
@@ -16,6 +17,9 @@ class Cataloguer():
     def prepared_content(self):
         content = {}
         get_all_folders_names = self.get_all_folders(self.current_folder)
+        for item_exclude in get_config()['exclude']:
+            get_all_folders_names.remove(item_exclude)
+
         all_descriptions = self.get_all_descriptions(get_all_folders_names)
         folders_by_letters = self.break_alphabetically(get_all_folders_names)
 
