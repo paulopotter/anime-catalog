@@ -45,7 +45,7 @@ O comando `python run.py` possui os seguintes argumentos:
     - `--starts_with`: Se usado, começará a parsear os animes a partir da letra selecinada.
     - `--ends_with`: Usado para delimitar até que letra será parseados. Obrigatório o uso do _--starts_with_
     - `--just_with`: Se usado, apenas os animes começados com a letra selecionada serão parseados.
-      - _Nota:_ Parse começa a partir da letra *a* e termina no número *9*. [a-z0-9]
+      - _Nota:_ Parse começa a partir da letra **a** e termina no número **9**. [a-z0-9]
 
 - `cataloguer`: _utilizado para criar o arquivo com todos as info dos animes_. Esse argumento possui os seguintes parametros:
 
@@ -113,7 +113,7 @@ O comando `python run.py` possui os seguintes argumentos:
       python run.py parse --list_type 'folder' --path '../Animes/' --starts_with d --ends_with k
     ```
 
-    1.6. Parse apenas de uma letra:
+    1.7. Parse apenas de uma letra:
       - Atualizar via folders
       - Path onde os animes estarão será '../Animes'
       - Começará e terminará na letra selecionada.
