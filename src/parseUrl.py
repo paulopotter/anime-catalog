@@ -34,7 +34,7 @@ class Parse():
         for node in self.tree.findAll('div', {"class": 'anime-info'}):
 
             img = node.find('img')
-            url_img = self.host[:-1] + img.attrs['src']
+            url_img = self.host + img.attrs['src']
             urllib.request.urlretrieve(url_img, path + '/thumb.png')
             return url_img
 
