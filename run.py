@@ -158,8 +158,12 @@ def parse(list_type, file, path, create_folder, override, only, start_with, end_
 
     if start_with or (start_with and end_with):
         anime_list = sorted(anime_list)
+        alphanumeric = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+        start_index = alphanumeric.index(start_with)
+        end_index = alphanumeric.index(end_with or "9")
+
         for word in anime_list[:]:
-            if not word.upper().startswith(start_with.upper()):
+            if not word.lower().startswith(tuple(alphanumeric[start_index:end_index + 1])):
                 anime_list.remove(word)
 
     for anime_name in anime_list:
