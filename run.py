@@ -126,7 +126,8 @@ def parse(list_type, file, path, create_folder, override, only):
         cataloguer = Cataloguer(path, 'dummy')
         anime_list = cataloguer.get_all_folders(path)
         for anime_name in anime_list:
-            do_parse(anime_name, host, uris, 'folder', path, create_folder, override, only)
+            if anime_name not in configs['exclude']:
+                do_parse(anime_name, host, uris, 'folder', path, create_folder, override, only)
 
     else:
         print('[ ERROR ] unrecognized list type. Please use < list > or < folder >')
