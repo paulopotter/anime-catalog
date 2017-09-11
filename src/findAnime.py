@@ -14,6 +14,7 @@ class FindAnime():
         host = 'https://www.anbient.com/'
         uri = 'search?search_api_views_fulltext=' + anime_name
         url = host + uri
+        print('\t' + url)
         self.tree = self.beautifulSoup_page(url)
 
     def getPage(self, url):
