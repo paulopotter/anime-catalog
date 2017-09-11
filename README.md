@@ -42,6 +42,10 @@ O comando `python run.py` possui os seguintes argumentos:
     - `--override`: Se usado, irá sobreescrever as infos dos animes (descriação e thumb). Default=False.
     - `--create_folder`: Se usado, irá criar as pastas com o nome dos animes. Default=False.
     - `--only`: Se usado irá fazer o update da chave passada (Ex.: description). Obrigatorio o uso do _--override_. Para cada chave nova, o comando deverá ser repetido.
+    - `--starts_with`: Se usado, começará a parsear os animes a partir da letra selecinada.
+    - `--ends_with`: Usado para delimitar até que letra será parseados. Obrigatório o uso do _--starts_with_
+    - `--just_with`: Se usado, apenas os animes começados com a letra selecionada serão parseados.
+      - _Nota:_ Parse começa a partir da letra *a* e termina no número *9*. [a-z0-9]
 
 - `cataloguer`: _utilizado para criar o arquivo com todos as info dos animes_. Esse argumento possui os seguintes parametros:
 
@@ -88,6 +92,34 @@ O comando `python run.py` possui os seguintes argumentos:
 
     ```
       python run.py parse --list_type 'folder' --path '../Animes/' --override --only 'name' --only 'description' --only 'genre'
+    ```
+
+    1.5. Parse inciado a partir de uma letra:
+      - Atualizar via folders
+      - Path onde os animes estarão será '../Animes'
+      - Começará a partir da letra selecionada.
+
+    ```
+      python run.py parse --list_type 'folder' --path '../Animes/' --starts_with f
+    ```
+
+    1.6. Parse inciado a partir de uma letra e terminada em outra:
+      - Atualizar via folders
+      - Path onde os animes estarão será '../Animes'
+      - Começará a partir da letra selecionada.
+      - Terminará na letra selecionada.
+
+    ```
+      python run.py parse --list_type 'folder' --path '../Animes/' --starts_with d --ends_with k
+    ```
+
+    1.6. Parse apenas de uma letra:
+      - Atualizar via folders
+      - Path onde os animes estarão será '../Animes'
+      - Começará e terminará na letra selecionada.
+
+    ```
+      python run.py parse --list_type 'folder' --path '../Animes/' --just_with p
     ```
 
 2. Cataloguer
