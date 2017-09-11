@@ -89,7 +89,7 @@ class CreateFile():
             if anime_path:
                 list_dir = os.listdir(anime_path)
                 for listed_file in list_dir:
-                    if not listed_file.endswith(".png") or not listed_file.endswith(".json"):
+                    if not listed_file.endswith(tuple([".png", ".json"])):
                         i += 1
 
         except Exception:

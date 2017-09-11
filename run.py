@@ -25,10 +25,35 @@ def try_parse(host, uris, anime, searching=True):
 
                 from src.findAnime import FindAnime
 
-                search = FindAnime(anime).parse_search()
-                if search:
-                    print('\t' + str(search))
-                    return try_parse(host, [''], search.get(slugify(anime), anime), False)
+                animes_names = names_to_try(anime)
+
+                for anime_name in animes_names:
+                    search = FindAnime(anime_name).parse_search()
+
+                    if search:
+                        print('\t' + str(search))
+
+                        if search.get(slugify(anime), False):
+                            anime_name = search.get(slugify(anime), anime)
+                        else:
+                            import prompt
+
+                            i = 0
+                            print("")
+                            for search_keys, search_options in search.items():
+                                print('\t\t[ {} ]: {}'.format(i, search_keys))
+                                i += 1
+
+                            print('\t\tAny another number: Cancel choice')
+                            choice = prompt.integer(prompt="\t\tPlease enter a number: ")
+
+                            keys_in_list = list(search.keys())
+                            if choice == 99 or choice >= len(search):
+                                return False
+
+                            anime_name = search[keys_in_list[choice]]
+
+                        return try_parse(host, [''], anime_name, False)
 
             return False
     else:
@@ -155,6 +180,17 @@ def get_config():
             print(exc)
 
     return config
+
+
+def names_to_try(original_anime_name):
+    animes_names = [original_anime_name]
+
+    if "-and-" in original_anime_name:
+        animes_names.append(original_anime_name.replace("-and-", "-e-"))
+        animes_names.append(original_anime_name.replace("-and-", "-"))
+
+    return animes_names
+
 
 # ####
 
