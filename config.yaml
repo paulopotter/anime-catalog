@@ -1,12 +1,15 @@
 host:
   anbient: 'https://www.anbient.com'
-  punchsub: 'https://punchsub.com'
-  myAnimeList: 'https://myanimelist.net/'
+  punchsub: 'https://punchsub.zlx.com.br'
+  myAnimeList: 'https://myanimelist.net'
 
 
 uris:
   anbient: ['/animes/', '/tv/', '/TV/', '/anime/', '/ova/']
-  punchsub: ["lista-de-animes", "lista-de-filmes", "lista-de-ovas", "lista-de-musicas"]
+  punchsub:
+    animes: "lista-de-animes"
+    filmes: "lista-de-filmes"
+    ovas: "lista-de-ovas"
 
 
 exclude: []
