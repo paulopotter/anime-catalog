@@ -63,10 +63,11 @@ def try_parse(host, uris, anime, searching=True):
 def make_parse(parse, anime_name, path, create_folder, override, list_or_folder='list', overrideData=[]):
 
     data = {
-        "name": parse.parse_name(),
+        "name": parse.parse_name() or anime_name,
         "description": parse.parse_description(),
         "totalEpisodes": parse.parse_total_ep(),
-        "genre": parse.parse_genres()
+        "genre": parse.parse_genres(),
+        "path": path
     }
 
     try:
@@ -96,7 +97,9 @@ def make_parse(parse, anime_name, path, create_folder, override, list_or_folder=
 
         if override:
                 creating_file(overrideData)
-                getting_img()
+
+                if "image" in overrideData or overrideData == []:
+                    getting_img()
         else:
 
             import os

@@ -37,7 +37,6 @@ class CreateFile():
                          file_name='description',
                          create_folder=False,
                          overrideData=[]):
-
         content['path'] = folder_name
         if overrideData:
 
