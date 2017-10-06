@@ -4,9 +4,10 @@
 import io
 import argparse
 import inspect
-import yaml
 
 from slugify import slugify
+
+from src.utils import get_configs
 
 
 def try_parse(host, uris, anime, searching=True):
@@ -138,9 +139,9 @@ def parse(list_type, file, path, create_folder, override, only, starts_with, end
         print('[ ERROR ]: list type or file/path is empty')
         return False
 
-    configs = get_config()
-    host = configs.get('host', '')
-    uris = configs.get('uris', '')
+    configs = get_configs()
+    host = configs.get('host', '').get('anbient', '')
+    uris = configs.get('uris', '').get('anbient', '')
 
     anime_list = []
     if list_type == 'list':
@@ -189,16 +190,6 @@ def do_parse(anime_name, host, uris, type_of_parse, path, create_folder, overrid
             msg = u'< {} > not found!\n'.format(slugify(anime_name))
             print(msg)
             log.write(msg)
-
-
-def get_config():
-    with open("config.yaml", 'r') as f:
-        try:
-            config = yaml.load(f)
-        except yaml.YAMLError as exc:
-            print(exc)
-
-    return config
 
 
 def names_to_try(original_anime_name):
