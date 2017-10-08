@@ -7,6 +7,8 @@ from bs4 import BeautifulSoup
 from slugify import slugify
 from utils import get_configs
 
+from utils import normalize_name
+
 
 class FindAnime():
 
@@ -43,34 +45,29 @@ class PunchLib():
     def __init__(self, list_type):
         self.config = get_configs()
         self.host = self.config['host']['punchsub'] + '/'
-        self.full_list = self.get_full_list(list_type)
+        position = {"animes": 0, "movies": 2, "ovas": 1}
+        self.full_list = self.format_full_list(position[list_type])
 
-    def get_full_list(self, list_type):
-        url = self.host + self.config['uris']['punchsub'].get(list_type, 'animes')
+    def get_full_list(self, position):
+        url = self.host + self.config['uris']['punchsub'][position]
         request_get = requests.get(url)
         return request_get.json()
 
-    def format_full_list(self, list_type):
-        full_list = self.full_list
+    def format_full_list(self, position):
+        full_list = self.get_full_list(position)
         new_full_list = {}
         for anime in full_list:
-            new_full_list.setdefault(anime[2], []).append(self._list_2_dict(anime))
+            new_full_list.setdefault(anime[2].upper(), []).append(self._list_2_dict(anime))
 
         return new_full_list
 
     def _list_2_dict(self, value):
+        name = normalize_name(value[1])
         return {
-            "name": value[1],
+            "name": name,
             "id": value[0],
             "quality": value[5],
-            "season": value[3] or "Primeira temporada"
+            "season": value[3] or "Primeira temporada",
+            "totalEpisodes": value[6],
+            "genres": value[4]
         }
-
-    def find_anime(self, anime_name):
-        full_list = self.format_full_list("animes")
-        char_list = full_list[anime_name[:1]]
-        for pos, anime in enumerate(char_list):
-            if anime["name"] == anime_name:
-                return anime
-
-        return False

@@ -43,7 +43,7 @@ def parse(list_type, file, path, create_folder, override, only, starts_with, end
 
     parse_settings = [list_type, path, create_folder, override, only]
     anime_list = search_limit(anime_list, starts_with, ends_with, just_with)
-    know_animes = AnimeLib()
+    know_animes = AnimeLib().data
 
     Parse(anime_list, know_animes, parse_settings)
 
