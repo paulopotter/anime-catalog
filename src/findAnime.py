@@ -5,9 +5,8 @@ import requests
 from bs4 import BeautifulSoup
 
 from slugify import slugify
-from utils import get_configs
 
-from utils import normalize_name
+from src.utils import get_configs, normalize_name
 
 
 class FindAnime():

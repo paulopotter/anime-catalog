@@ -1,4 +1,6 @@
-from findAnime import PunchLib
+#!/usr/bin/env python
+# -*- coding: utf-8 -*- #
+from src.findAnime import PunchLib
 
 
 class AnimeLib():

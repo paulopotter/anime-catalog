@@ -5,7 +5,7 @@ import os
 import simplejson as json
 
 from src.createFile import CreateFile
-from utils import get_configs
+from src.utils import get_configs
 
 
 class Cataloguer():

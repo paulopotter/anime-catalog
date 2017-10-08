@@ -50,7 +50,8 @@ class CreateFile():
                 old_data = json.loads(file_content) if len(file_content) > 0 else {}
 
                 for new_data in overrideData:
-                    old_data[new_data] = content[new_data]
+                    if new_data != 'image':
+                        old_data[new_data] = content[new_data]
 
                 content = old_data
 

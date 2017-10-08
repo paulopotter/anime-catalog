@@ -5,7 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 from slugify import slugify
 
-from utils import get_configs
+from src.utils import get_configs
 
 
 class ParseUrl():
@@ -15,7 +15,7 @@ class ParseUrl():
     def execute_parse(self, host, anime):
 
         if host == 'punchsub':
-            return self.parse_punch(host['punchsub'], anime)
+            return self.parse_punch(host, anime)
 
         elif host == 'anbient':
             return self.parse_anbient(host, anime['name'])
@@ -24,23 +24,24 @@ class ParseUrl():
 
     def parse_punch(self, host, anime):
         punchsub_parser = PunchParser()
-        # import ipdb; ipdb.set_trace()
         parser = punchsub_parser.parser(anime)
 
         return parser
 
     def parse_anbient(self, host, anime_name):
         uris = self.config['uris']
+        data = {}
         anbient_parse = AnbientParse()
-        parser = anbient_parse.try_parse(host, uris['anbient'], anime_name, True)
+        parser = anbient_parse.try_parse(host, uris['anbient'], slugify(anime_name), True)
 
-        data = {
-            "name": anbient_parse.parse_name(parser) or anime_name,
-            "description": anbient_parse.parse_description(parser),
-            "totalEpisodes": anbient_parse.parse_total_ep(parser),
-            "genre": anbient_parse.parse_genres(parser),
-            "img": anbient_parse.parse_image(parser)
-        }
+        if parser:
+            data = {
+                "name": anime_name,
+                "description": anbient_parse.parse_description(parser),
+                "totalEpisodes": anbient_parse.parse_total_ep(parser),
+                "genre": anbient_parse.parse_genres(parser),
+                "img": anbient_parse.parse_image(parser)
+            }
         return data
 
 
@@ -68,7 +69,7 @@ class AnbientParse():
             description = node.find('div', attrs={'class': 'item '})
             return description.getText()
 
-    def parser_image(self, tree, path='.'):
+    def parse_image(self, tree, path='.'):
         for node in tree.findAll('div', {"class": 'anime-info'}):
             img = node.find('img')
 
@@ -160,7 +161,7 @@ class AnbientParse():
 
 class PunchParser():
     def __init__(self):
-        config = self.get_configs()
+        config = get_configs()
         self.host = config['host']['punchsub']
 
     def getPage(self, url):
@@ -173,9 +174,10 @@ class PunchParser():
         uri = '/listar/{}/episodios/{}'.format(anime['id'], anime['quality'])
         page = self.getPage(self.host + uri)
 
+        # import ipdb; ipdb.set_trace()
         return {
             "name": anime['name'],
-            "description": page[6],
+            "description": page['p'][6],
             "totalEpisodes": anime['totalEpisodes'],
             "genre": anime['genres'],
             "season": anime['season'],

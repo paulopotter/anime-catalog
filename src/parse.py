@@ -1,9 +1,9 @@
 import io
-import urllib
+import requests
 
-from utils import get_configs, normalize_name
-from animes import Anime
-from parseUrl import ParseUrl
+from src.utils import get_configs, normalize_name
+from src.animes import Anime
+from src.parseUrl import ParseUrl
 
 
 class Parse():
@@ -62,7 +62,7 @@ class Parse():
         }
 
         if knew_anime['anime']:
-            data = parse_url.execute_parse(self.config['host']['punchsub'], knew_anime['anime'])
+            data = parse_url.execute_parse('punchsub', knew_anime['anime'])
             if not data:
                 for host in self.config['host']:
                     data.update(parse_url.execute_parse(host, knew_anime['anime']))
@@ -80,19 +80,8 @@ class Parse():
         anime_name = normalize_name(data['name'])
         # parse, anime_name, path, create_folder, override, list_or_folder='list', overrideData=[]):
         try:
-            anime_dir = anime_name
-            full_path = path + anime_dir
-
-            if overrideData:
-                new_data = {}
-                data['path'] = full_path
-                for item in overrideData:
-                    new_data[item] = data[item]
-
-                data = new_data
-
             def creating_file(overrideData=[]):
-                from createFile import CreateFile
+                from src.createFile import CreateFile
 
                 create_file = CreateFile()
                 create_file.create_json_file(data,
@@ -101,13 +90,28 @@ class Parse():
                                              overrideData=overrideData)
 
             def getting_img(url_img, path):
-                urllib.request.urlretrieve(url_img, path + '/thumb.png')
+                with open(path + '/thumb.png', 'wb') as thumb:
+                    bla = requests.get(url_img)
+                    thumb.write(bla.content)
+
+            anime_dir = anime_name
+            full_path = path + anime_dir
 
             if override:
+                if overrideData:
+                    if "image" in overrideData or overrideData == []:
+                        getting_img(data['img_url'], full_path)
+                    new_data = {}
+
+                    data['path'] = full_path
+                    for item in overrideData:
+                        if "image" != item:
+                            new_data[item] = data.get(item, '')
+
+                    data = new_data
+
                     creating_file(overrideData)
 
-                    if "image" in overrideData or overrideData == []:
-                        getting_img()
             else:
 
                 import os
@@ -123,9 +127,9 @@ class Parse():
                     if 'thumb.png' in os.listdir(path + anime_dir):
                         print('\t< thumb.png > Alread exists!')
                     else:
-                        getting_img()
+                        getting_img(data['img_url'], full_path)
                 except OSError:
-                        getting_img()
+                        getting_img(data['img_url'], full_path)
 
         except Exception as e:
             print('\t< {} > can not be done. \n\t[ERROR]: {} \n'.format(anime_name, e))
