@@ -13,3 +13,7 @@ def get_configs():
             print(exc)
 
     return config
+
+
+def normalize_name(name):
+    return name[0].upper() + name[1:].lower()
