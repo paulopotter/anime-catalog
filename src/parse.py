@@ -17,17 +17,22 @@ class Parse():
 
     def parse_exec(self):
         anime_list = self.list_animes
-        total = len(anime_list)
+        total = 0
         success = 0
         fail = 0
+        skipped = 0
+
         for anime_name in anime_list:
             anime_name = normalize_name(anime_name)
 
             if anime_name not in self.config.get('exclude', ''):
+                total += 1
                 print('\n- {}:'.format(anime_name))
                 success, fail = self.parse_anime(anime_name, success, fail)
+            else:
+                skipped = skipped + 1
 
-        print("Total: {}\nSuccess: {}\nFail: {}".format(total, success, fail))
+        print("\nTotal: {}\nSuccess: {}\nFail: {}\nSkipped: {}".format(total, success, fail, skipped))
 
     def parse_anime(self, anime_name, success, fail):
 
@@ -74,13 +79,13 @@ class Parse():
         list_or_folder, path, create_folder, override, overrideData = self.parse_settings
         anime_name = normalize_name(data['name'])
         # parse, anime_name, path, create_folder, override, list_or_folder='list', overrideData=[]):
-
         try:
             anime_dir = anime_name
             full_path = path + anime_dir
 
             if overrideData:
                 new_data = {}
+                data['path'] = full_path
                 for item in overrideData:
                     new_data[item] = data[item]
 
@@ -123,4 +128,4 @@ class Parse():
                         getting_img()
 
         except Exception as e:
-            print('\t< {} > can not be done. \n\t[ERROR]: {} \n'.format(data['name'], e))
+            print('\t< {} > can not be done. \n\t[ERROR]: {} \n'.format(anime_name, e))
