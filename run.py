@@ -5,123 +5,8 @@ import io
 import argparse
 import inspect
 
-from slugify import slugify
-
-from src.utils import get_configs
-
-
-def try_parse(host, uris, anime, searching=True):
-    from src.parseUrl import Parse
-
-    parse = Parse(host, uris[0] + anime)
-    print('\t{}{}{}'.format(host, uris[0], anime))
-    if (parse.parse_name()).strip() in [u'A página não foi encontrada', 'Animes']:
-        if len(uris[1::]) > 0:
-            return try_parse(host, uris[1::], anime)
-        else:
-            print('\t[ERROR]: Page  < {} > not found!'.format(anime))
-
-            if searching:
-                print('\tTrying to find the anime < {} > '.format(anime))
-
-                from src.findAnime import FindAnime
-
-                animes_names = names_to_try(anime)
-
-                for anime_name in animes_names:
-                    search = FindAnime(anime_name).parse_search()
-
-                    if search:
-                        print('\t' + str(search))
-
-                        if search.get(slugify(anime), False):
-                            anime_name = search.get(slugify(anime), anime)
-                        else:
-                            import prompt
-
-                            i = 0
-                            print("")
-                            for search_keys, search_options in search.items():
-                                print('\t\t[ {} ]: {}'.format(i, search_keys))
-                                i += 1
-
-                            print('\t\tAny another number: Cancel choice')
-                            choice = prompt.integer(prompt="\t\tPlease enter a number: ")
-
-                            keys_in_list = list(search.keys())
-                            if choice == 99 or choice >= len(search):
-                                return False
-
-                            anime_name = search[keys_in_list[choice]]
-
-                        return try_parse(host, [''], anime_name, False)
-
-            return False
-    else:
-        return parse
-
-
-def make_parse(parse, anime_name, path, create_folder, override, list_or_folder='list', overrideData=[]):
-
-    data = {
-        "name": parse.parse_name() or anime_name,
-        "description": parse.parse_description(),
-        "totalEpisodes": parse.parse_total_ep(),
-        "genre": parse.parse_genres(),
-        "path": path
-    }
-
-    try:
-        slugify_name = slugify(anime_name, separator=' ')
-        slugify_name = anime_name[0].upper() + anime_name[1::]
-        anime_dir = anime_name if (list_or_folder == 'folder') else slugify_name
-        full_path = path + anime_dir
-
-        if overrideData:
-            new_data = {}
-            for item in overrideData:
-                new_data[item] = data[item]
-
-            data = new_data
-
-        def creating_file(overrideData=[]):
-            from src.createFile import CreateFile
-
-            create_file = CreateFile()
-            create_file.create_json_file(data,
-                                         folder_name=full_path,
-                                         create_folder=create_folder,
-                                         overrideData=overrideData)
-
-        def getting_img():
-            parse.get_image(full_path)
-
-        if override:
-                creating_file(overrideData)
-
-                if "image" in overrideData or overrideData == []:
-                    getting_img()
-        else:
-
-            import os
-
-            try:
-                if 'description.json' in os.listdir(path + anime_dir):
-                    print('\t< description.json > Alread exists!')
-                else:
-                    creating_file()
-            except OSError:
-                creating_file()
-            try:
-                if 'thumb.png' in os.listdir(path + anime_dir):
-                    print('\t< thumb.png > Alread exists!')
-                else:
-                    getting_img()
-            except OSError:
-                    getting_img()
-
-    except Exception as e:
-        print('\t< {} > can not be done. \n\t[ERROR]: {} \n'.format(slugify(data['name']), e))
+from src.animes import AnimeLib
+from src.parse import Parse
 
 
 def cataloguer(folder_name, description_file):
@@ -139,14 +24,10 @@ def parse(list_type, file, path, create_folder, override, only, starts_with, end
         print('[ ERROR ]: list type or file/path is empty')
         return False
 
-    configs = get_configs()
-    host = configs.get('host', '').get('anbient', '')
-    uris = configs.get('uris', '').get('anbient', '')
-
     anime_list = []
     if list_type == 'list':
-        with io.open(file, 'r', encoding='utf-8') as anime_list:
-            for anime in anime_list.readlines():
+        with io.open(file, 'r', encoding='utf-8') as f:
+            for anime in f.readlines():
                 anime_name = anime.split('/', 4)[-1][:-1]
                 anime_list.append(anime_name)
 
@@ -160,6 +41,14 @@ def parse(list_type, file, path, create_folder, override, only, starts_with, end
         print('[ ERROR ] unrecognized list type. Please use < list > or < folder >')
         return False
 
+    parse_settings = [list_type, path, create_folder, override, only]
+    anime_list = search_limit(anime_list, starts_with, ends_with, just_with)
+    know_animes = AnimeLib()
+
+    Parse(anime_list, know_animes, parse_settings)
+
+
+def search_limit(anime_list, starts_with, ends_with, just_with):
     if starts_with or (starts_with and ends_with) or just_with:
         if just_with:
             starts_with = just_with
@@ -174,32 +63,7 @@ def parse(list_type, file, path, create_folder, override, only, starts_with, end
             if not word.lower().startswith(tuple(alphanumeric[starts_index:ends_index + 1])):
                 anime_list.remove(word)
 
-    for anime_name in anime_list:
-            if anime_name not in configs['exclude']:
-                do_parse(anime_name, host, uris, list_type, path, create_folder, override, only)
-
-
-def do_parse(anime_name, host, uris, type_of_parse, path, create_folder, override, only):
-    print('\n- {}:'.format(anime_name))
-    parse = try_parse(host, uris, slugify(anime_name))
-
-    if parse:
-        make_parse(parse, anime_name, path, create_folder, override, type_of_parse, only)
-    else:
-        with io.open('not-found.log', 'a+', encoding='utf-8') as log:
-            msg = u'< {} > not found!\n'.format(slugify(anime_name))
-            print(msg)
-            log.write(msg)
-
-
-def names_to_try(original_anime_name):
-    animes_names = [original_anime_name]
-
-    if "-and-" in original_anime_name:
-        animes_names.append(original_anime_name.replace("-and-", "-e-"))
-        animes_names.append(original_anime_name.replace("-and-", "-"))
-
-    return animes_names
+    return anime_list
 
 
 # ####
