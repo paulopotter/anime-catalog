@@ -5,6 +5,8 @@ import io
 import os
 import simplejson as json
 
+from src.msg import warning_msg, info_msg
+
 
 class CreateFile():
 
@@ -18,11 +20,11 @@ class CreateFile():
         if create_folder:
             self.create_folder(folder_name)
 
-        print('\tWriting in the file < {}.{} >...'.format(file_name, file_type))
+        info_msg('Writing in the file < {}.{} >...'.format(file_name, file_type), True)
 
         with io.open(file_path, 'w', encoding='utf-8') as f:
             f.write(content)
-        print('\tWriting completed!')
+        info_msg('Writing completed!', True)
 
     def create_js_file(self, content,
                        folder_name='.',
@@ -65,10 +67,10 @@ class CreateFile():
         folder_exists = self.is_folder(folder_name)
 
         if folder_exists:
-            print('\t{} exists'.format(folder_name))
+            warning_msg('{} exists'.format(folder_name), True)
         else:
             os.mkdir(folder_name)
-            print('\t{} created!'.format(folder_name))
+            info_msg('{} created!'.format(folder_name), True)
 
     def format_file(self, get_infos):
 

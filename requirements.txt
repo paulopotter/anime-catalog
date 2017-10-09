@@ -4,3 +4,4 @@ requests==2.18.1
 simplejson==3.10.0
 PyYAML==3.12
 prompt==0.4.1
+termcolor

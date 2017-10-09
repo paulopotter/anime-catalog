@@ -5,6 +5,7 @@ import io
 import argparse
 import inspect
 
+from src.msg import error_msg
 from src.animes import AnimeLib
 from src.parse import Parse
 
@@ -21,7 +22,7 @@ def cataloguer(folder_name, description_file):
 
 def parse(list_type, file, path, create_folder, override, only, starts_with, ends_with, just_with):
     if list_type == '' or file == '':
-        print('[ ERROR ]: list type or file/path is empty')
+        error_msg('list type or file/path is empty')
         return False
 
     anime_list = []
@@ -38,7 +39,7 @@ def parse(list_type, file, path, create_folder, override, only, starts_with, end
         anime_list = cataloguer.get_all_folders(path)
 
     else:
-        print('[ ERROR ] unrecognized list type. Please use < list > or < folder >')
+        error_msg('unrecognized list type. Please use < list > or < folder >')
         return False
 
     parse_settings = [list_type, path, create_folder, override, only]

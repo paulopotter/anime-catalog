@@ -1,6 +1,7 @@
 import io
 import requests
 
+from src.msg import warning_msg, simple_msg
 from src.utils import get_configs, normalize_name
 from src.animes import Anime
 from src.parseUrl import ParseUrl
@@ -27,12 +28,15 @@ class Parse():
 
             if anime_name not in self.config.get('exclude', ''):
                 total += 1
-                print('\n- {}:'.format(anime_name))
+                simple_msg('\n- {}:'.format(anime_name))
                 success, fail = self.parse_anime(anime_name, success, fail)
             else:
                 skipped = skipped + 1
 
-        print("\nTotal: {}\nSuccess: {}\nFail: {}\nSkipped: {}".format(total, success, fail, skipped))
+        simple_msg("\nTotal:", 'white', total)
+        simple_msg("Success:", 'green', success)
+        simple_msg("Fail:", 'red', fail)
+        simple_msg("Skipped:", 'yellow', skipped)
 
     def parse_anime(self, anime_name, success, fail):
 
@@ -46,7 +50,7 @@ class Parse():
             fail = fail + 1
             with io.open('not-found.log', 'a+', encoding='utf-8') as log:
                 msg = u'< {} > not found!\n'.format(anime_name)
-                print(msg)
+                warning_msg(msg)
                 log.write(msg)
 
         return success, fail
@@ -118,18 +122,19 @@ class Parse():
 
                 try:
                     if 'description.json' in os.listdir(path + anime_dir):
-                        print('\t< description.json > Alread exists!')
+                        warning_msg('< description.json > Alread exists!', True)
                     else:
                         creating_file()
                 except OSError:
                     creating_file()
                 try:
                     if 'thumb.png' in os.listdir(path + anime_dir):
-                        print('\t< thumb.png > Alread exists!')
+                        warning_msg('< thumb.png > Alread exists!', True)
                     else:
                         getting_img(data['img_url'], full_path)
                 except OSError:
                         getting_img(data['img_url'], full_path)
 
         except Exception as e:
-            print('\t< {} > can not be done. \n\t[ERROR]: {} \n'.format(anime_name, e))
+            error_msg('< {} > can not be done.'.format(anime_name), True)
+            error_msg('{} \n'.format(e), True)

@@ -1,6 +1,8 @@
 import os
 import yaml
 
+from src.msg import error_msg
+
 
 def get_configs():
 
@@ -10,7 +12,7 @@ def get_configs():
             config = yaml.load(f)
 
         except yaml.YAMLError as exc:
-            print(exc)
+            error_msg(exc)
 
     return config
 

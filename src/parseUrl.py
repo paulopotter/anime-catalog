@@ -5,6 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 from slugify import slugify
 
+from src.msg import error_msg, simple_msg, info_msg
 from src.utils import get_configs
 
 
@@ -103,15 +104,15 @@ class AnbientParse():
         host = self.host
         parse = self.beautifulSoup_page(host + uris[0] + anime)
 
-        print('\t{}{}{}'.format(host, uris[0], anime))
+        simple_msg('{}{}{}'.format(host, uris[0], anime), tab=True)
         if (self.parse_name(parse)).strip() in [u'A página não foi encontrada', 'Animes']:
             if len(uris[1::]) > 0:
                 return self.try_parse(host, uris[1::], anime)
             else:
-                print('\t[ERROR]: Page  < {} > not found!'.format(anime))
+                error_msg('Page  < {} > not found!'.format(anime), True)
 
                 if searching:
-                    print('\tTrying to find the anime < {} > '.format(anime))
+                    info_msg('Trying to find the anime < {} > '.format(anime), True)
 
                     from src.findAnime import FindAnime
 
@@ -121,7 +122,7 @@ class AnbientParse():
                         search = FindAnime(anime_name).parse_search()
 
                         if search:
-                            print('\t' + str(search))
+                            info_msg(str(search), True)
 
                             if search.get(slugify(anime), False):
                                 anime_name = search.get(slugify(anime), anime)
@@ -131,10 +132,10 @@ class AnbientParse():
                                 i = 0
                                 print("")
                                 for search_keys, search_options in search.items():
-                                    print('\t\t[ {} ]: {}'.format(i, search_keys))
+                                    simple_msg('\t[ {} ]:', 'green', '{}'.format(i, search_keys), tab=True)
                                     i += 1
 
-                                print('\t\tAny another number: Cancel choice')
+                                simple_msg('\tAny another number:', 'yellow', 'Cancel choice', True)
                                 choice = prompt.integer(prompt="\t\tPlease enter a number: ")
 
                                 keys_in_list = list(search.keys())

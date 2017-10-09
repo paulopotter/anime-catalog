@@ -4,6 +4,7 @@
 import os
 import simplejson as json
 
+from src.msg import error_msg
 from src.createFile import CreateFile
 from src.utils import get_configs
 
@@ -63,7 +64,7 @@ class Cataloguer():
                 description = json.load(data)
         except Exception:
             name = folder.split('/')[-1]
-            print('< ' + name + ' > do not exist')
+            error_msg('< ' + name + ' > do not exist')
             description = {
                 "name": name
             }
