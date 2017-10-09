@@ -80,7 +80,6 @@ class Parse():
     def parse_write(self, data):
         list_or_folder, path, create_folder, override, overrideData = self.parse_settings
         anime_name = normalize_name(data['name'])
-        # parse, anime_name, path, create_folder, override, list_or_folder='list', overrideData=[]):
         try:
             def creating_file(overrideData=[]):
                 from src.createFile import CreateFile
@@ -111,8 +110,7 @@ class Parse():
                             new_data[item] = data.get(item, '')
 
                     data = new_data
-
-                    creating_file(overrideData)
+                creating_file(overrideData)
 
             else:
 
