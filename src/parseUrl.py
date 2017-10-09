@@ -113,7 +113,7 @@ class AnbientParse():
                 if searching:
                     print('\tTrying to find the anime < {} > '.format(anime))
 
-                    from findAnime import FindAnime
+                    from src.findAnime import FindAnime
 
                     animes_names = self.names_to_try(anime)
 

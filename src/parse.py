@@ -60,7 +60,6 @@ class Parse():
             "ova": anime_lib.knew_anime(anime_name, self.know_animes['ovas']),
             "movie": anime_lib.knew_anime(anime_name, self.know_animes['movies']),
         }
-
         if knew_anime['anime']:
             data = parse_url.execute_parse('punchsub', knew_anime['anime'])
             if not data:
@@ -72,6 +71,9 @@ class Parse():
 
         elif knew_anime['movie']:
             pass
+
+        else:
+            data = parse_url.execute_parse('anbient', {'name': anime_name})
 
         return data
 
