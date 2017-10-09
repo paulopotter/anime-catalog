@@ -47,9 +47,16 @@ O comando `python run.py` possui os seguintes argumentos:
     - `--just_with`: Se usado, apenas os animes começados com a letra selecionada serão parseados.
       - _Nota:_ Parse começa a partir da letra **a** e termina no número **9**. [a-z0-9]
 
+
+
++=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
+
+O comando `make` possui os seguintes comandos:
+
 - `cataloguer`: _utilizado para criar o arquivo com todos as info dos animes_. Esse argumento possui os seguintes parametros:
 
-    - `--folder_name <nome da folder>`: nome da folder onde estao todos os animes. Default=Animes
+    - `folder=<nome da folder>`: nome da folder onde estao todos os animes. Default=Animes
+
 
 ## Exemplos de uso: ##
 
@@ -129,5 +136,5 @@ O comando `python run.py` possui os seguintes argumentos:
       - Cria o catalogo com os dados que estao na pasta _Animes/_
 
     ```
-        python run.py cataloguer --folder_name "Animes/"
+        make cataloguer folder="Animes/"
     ```
