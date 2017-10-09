@@ -68,5 +68,5 @@ class PunchLib():
             "quality": value[5],
             "season": value[3] or "Primeira temporada",
             "totalEpisodes": value[6],
-            "genres": value[4]
+            "genres": [value[4]]
         }
