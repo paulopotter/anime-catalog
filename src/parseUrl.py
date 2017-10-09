@@ -40,7 +40,7 @@ class ParseUrl():
                 "description": anbient_parse.parse_description(parser),
                 "totalEpisodes": anbient_parse.parse_total_ep(parser),
                 "genre": anbient_parse.parse_genres(parser),
-                "img": anbient_parse.parse_image(parser)
+                "img_url": anbient_parse.parse_image(parser)
             }
         return data
 
