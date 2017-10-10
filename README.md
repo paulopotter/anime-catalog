@@ -38,9 +38,9 @@ _utilizado para baixar as descrições dos animes_.
 
 - `make parse_list`: Utiliza uma lista txt com o nome de cada anime por linha. Parâmetros:
 
-  - `file='<nome do arquivo.txt>'`: utilizado para dizer qual arquivo será lido. Default='./list.txt' **OBRIGATÓRIO**
+  - `file='<nome do arquivo.txt>'`: utilizado para dizer qual arquivo será lido. **OBRIGATÓRIO**
 
-  - `folder='<path>'`: Caminho da pasta onde ficam/ficaram os animes. Default='./' **OBRIGATÓRIO**
+  - `folder='<path>'`: Caminho da pasta onde ficam/ficaram os animes. **OBRIGATÓRIO**
 
   - `create_folder`: Se usado, irá criar as pastas com o nome dos animes. Default=False. _Opcional_
   
@@ -48,7 +48,7 @@ _utilizado para baixar as descrições dos animes_.
   
 - `make parse_folder`: Utiliza todas as subpastas de uma pasta específica será utilizada como nome dos animes. Parâmetros:
 
-  - `folder='<path>'`: Caminho da pasta onde ficam/ficaram os animes. Default='./' **OBRIGATÓRIO**
+  - `folder='<path>'`: Caminho da pasta onde ficam/ficaram os animes. **OBRIGATÓRIO**
 
 
 
