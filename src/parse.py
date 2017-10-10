@@ -1,7 +1,7 @@
 import io
 import requests
 
-from src.msg import warning_msg, simple_msg
+from src.msg import warning_msg, simple_msg, error_msg
 from src.utils import get_configs, normalize_name
 from src.animes import Anime
 from src.parseUrl import ParseUrl
