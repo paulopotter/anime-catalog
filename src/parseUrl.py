@@ -132,7 +132,7 @@ class AnbientParse():
                                 i = 0
                                 print("")
                                 for search_keys, search_options in search.items():
-                                    simple_msg('\t[ {} ]:', 'green', '{}'.format(i, search_keys), tab=True)
+                                    simple_msg('\t[ {} ]:'.format(i), 'green', '{}'.format(search_keys), tab=True)
                                     i += 1
 
                                 simple_msg('\tAny another number:', 'yellow', 'Cancel choice', True)
