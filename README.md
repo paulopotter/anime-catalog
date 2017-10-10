@@ -64,7 +64,7 @@ Parâmetros **opcionais** que podem ser utilizados nos comandos anteriores:
   - _Nota:_ Parse começa a partir da letra **a** e termina no número **9**. [a-z0-9]
 
 
-### cataloguer ###: 
+### cataloguer: ###
 _utilizado para criar o arquivo com todos as info dos animes_. 
 
 
