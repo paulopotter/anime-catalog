@@ -1,5 +1,5 @@
 setup:
-	pip install -r requirements.txt
+	@pip install -r requirements.txt
 
 clean:
 	@echo "Cleaning up build, *.pyc and docs files..."
@@ -7,3 +7,15 @@ clean:
 
 cataloguer:
 	@python run.py cataloguer --folder_name $(folder)
+
+parse_file:
+	@python run.py parse --file $(file) --path $(folder)
+
+parse_file_update:
+	@python run.py parse --file $(file) --path $(folder) --override $(filter-out $@,$(MAKECMDGOALS))
+
+parse_folder:
+	@python run.py parse --list_type 'folder' --path $(folder)
+
+parse_folder_update:
+	@python run.py parse --list_type 'folder' --path $(folder) --override $(filter-out $@,$(MAKECMDGOALS))

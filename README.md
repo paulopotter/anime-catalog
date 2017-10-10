@@ -19,8 +19,8 @@ cria um arquivo _js_ lido por um _html_ formatado.
 
   ```
 2. Com a virtualenv levantada rode o comando `make setup`
-3. rode o comando `python run.py parse` com os parametros necessarios.
-4. rode o comando `python run.py cataloguer` com os parametros necessarios.
+3. rode o comando `make parse_file` ou `make parse_folder` com os parametros necessarios.
+4. rode o comando `make cataloguer` com os parametros necessarios.
 5. Abra o arquivo **catalogo.html** e visualize o seu catalogo.
 
 Nota: Se tiver algum animes que não foi encontrado, o nome do mesmo estará no arquivo *not-found.log*.
@@ -30,32 +30,37 @@ Nota[2]: Se quiser excluir uma ou mais folders, abra o arquivo *config.yaml* e a
 
 ## Comandos: ##
 
-O comando `python run.py` possui os seguintes argumentos:
-
-- `parse`: _utilizado para baixar as descrições dos animes_. Esse argumento possui os seguintes parametros:
-
-    - `--list_type "<list||folder>"`: utilizado para saber de onde virá a fonte de dados com os nomes dos animes.
-        - **list**_(default)_: uma lista txt com o nome de cada anime por linha
-        - **folder**: todas as subpastas de uma pasta específica será utilizada como nome dos animes
-    - `--file '<nome do arquivo.txt>'`: utilizado para dizer qual arquivo será lido, necessário apenas quando o --list_type for list. Default='list.txt'
-    - `--path '<path>'`: path da pasta onde ficam/ficaram os animes. Default='./'
-    - `--override`: Se usado, irá sobreescrever as infos dos animes (descriação e thumb). Default=False.
-    - `--create_folder`: Se usado, irá criar as pastas com o nome dos animes. Default=False.
-    - `--only`: Se usado irá fazer o update da chave passada (Ex.: description). Obrigatorio o uso do _--override_. Para cada chave nova, o comando deverá ser repetido.
-    - `--starts_with`: Se usado, começará a parsear os animes a partir da letra selecinada.
-    - `--ends_with`: Usado para delimitar até que letra será parseados. Obrigatório o uso do _--starts_with_
-    - `--just_with`: Se usado, apenas os animes começados com a letra selecionada serão parseados.
-      - _Nota:_ Parse começa a partir da letra **a** e termina no número **9**. [a-z0-9]
-
-
-
-+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-
 O comando `make` possui os seguintes comandos:
 
-- `cataloguer`: _utilizado para criar o arquivo com todos as info dos animes_. Esse argumento possui os seguintes parametros:
+`parse`: _utilizado para baixar as descrições dos animes_. 
 
-    - `folder=<nome da folder>`: nome da folder onde estao todos os animes. Default=Animes
+- make parse_**list**: Utiliza uma lista txt com o nome de cada anime por linha. Parâmetros:
+
+  - `file='<nome do arquivo.txt>'`: utilizado para dizer qual arquivo será lido. Default='./list.txt' **OBRIGATÓRIO**
+
+  - `folder='<path>'`: Caminho da pasta onde ficam/ficaram os animes. Default='./' **OBRIGATÓRIO**
+
+  - `create_folder`: Se usado, irá criar as pastas com o nome dos animes. Default=False. _Opcional_
+  
+- make parse_**folder**: Utiliza todas as subpastas de uma pasta específica será utilizada como nome dos animes. Parâmetros:
+
+  - `folder='<path>'`: Caminho da pasta onde ficam/ficaram os animes. Default='./' **OBRIGATÓRIO**
+
+- Se acrescentar o **_update** no final dos comandos anteriores (parse_file_update, parse_folder_update ) ele irá executar um update nas informações que já existem. Parâmetro:
+
+  - `only=<campo para ser atualizado>`: Se usado irá fazer o update da chave passada (Ex.: description). Para cada chave nova, o comando deverá ser repetido. _Opcional_
+
+
+Parâmetros **opcionais** que podem ser utilizados nos comandos anteriores:
+- `starts_with`: Se usado, começará a parsear os animes a partir da letra selecinada.
+- `ends_with`: Usado para delimitar até que letra será parseados. Obrigatório o uso do _starts_with_
+- `just_with`: Se usado, apenas os animes começados com a letra selecionada serão parseados.
+  - _Nota:_ Parse começa a partir da letra **a** e termina no número **9**. [a-z0-9]
+
+
+- make `cataloguer`: _utilizado para criar o arquivo com todos as info dos animes_. Esse argumento possui os seguintes parametros:
+
+  - `folder=<nome da folder>`: nome da folder onde estao todos os animes. Default=Animes
 
 
 ## Exemplos de uso: ##
@@ -69,7 +74,7 @@ O comando `make` possui os seguintes comandos:
       - **Não** substituirá tudo dos arquivos.
 
     ```
-        python run.py parse --file 'arquivo.txt' --path '../Animes/'
+        make parse_file file='arquivo.txt' folder='../Animes/'
     ```
 
     1.2. Parse com update:
@@ -79,7 +84,7 @@ O comando `make` possui os seguintes comandos:
       - Substituirá apenas os nomes e descrições dos arquivos.
 
     ```
-        python run.py parse --file 'arquivo.txt' --path '../Animes/' --create_folder --override --only 'name' --only 'description'
+        make parse_file_update file='arquivo.txt' folder='../Animes/' create_folder only='name' only='description'
     ```
 
     1.3. Parse com sobreescrita:
@@ -89,7 +94,7 @@ O comando `make` possui os seguintes comandos:
       - Substituirá tudo dos arquivos.
 
     ```
-        python run.py parse --file 'arquivo.txt' --path '../Animes/' --create_folder --override
+        make parse_file_update file='arquivo.txt' folder='../Animes/' create_folder
     ```
 
     1.4. Parse com sobreescrita:
@@ -98,7 +103,7 @@ O comando `make` possui os seguintes comandos:
       - Substituirá apenas os nomes, descrições e generos dos arquivos.
 
     ```
-      python run.py parse --list_type 'folder' --path '../Animes/' --override --only 'name' --only 'description' --only 'genre'
+      make parse_folder_update folder='../Animes/' only='name' only='description' only='genre'
     ```
 
     1.5. Parse inciado a partir de uma letra:
@@ -107,7 +112,7 @@ O comando `make` possui os seguintes comandos:
       - Começará a partir da letra selecionada.
 
     ```
-      python run.py parse --list_type 'folder' --path '../Animes/' --starts_with f
+      make parse_folder folder='../Animes/' starts_with=f
     ```
 
     1.6. Parse inciado a partir de uma letra e terminada em outra:
@@ -117,7 +122,7 @@ O comando `make` possui os seguintes comandos:
       - Terminará na letra selecionada.
 
     ```
-      python run.py parse --list_type 'folder' --path '../Animes/' --starts_with d --ends_with k
+      make parse_folder folder='../Animes/' starts_with=c ends_with=k
     ```
 
     1.7. Parse apenas de uma letra:
@@ -126,7 +131,7 @@ O comando `make` possui os seguintes comandos:
       - Começará e terminará na letra selecionada.
 
     ```
-      python run.py parse --list_type 'folder' --path '../Animes/' --just_with p
+      make parse_folder folder='../Animes/' just_with=p
     ```
 
 2. Cataloguer
