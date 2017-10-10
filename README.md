@@ -70,7 +70,7 @@ _utilizado para criar o arquivo com todos as info dos animes_.
 
 - `make cataloguer`:
 
-  - `folder=<nome da folder>`: nome da folder onde estao todos os animes. Default=Animes
+  - `folder=<nome da folder>`: nome da folder onde estao todos os animes. **Obrigatório**
 
 
 ## Exemplos de uso: ##
