@@ -32,9 +32,11 @@ Nota[2]: Se quiser excluir uma ou mais folders, abra o arquivo *config.yaml* e a
 
 O comando **make** possui os seguintes comandos:
 
-**parse**: _utilizado para baixar as descrições dos animes_. 
+### parse: ### 
+_utilizado para baixar as descrições dos animes_. 
 
-- `make parse_**list**`: Utiliza uma lista txt com o nome de cada anime por linha. Parâmetros:
+
+- `make parse_list`: Utiliza uma lista txt com o nome de cada anime por linha. Parâmetros:
 
   - `file='<nome do arquivo.txt>'`: utilizado para dizer qual arquivo será lido. Default='./list.txt' **OBRIGATÓRIO**
 
@@ -42,9 +44,13 @@ O comando **make** possui os seguintes comandos:
 
   - `create_folder`: Se usado, irá criar as pastas com o nome dos animes. Default=False. _Opcional_
   
-- `make parse_**folder**`: Utiliza todas as subpastas de uma pasta específica será utilizada como nome dos animes. Parâmetros:
+  
+  
+- `make parse_folder`: Utiliza todas as subpastas de uma pasta específica será utilizada como nome dos animes. Parâmetros:
 
   - `folder='<path>'`: Caminho da pasta onde ficam/ficaram os animes. Default='./' **OBRIGATÓRIO**
+
+
 
 - Se acrescentar o **_update** no final dos comandos anteriores (parse_file_update, parse_folder_update ) ele irá executar um update nas informações que já existem. Parâmetro:
 
@@ -58,7 +64,9 @@ Parâmetros **opcionais** que podem ser utilizados nos comandos anteriores:
   - _Nota:_ Parse começa a partir da letra **a** e termina no número **9**. [a-z0-9]
 
 
-**cataloguer**`: _utilizado para criar o arquivo com todos as info dos animes_. 
+### cataloguer ###: 
+_utilizado para criar o arquivo com todos as info dos animes_. 
+
 
 - `make cataloguer`:
 
