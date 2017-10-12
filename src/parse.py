@@ -24,9 +24,7 @@ class Parse():
         skipped = 0
 
         for anime_name in anime_list:
-            anime_name = normalize_name(anime_name)
-
-            if anime_name not in self.config.get('exclude', ''):
+            if normalize_name(anime_name) not in self.config.get('exclude', ''):
                 total += 1
                 simple_msg('\n- {}:'.format(anime_name))
                 success, fail = self.parse_anime(anime_name, success, fail)
@@ -39,18 +37,17 @@ class Parse():
         simple_msg("Skipped:", 'yellow', skipped)
 
     def parse_anime(self, anime_name, success, fail):
-
-        parse = self.parse_by_host(anime_name)
+        parse = self.parse_by_host(normalize_name(anime_name))
 
         if parse:
-            self.parse_write(parse)
+            self.parse_write(parse, anime_name)
             success = success + 1
 
         else:
             fail = fail + 1
             with io.open('not-found.log', 'a+', encoding='utf-8') as log:
                 msg = u'< {} > not found!\n'.format(anime_name)
-                warning_msg(msg)
+                warning_msg(msg, True)
                 log.write(msg)
 
         return success, fail
@@ -81,13 +78,14 @@ class Parse():
 
         return data
 
-    def parse_write(self, data):
+    def parse_write(self, data, anime_dir):
         list_or_folder, path, create_folder, override, overrideData = self.parse_settings
+        full_path = path + anime_dir
         anime_name = normalize_name(data['name'])
+
         try:
             def creating_file(overrideData=[]):
                 from src.createFile import CreateFile
-
                 create_file = CreateFile()
                 create_file.create_json_file(data,
                                              folder_name=full_path,
@@ -96,11 +94,8 @@ class Parse():
 
             def getting_img(url_img, path):
                 with open(path + '/thumb.png', 'wb') as thumb:
-                    bla = requests.get(url_img)
-                    thumb.write(bla.content)
-
-            anime_dir = anime_name
-            full_path = path + anime_dir
+                    req = requests.get(url_img)
+                    thumb.write(req.content)
 
             if override:
                 if overrideData:
@@ -121,14 +116,14 @@ class Parse():
                 import os
 
                 try:
-                    if 'description.json' in os.listdir(path + anime_dir):
+                    if 'description.json' in os.listdir(full_path):
                         warning_msg('< description.json > Alread exists!', True)
                     else:
                         creating_file()
                 except OSError:
                     creating_file()
                 try:
-                    if 'thumb.png' in os.listdir(path + anime_dir):
+                    if 'thumb.png' in os.listdir(full_path):
                         warning_msg('< thumb.png > Alread exists!', True)
                     else:
                         getting_img(data['img_url'], full_path)
