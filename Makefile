@@ -19,3 +19,6 @@ parse_folder:
 
 parse_folder_update:
 	@python run.py parse --list_type 'folder' --path $(folder) --override $(filter-out $@,$(MAKECMDGOALS))
+
+rename:
+	@python run.py rename --folder_name $(folder)

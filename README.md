@@ -73,6 +73,15 @@ _utilizado para criar o arquivo com todos as info dos animes_.
   - `folder=<nome da folder>`: nome da folder onde estao todos os animes. **Obrigatório**
 
 
+### rename: ###
+_utilizado para renomear as pastas de animes_. 
+
+
+- `make rename`:
+
+  - `folder=<nome da folder>`: nome da folder onde estao todos os animes. **Obrigatório**
+
+
 ## Exemplos de uso: ##
 
 1. Parse
@@ -152,4 +161,14 @@ _utilizado para criar o arquivo com todos as info dos animes_.
 
     ```
         make cataloguer folder="Animes/"
+    ```
+
+3. Rename
+
+    2.1. Simples
+
+      - Renomeia todas as pastas da pasta _Animes/_ pra ficar apenas com a primeira letra maiuscula.
+
+    ```
+        make rename folder="Animes/"
     ```
