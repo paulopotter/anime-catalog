@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from slugify import slugify
 
 from src.msg import error_msg, simple_msg, info_msg
-from src.utils import get_configs
+from src.utils import get_configs, names_to_try
 
 
 class ParseUrl():
@@ -116,7 +116,7 @@ class AnbientParse():
 
                     from src.findAnime import FindAnime
 
-                    animes_names = self.names_to_try(anime)
+                    animes_names = names_to_try(anime)
 
                     for anime_name in animes_names:
                         search = FindAnime(anime_name).parse_search()
@@ -150,15 +150,6 @@ class AnbientParse():
         else:
             return parse
 
-    def names_to_try(self, original_anime_name):
-        animes_names = [original_anime_name]
-
-        if "-and-" in original_anime_name:
-            animes_names.append(original_anime_name.replace("-and-", "-e-"))
-            animes_names.append(original_anime_name.replace("-and-", "-"))
-
-        return animes_names
-
 
 class PunchParser():
     def __init__(self):
@@ -175,7 +166,6 @@ class PunchParser():
         uri = '/listar/{}/episodios/{}'.format(anime['id'], anime['quality'])
         page = self.getPage(self.host + uri)
 
-        # import ipdb; ipdb.set_trace()
         return {
             "name": anime['name'],
             "description": page['p'][6],
