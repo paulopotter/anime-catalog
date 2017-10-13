@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 from slugify import slugify
 
-from src.msg import simple_msg
+# from src.msg import simple_msg
 from src.utils import get_configs, normalize_name
 
 
@@ -18,7 +18,7 @@ class FindAnime():
         host = config['host']['anbient'] + '/'
         uri = 'search?search_api_views_fulltext=' + anime_name
         url = host + uri
-        simple_msg(url, 'white', tab=True)
+        # simple_msg(url, 'white', tab=True)
         self.tree = self.beautifulSoup_page(url)
 
     def getPage(self, url):

@@ -51,8 +51,6 @@ class AnbientParse():
     def __init__(self):
         self.config = get_configs()
         self.host = self.config['host']['anbient']
-        # url = host + uri
-        # self.tree = self.beautifulSoup_page(url)
 
     def getPage(self, url):
         request_get = requests.get(url)
@@ -104,7 +102,7 @@ class AnbientParse():
         host = self.host
         parse = self.beautifulSoup_page(host + uris[0] + anime)
 
-        simple_msg('{}{}{}'.format(host, uris[0], anime), tab=True)
+        # simple_msg('{}{}{}'.format(host, uris[0], anime), tab=True)
         if (self.parse_name(parse)).strip() in [u'A página não foi encontrada', 'Animes']:
             if len(uris[1::]) > 0:
                 return self.try_parse(host, uris[1::], anime)
@@ -122,7 +120,7 @@ class AnbientParse():
                         search = FindAnime(anime_name).parse_search()
 
                         if search:
-                            info_msg(str(search), True)
+                            # info_msg(str(search), True)
 
                             if search.get(slugify(anime), False):
                                 anime_name = search.get(slugify(anime), anime)
@@ -139,7 +137,7 @@ class AnbientParse():
                                 choice = prompt.integer(prompt="\t\tPlease enter a number: ")
 
                                 keys_in_list = list(search.keys())
-                                if choice == 99 or choice >= len(search):
+                                if choice >= len(search):
                                     return False
 
                                 anime_name = search[keys_in_list[choice]]
