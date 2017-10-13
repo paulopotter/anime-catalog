@@ -61,19 +61,15 @@ class Parse():
             "ova": anime_lib.knew_anime(anime_name, self.know_animes['ovas']),
             "movie": anime_lib.knew_anime(anime_name, self.know_animes['movies']),
         }
-        if knew_anime['anime']:
-            data = parse_url.execute_parse('punchsub', knew_anime['anime'])
-            if not data:
-                for host in self.config['host']:
-                    data.update(parse_url.execute_parse(host, knew_anime['anime']))
 
-        elif knew_anime['ova']:
-            pass
+        for key in knew_anime:
+            if knew_anime[key]:
+                data = parse_url.execute_parse('punchsub', knew_anime[key])
+                if not data:
+                    for host in self.config['host']:
+                        data.update(parse_url.execute_parse(host, knew_anime[key]))
 
-        elif knew_anime['movie']:
-            pass
-
-        else:
+        if not data:
             data = parse_url.execute_parse('anbient', {'name': anime_name})
 
         return data
