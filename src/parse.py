@@ -64,7 +64,7 @@ class Parse():
 
         for key in knew_anime:
             if knew_anime[key]:
-                data = parse_url.execute_parse('punchsub', knew_anime[key])
+                data = parse_url.execute_parse('punchsub', knew_anime[key], key)
                 if not data:
                     for host in self.config['host']:
                         data.update(parse_url.execute_parse(host, knew_anime[key]))

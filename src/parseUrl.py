@@ -13,19 +13,19 @@ class ParseUrl():
     def __init__(self):
         self.config = get_configs()
 
-    def execute_parse(self, host, anime):
+    def execute_parse(self, host, anime, type_of_anime=''):
 
         if host == 'punchsub':
-            return self.parse_punch(host, anime)
+            return self.parse_punch(host, anime, type_of_anime)
 
         elif host == 'anbient':
             return self.parse_anbient(host, anime['name'])
 
         return {}
 
-    def parse_punch(self, host, anime):
+    def parse_punch(self, host, anime, type_of_anime):
         punchsub_parser = PunchParser()
-        parser = punchsub_parser.parser(anime)
+        parser = punchsub_parser.parser(anime, type_of_anime)
 
         return parser
 
@@ -160,8 +160,10 @@ class PunchParser():
 
         return requests_response
 
-    def parser(self, anime):
-        uri = '/listar/{}/episodios/{}'.format(anime['id'], anime['quality'])
+    def parser(self, anime, type_of_anime):
+        config = {'anime': 'episodios', 'ova': 'ovas', 'movies': 'filmes'}
+        type_of_anime = config.get(type_of_anime, type_of_anime)
+        uri = '/listar/{}/{}/{}'.format(anime['id'], type_of_anime, anime['quality'])
         page = self.getPage(self.host + uri)
 
         return {
