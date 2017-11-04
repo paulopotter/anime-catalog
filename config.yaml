@@ -6,7 +6,7 @@ host:
 
 uris:
   anbient: ['/animes/', '/tv/', '/TV/', '/anime/', '/ova/']
-  punchsub: ["/lista-de-animes", "/lista-de-filmes", "/lista-de-ovas"]
+  punchsub: ["/lista-de-animes", "/lista-de-ovas", "/lista-de-filmes"]
 
 
 exclude: []
