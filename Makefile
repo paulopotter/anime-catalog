@@ -46,6 +46,7 @@ help: ## Show this help message.
 
 
 setup: ##@Setup Instala as dependencias do projeto.
+
 	@pip install -r requirements.txt
 
 clean: ##@Setup Remove pyc e __pycache__.

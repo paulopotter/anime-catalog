@@ -23,11 +23,16 @@ def cataloguer(folder_name, description_file):
 
 
 def parse(list_type, file, path, create_folder, override, only, starts_with, ends_with, just_with):
+
+    print(list_type, file, path, create_folder, override, only, starts_with, ends_with, just_with)
+    print("=" * 29)
     if list_type == '' or file == '':
         error_msg('list type or file/path is empty')
         return False
 
     anime_list = []
+
+    path = path + '/' if path and path[-1] != '/' else path
     if list_type == 'list':
         with io.open(file, 'r', encoding='utf-8') as f:
             for anime in f.readlines():
@@ -116,5 +121,4 @@ if __name__ == "__main__":
     else:
         # # get a subset of the dictionary containing just the arguments of func
         args_for_func = {k: getattr(args, k) for k in arg_spec.args}
-
     args.func(**args_for_func)
