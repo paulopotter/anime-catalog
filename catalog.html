@@ -10,7 +10,7 @@
                 list-style: none;
             }
             body {
-                background-color: rgba(224, 241, 249, 0.5);
+                background-color: rgb(26, 38, 44);
                 font-family: sans-serif;
             }
             #wrapper {
@@ -242,8 +242,10 @@
             }
             .anime-list {
                 display: flex;
-                width: 100%;
+                width: calc(100% - 100px);
                 flex-wrap: wrap;
+                justify-content: flex-start;
+                margin-left: 100px;
             }
             .anime-item {
                 display: block;
