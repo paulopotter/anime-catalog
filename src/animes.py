@@ -7,9 +7,7 @@ from src.utils import names_to_try
 class AnimeLib():
     def __init__(self):
         self.data = {
-            "animes": PunchLib("animes").full_list,
-            "ovas": PunchLib("ovas").full_list,
-            "movies": PunchLib("movies").full_list,
+            "animes": PunchLib("animes").full_list
         }
 
 

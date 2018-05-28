@@ -57,9 +57,7 @@ class Parse():
         anime_lib = Anime()
         parse_url = ParseUrl()
         knew_anime = {
-            "anime": anime_lib.knew_anime(anime_name, self.know_animes['animes']),
-            "ova": anime_lib.knew_anime(anime_name, self.know_animes['ovas']),
-            "movie": anime_lib.knew_anime(anime_name, self.know_animes['movies']),
+            "anime": anime_lib.knew_anime(anime_name, self.know_animes['animes'])
         }
 
         for key in knew_anime:
