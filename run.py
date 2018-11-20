@@ -1,15 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- #
 
-import io
 import os
 import argparse
 import inspect
 
 from src.msg import error_msg, info_msg
-from src.animes import AnimeLib
-from src.parse import Parse
 from src.utils import normalize_name
+
+from src.parser.parser import Parser
 
 
 def cataloguer(folder_name, description_file):
@@ -22,54 +21,10 @@ def cataloguer(folder_name, description_file):
     create_file.create_js_file(data)
 
 
-def parse(list_type, file, path, create_folder, override, only, starts_with, ends_with, just_with):
-
-    if list_type == '' or file == '':
-        error_msg('list type or file/path is empty')
-        return False
-
-    anime_list = []
-
-    path = path + '/' if path and path[-1] != '/' else path
-    if list_type == 'list':
-        with io.open(file, 'r', encoding='utf-8') as f:
-            for anime in f.readlines():
-                anime_name = anime.split('/', 4)[-1][:-1]
-                anime_list.append(anime_name)
-
-    elif list_type == 'folder':
-        from src.cataloguer import Cataloguer
-
-        cataloguer = Cataloguer(path, 'dummy')
-        anime_list = cataloguer.get_all_folders(path)
-
-    else:
-        error_msg('unrecognized list type. Please use < list > or < folder >')
-        return False
-
-    parse_settings = [list_type, path, create_folder, override, only]
-    anime_list = search_limit(anime_list, starts_with, ends_with, just_with)
-    know_animes = AnimeLib().data
-
-    Parse(anime_list, know_animes, parse_settings)
-
-
-def search_limit(anime_list, starts_with, ends_with, just_with):
-    if starts_with or (starts_with and ends_with) or just_with:
-        if just_with:
-            starts_with = just_with
-            ends_with = just_with
-
-        anime_list = sorted(anime_list)
-        alphanumeric = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
-        starts_index = alphanumeric.index(starts_with)
-        ends_index = alphanumeric.index(ends_with or "9")
-
-        for word in anime_list[:]:
-            if not word.lower().startswith(tuple(alphanumeric[starts_index:ends_index + 1])):
-                anime_list.remove(word)
-
-    return anime_list
+def parse(**kwargs):
+    parser = Parser(**kwargs)
+    anime_list = parser.get_anime_list()
+    parser.do(anime_list)
 
 
 def rename(folder_name):
