@@ -10,7 +10,7 @@
                 list-style: none;
             }
             body {
-                background-color: rgb(26, 38, 44);
+                background-color: #0a1b21;
                 font-family: sans-serif;
             }
             #wrapper {
@@ -242,34 +242,38 @@
             }
             .anime-list {
                 display: flex;
-                width: calc(100% - 100px);
+                width: calc(100% - 200px);
                 flex-wrap: wrap;
                 justify-content: flex-start;
                 margin-left: 100px;
+                margin-right: 100px;
+                flex-wrap: nowrap;
+                overflow-x: auto;
             }
             .anime-item {
                 display: block;
                 width: 200px;
-                height: 295px;
+                height: 370px;
                 overflow: hidden;
                 margin: 5px;
                 cursor: pointer;
+                flex: 0 0 auto;
             }
 
-            .anime-item:hover .name {
-                bottom: 101%;
-                background-color: rgba(235, 235, 235, .5);
-                display: inline-block;
+            .anime-item .name {
+                display: flex;
                 width: 100%;
                 text-align: center;
                 color: #fff;
                 text-shadow: 1px 1px #000;
-                position: absolute;
                 padding: 5px 0;
-                border-top: 1px solid;
                 border-bottom: 1px solid;
+                min-height: 4em;
+                max-height: 5em;
+                align-items: center;
+                justify-content: center;
             }
-            .anime-item:hover .info-title{
+            .anime-item .info-title{
                 display: none;
             }
 
@@ -286,6 +290,7 @@
         <style id="style--catalog-info">
             .show-info {
                 overflow: visible;
+                z-index: 9;
             }
 
             .show-info .plus li {
@@ -303,6 +308,11 @@
                 font-size: 2em;
                 line-height: 1.7rem;
                 padding-top: 10px;
+                display: block;
+                height: auto;
+                min-height: auto;
+                text-align: left;
+                border: none;
             }
 
             .show-info:hover .info-title {
@@ -326,11 +336,11 @@
             .show-info .plus-wrapper {
                 position: absolute;
                 left: 0%;
-                background-color: rgba(0, 0, 0, 0.8);
+                background-color: rgba(0, 0, 0, 0.9);
                 color: #fff;
                 width: 98.4%;
                 padding: 10px;
-                margin-top: 4px;
+                margin-top: 80px;
                 overflow: hidden;
             }
 

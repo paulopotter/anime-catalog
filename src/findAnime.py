@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- #
 
+import re
+import json
+
+
 import requests
 from bs4 import BeautifulSoup
 
@@ -49,25 +53,33 @@ class PunchLib():
         self.full_list = self.format_full_list(position[list_type])
 
     def get_full_list(self, position):
-        url = self.host + self.config['uris']['punchsub'][position]
+        url = 'https://punchsubs.net/buscar-projeto/anime'
         request_get = requests.get(url)
-        return request_get.json()
+        content = request_get.content
+        bs = BeautifulSoup(content, 'html.parser')
+        pattern = re.compile("var values = \[.*?\]\;")
+        values = pattern.findall(bs.text)[0]
+        value = values.split('var values = ')[1].rsplit(';', 1)
+        the_list = json.loads(json.loads(json.dumps(value))[0])
+        return the_list
 
     def format_full_list(self, position):
         full_list = self.get_full_list(position)
         new_full_list = {}
         for anime in full_list:
-            new_full_list.setdefault(anime[2].upper(), []).append(self._list_2_dict(anime))
+            new_full_list.setdefault(anime['titulo'].upper(), []).append(self._list_2_dict(anime))
 
         return new_full_list
 
     def _list_2_dict(self, value):
-        name = normalize_name(value[1])
+        name = normalize_name(value['titulo'])
         return {
             "name": name,
-            "id": value[0],
-            "quality": value[5],
-            "season": value[3] or "Primeira temporada",
-            "totalEpisodes": value[6],
-            "genres": [value[4]]
+            # "id": value[0],
+            # "quality": value[5],
+            "season": "Primeira temporada",
+            "totalEpisodes": value['sinopse'],
+            "genres": [value['genero']],
+            "link": value['link'],
+            "imagem": value['imagem']
         }

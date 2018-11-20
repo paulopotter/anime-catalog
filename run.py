@@ -24,8 +24,6 @@ def cataloguer(folder_name, description_file):
 
 def parse(list_type, file, path, create_folder, override, only, starts_with, ends_with, just_with):
 
-    print(list_type, file, path, create_folder, override, only, starts_with, ends_with, just_with)
-    print("=" * 29)
     if list_type == '' or file == '':
         error_msg('list type or file/path is empty')
         return False
