@@ -5,15 +5,15 @@ import os
 import argparse
 import inspect
 
-from src.msg import error_msg, info_msg
-from src.utils import normalize_name
+from src.model.msg import error_msg, info_msg
+from src.model.utils import normalize_name
 
-from src.parser.parser import Parser
+from src.model.parser.parser import Parser
 
 
 def cataloguer(folder_name, description_file):
-    from src.cataloguer import Cataloguer
-    from src.createFile import CreateFile
+    from src.model.cataloguer import Cataloguer
+    from src.model.createFile import CreateFile
 
     cataloguer = Cataloguer(folder_name, description_file)
     create_file = CreateFile()
