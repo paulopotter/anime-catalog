@@ -1,0 +1,74 @@
+#header {
+    background-color: rgba(0, 0, 0, 0.27);
+    height: 40vh;
+    border-bottom: 3px solid black;
+    display: flex;
+    padding: 2%;
+    height: fit-content;
+}
+
+#header__poster {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+#header__info {
+    color: #777;
+    width: 70%;
+    margin-left: 8%;
+}
+
+.header__info--name {
+    font-size: 2.5em;
+    color: #fff;
+}
+
+.header__info--description {
+    font-size: 1.3em;
+    padding: 5px 0;
+    font-style: italic;
+    letter-spacing: 0.2px;
+    color: #bbb;
+}
+
+.header__info--season {
+    /* width: 30%; */
+}
+
+tr:nth-of-type(3n) td {
+    display: inline-block;
+    width: 30%;
+}
+
+.header__info--obs {
+    display: none;
+}
+
+tr {
+    margin: 10px;
+    display: block;
+}
+
+
+#catalog {
+    margin: 4% 5%;
+    display: flex;
+    overflow-x: scroll;
+}
+.catalog__item {
+    margin: 0 3px;
+}
+.catalog__item--object {
+    position: relative;
+}
+
+.catalog__item--name {
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+    right: 0;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.07);
+    border-top: 1px solid;
+    padding: 10px 3px;
+}
