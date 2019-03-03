@@ -1,45 +1,29 @@
-function tmpl_content(arr, dad, dataGroup) {
-    var template = document.getElementById("template_item").innerHTML,
-        el = document.createElement('li');
-    el.className = 'anime-item'
-    el.setAttribute('data-group', dataGroup);
-    el.innerHTML = template;
+const tmp = (image, name, dIndex, dPosition) => {
+    const dad = document.getElementById('catalog');
 
-    for (var dataKey in arr) {
-        if (el.getElementsByClassName(dataKey).length > 0) {
-            if (arr[dataKey].length <= 0) {
-                var elDataKey = el.getElementsByClassName(dataKey)[0];
-                elDataKey.parentElement.removeChild(elDataKey);
-            } else {
-                if (dataKey == 'genre') {
-                    var value = '';
-                    for (var genreData in arr[dataKey]) {
-                        value += arr[dataKey][genreData] + ', ';
-                        genresNames.push(arr[dataKey][genreData]);
-                    }
-                    value = value.slice(0, -2);
-                } else {
-                    var value = arr[dataKey];
-                }
+    let wrapper = document.createElement('div');
+    wrapper.className = 'catalog__item';
+    wrapper.setAttribute('data-index', dIndex);
+    wrapper.setAttribute('data-position', dPosition);
 
-                el.getElementsByClassName(dataKey)[0].innerHTML += value;
-            }
-        } else {
-            if (dataKey == 'path') {
-                el.getElementsByTagName("object")[0].data = arr.path + '/thumb.png';
-            } else {
-                child = document.createElement('li');
-                child.className = dataKey;
-                child.innerHTML = dataKey + ': ' + arr[dataKey];
-                el.getElementsByClassName('plus')[0].append(child);
-            }
-        }
-    }
-    if (el.getElementsByTagName('object')[0].data == '') {
-        el.getElementsByTagName('object')[0].data = '../Animes/' + toTitleCase(arr['name']) + '/thumb.png';
-    }
 
-    el.id = arr['name'];
+    let picture = document.createElement('picture');
+    picture.className = 'catalog__item--picture';
+    picture.setAttribute('srcset', './src/presentation/static/img/placeholder.gif');
 
-    dad.appendChild(el);
-};
+    wrapper.appendChild(picture);
+
+    let img = document.createElement('img');
+    img.src = image;
+    img.className = 'catalog__item--image';
+
+    picture.appendChild(img);
+
+    let span = document.createElement('span');
+    span.className = "catalog__item--name";
+    span.innerText = name;
+
+    picture.appendChild(span);
+
+    dad.appendChild(wrapper)
+}
