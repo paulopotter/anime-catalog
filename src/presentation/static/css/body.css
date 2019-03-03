@@ -1,10 +1,9 @@
 #header {
     background-color: rgba(0, 0, 0, 0.27);
-    height: 40vh;
+    height: 50vh;
     border-bottom: 3px solid black;
     display: flex;
     padding: 2%;
-    height: fit-content;
 }
 
 #header__poster {
@@ -29,6 +28,9 @@
     font-style: italic;
     letter-spacing: 0.2px;
     color: #bbb;
+    height: 160px;
+    overflow: scroll;
+    display: block;
 }
 
 .header__info--season {
