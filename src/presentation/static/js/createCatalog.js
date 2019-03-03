@@ -12,11 +12,4 @@ for (var key in dataOdering) {
         let name = dataOdering[key][i].name;
         tmp(img, name, key, i)
     }
-
-    // console.log(data[key])
-    // rulerDiv.innerHTML += '<span><a href="#' + key + '">'+ key + '</span></a>';
-    // var el = document.getElementsByClassName('anime-list')[0];
-
-    //     tmpl_content(data[key][i], el, key);
-    // }
 }
