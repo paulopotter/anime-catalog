@@ -4,6 +4,7 @@
     border-bottom: 3px solid black;
     display: flex;
     padding: 2%;
+    overflow: scroll;
 }
 
 #header__poster {
@@ -28,9 +29,6 @@
     font-style: italic;
     letter-spacing: 0.2px;
     color: #bbb;
-    height: 160px;
-    overflow: scroll;
-    display: block;
 }
 
 .header__info--season {
