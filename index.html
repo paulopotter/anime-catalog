@@ -49,6 +49,15 @@
   <script type="text/javascript" src="./src/presentation/static/js/createCatalog.js"></script>
   <script type="text/javascript" src="./src/presentation/static/js/moreInfo.js"></script>
   <script>
-    fillHeader(dataOdering[Object.keys(dataOdering)[0]][0]);
+    if( window.location.hash){
+    let hash = window.location.hash.slugify();
+    let el = document.getElementById(hash);
+      if(el){
+        fillHeader(hash);
+        moveItem(el);
+      }
+    } else {
+      fillHeader(dataOdering[Object.keys(dataOdering)[0]][0].name.slugify());
+    }
   </script>
 </html>
