@@ -35,6 +35,18 @@
     /* width: 30%; */
 }
 
+.header__info--genre span{
+    margin-right: 5px;
+}
+
+.header__info--genre span::after{
+    content: ' -'
+}
+
+.header__info--genre span:last-of-type::after{
+    content: ''
+}
+
 tr:nth-of-type(3n) td {
     display: inline-block;
     width: 30%;

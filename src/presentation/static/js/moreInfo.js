@@ -9,7 +9,10 @@ let fillHeader = (elementId) => {
 
     header.querySelector('img').src = itemImg;
     header.querySelector('.header__info--name').innerText = item.name;
-    header.querySelector('.header__info--genre').innerText = item.genre;
+    header.querySelector('.header__info--genre').innerHTML = '';
+    item.genre.forEach(element => {
+        header.querySelector('.header__info--genre').innerHTML += `<span>${element}</span>`
+    });
     header.querySelector('.header__info--rate').innerText = rate;
     header.querySelector('.header__info--season').innerText = item.season;
     header.querySelector('.header__info--totalEpisodes').innerText = item.totalEpisodes || '';
