@@ -17,7 +17,7 @@ let fillHeader = (elementId) => {
     header.querySelector('.header__info--description').innerText = item.description;
     header.querySelector('.header__info--othersSeasons').innerHTML = '';
     item.othersSeasons.forEach(element => {
-        header.querySelector('.header__info--othersSeasons').innerHTML += `<span>${element}</span>`
+        header.querySelector('.header__info--othersSeasons').innerHTML += `<li>${element}</li>`
     });
     header.querySelector('.header__info--obs').innerText = item.obs || '';
 }
@@ -40,7 +40,9 @@ for (let item of document.querySelectorAll('.catalog__item')) {
 
 document.querySelector('.header__info--othersSeasons')
     .addEventListener('click', (ev) => {
-        let selectedItemName = ev.target.innerText.slugify()
-        moveItem(document.getElementById(selectedItemName));
-        fillHeader(selectedItemName)
+        if (ev.target.innerHTML.indexOf('<li>') == -1) {
+            let selectedItemName = ev.target.innerText.slugify()
+            moveItem(document.getElementById(selectedItemName));
+            fillHeader(selectedItemName)
+        }
     }, false)

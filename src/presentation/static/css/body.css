@@ -24,10 +24,10 @@
 }
 
 .header__info--description {
-    font-size: 1.3em;
+    font-size: 0.9em;
     padding: 5px 0;
     font-style: italic;
-    letter-spacing: 0.2px;
+    letter-spacing: 0.3px;
     color: #bbb;
 }
 
@@ -43,6 +43,26 @@ tr:nth-of-type(3n) td {
 .header__info--obs {
     display: none;
 }
+
+.header__info--othersSeasons{
+    display: flex;
+}
+
+.header__info--othersSeasons li {
+    list-style: disc;
+    list-style-position: outside;
+    margin-right: 25px;
+    cursor: pointer;
+}
+
+.header__info--othersSeasons li:first-of-type {
+    list-style: none;
+}
+
+.header__info--othersSeasons li:last-of-type {
+    margin-right: 0;
+}
+
 
 tr {
     margin: 10px;
