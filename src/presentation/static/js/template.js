@@ -10,13 +10,13 @@ const tmp = (image, name, dIndex, dPosition) => {
 
     let picture = document.createElement('picture');
     picture.className = 'catalog__item--picture';
-    picture.setAttribute('srcset', './src/presentation/static/img/placeholder.gif');
 
     wrapper.appendChild(picture);
 
     let img = document.createElement('img');
     img.src = image;
     img.className = 'catalog__item--image';
+    img.setAttribute('onerror', 'this.src="./src/presentation/static/img/placeholder.gif"');
 
     picture.appendChild(img);
 

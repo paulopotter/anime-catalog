@@ -9,6 +9,7 @@ let fillHeader = (elementId) => {
     for(let i = 0; i<item.rate; i++){ rate += '🤩'; }
 
     header.querySelector('img').src = itemImg;
+    header.querySelector('img').setAttribute('onerror', 'this.src="./src/presentation/static/img/placeholder.gif"');
     header.querySelector('.header__info--name').innerText = item.name;
     header.querySelector('.header__info--genre').innerHTML = '';
     item.genre.forEach(element => {
