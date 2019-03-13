@@ -1,4 +1,5 @@
 let fillHeader = (elementId) => {
+    // let elId = elementId.replace(/anime-/g, '');
     let el = document.querySelector(`#${elementId}`);
     let item = data[el.getAttribute('data-index')][el.getAttribute('data-position')]
     let header = document.getElementById('header');
@@ -30,7 +31,7 @@ const moveItem = (item) => {
         top: 0,
         behavior: 'smooth'
     });
-    history.replaceState('', '', '#' + item.innerText.slugify())
+    history.replaceState('', '', '#' + item.id)
 }
 
 for (let item of document.querySelectorAll('.catalog__item')) {

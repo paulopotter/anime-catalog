@@ -5,7 +5,7 @@ const tmp = (image, name, dIndex, dPosition) => {
     wrapper.className = 'catalog__item';
     wrapper.setAttribute('data-index', dIndex);
     wrapper.setAttribute('data-position', dPosition);
-    wrapper.id = name.slugify();
+    wrapper.id = `id-${name.slugify()}`;
 
 
     let picture = document.createElement('picture');
