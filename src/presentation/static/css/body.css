@@ -1,25 +1,38 @@
+.body-wrapper {
+    display: flex;
+}
+
 #header {
     background-color: rgba(0, 0, 0, 0.27);
-    height: 50vh;
-    border-bottom: 3px solid black;
     display: flex;
     padding: 2%;
     overflow: scroll;
+    width: 240px;
+    height: 95vh;
+    flex-direction: column;
+    position: absolute;
+    right: 0;
+}
+
+#header:hover {
+    width: 50vw;
+    background: black;
 }
 
 #header__poster {
     display: inline-block;
-    margin-right: 10px;
+    /* margin-right: 10px; */
+    margin: 0 auto;
 }
 
 #header__info {
     color: #777;
-    width: 70%;
-    margin-left: 8%;
+    /* width: 70%;
+    margin-left: 8%; */
 }
 
 .header__info--name {
-    font-size: 2.5em;
+    font-size: 1.5em;
     color: #fff;
 }
 
@@ -49,7 +62,7 @@
 
 tr:nth-of-type(3n) td {
     display: inline-block;
-    width: 30%;
+    /* width: 30%; */
 }
 
 .header__info--obs {
@@ -83,24 +96,28 @@ tr {
 
 
 #catalog {
-    margin: 4% 5%;
+    margin: 15px 0 0 15px;
     display: flex;
-    overflow-x: scroll;
+    overflow-y: scroll;
+    flex-wrap: wrap;
+    height: 95vh;
+    width: calc(100vw - 300px);
 }
 .catalog__item {
-    margin: 0 3px;
+    margin: 5px 3px;
+    display: flex;
 }
 .catalog__item--picture {
     position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .catalog__item--name {
-    position: absolute;
-    left: 0;
-    bottom: 0px;
-    right: 0;
     text-align: center;
     background: rgba(255, 255, 255, 0.9);
     border-top: 1px solid;
     padding: 10px 3px;
+    width: 168px;
+    flex: 1 0 auto;
 }

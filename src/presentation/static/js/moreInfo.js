@@ -28,8 +28,8 @@ let fillHeader = (elementId) => {
 }
 const moveItem = (item) => {
     item.parentElement.scroll({
-        left: item.offsetLeft - 70,
-        top: 0,
+        top: item.offsetTop - 30 - document.defaultView.getComputedStyle(item.parentElement).paddingTop.replace("px", "") ,
+        left: 0,
         behavior: 'smooth'
     });
     history.replaceState('', '', '#' + item.id)
@@ -47,7 +47,7 @@ document.querySelector('.header__info--othersSeasons')
     .addEventListener('click', (ev) => {
         if (ev.target.innerHTML.indexOf('<li>') == -1) {
             let selectedItemName = ev.target.innerText.slugify()
-            moveItem(document.getElementById(selectedItemName));
-            fillHeader(selectedItemName)
+            moveItem(document.getElementById(`id-${selectedItemName}`));
+            fillHeader(`id-${selectedItemName}`)
         }
     }, false)
