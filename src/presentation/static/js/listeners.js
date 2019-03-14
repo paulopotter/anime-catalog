@@ -14,8 +14,10 @@ document.querySelector('.header__info--othersSeasons')
     }, false)
 
 document.getElementById('header')
-    .addEventListener('click', () => {
-        document.getElementById('header').classList.add('header__more-info--open')
+    .addEventListener('click', (evt) => {
+        if(evt.target.nodeName != "LI"){
+            document.getElementById('header').classList.add('header__more-info--open')
+        }
     }, false)
 
 document.getElementById('catalog')
@@ -23,8 +25,6 @@ document.getElementById('catalog')
         document.getElementById('header').classList.remove('header__more-info--open')
     }, false)
 
-
-// document.addEventListener('onkeydown', evt => {
 document.onkeydown = (evt) => {
     evt = evt || window.event;
     const animeItems = document.querySelectorAll('.catalog__item');
