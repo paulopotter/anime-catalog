@@ -52,17 +52,13 @@
   <script type="text/javascript" src="./src/presentation/static/js/moreInfo.js"></script>
   <script type="text/javascript" src="./src/presentation/static/js/listeners.js"></script>
   <script>
-    if( window.location.hash){
+    if( window.location.hash ){
       let hash = window.location.hash.slugify();
       let el = document.getElementById(hash);
-      if(el){
-        fillHeader(hash);
-        moveItemTo(el);
-      }
+      el ? fillWithSelectedItem(el) : null
     } else {
       let elName = `id-${dataOdering[Object.keys(dataOdering)[0]][0].name.slugify()}`
-      fillHeader(elName);
-      moveItemTo(document.getElementById(elName));
+      fillWithSelectedItem(document.getElementById(elName));
     }
   </script>
 </html>

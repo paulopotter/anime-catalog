@@ -1,8 +1,7 @@
 document.querySelectorAll('.catalog__item').forEach(item => {
     item.addEventListener('click', (ev) => {
         let selectedItem = ev.target.parentElement.parentElement;
-        fillHeader(selectedItem.id)
-        moveItemTo(selectedItem);
+        fillWithSelectedItem(selectedItem);
     }, false)
 })
 
@@ -10,8 +9,7 @@ document.querySelector('.header__info--othersSeasons')
     .addEventListener('click', (ev) => {
         if (ev.target.innerHTML.indexOf('<li>') == -1) {
             let selectedItemName = ev.target.innerText.slugify()
-            moveItemTo(document.getElementById(`id-${selectedItemName}`));
-            fillHeader(`id-${selectedItemName}`)
+            fillWithSelectedItem(document.getElementById(`id-${selectedItemName}`));
         }
     }, false)
 
@@ -26,54 +24,52 @@ document.getElementById('catalog')
     }, false)
 
 
-document.onkeydown = function (evt) {
+// document.addEventListener('onkeydown', evt => {
+document.onkeydown = (evt) => {
     evt = evt || window.event;
-    var showInfo = document.querySelector('.catalog__item--selected');
-        // var animeItems = document.querySelectorAll('.catalog__item');
+    const animeItems = document.querySelectorAll('.catalog__item');
+    let showInfo = document.querySelector('.catalog__item--selected');
+
         switch (evt.keyCode) {
-            case 13:
-            // 13 - Enter
+            case 13: // 13 - Enter
                 document.getElementById('header').classList.add('header__more-info--open')
             break;
 
-            case 27:
-            // 27 - ESC
+            case 27: // 27 - ESC
                 document.getElementById('header').classList.remove('header__more-info--open')
             break;
 
-            case 37:
-                // 37 - left
-                moveItemTo(showInfo.previousElementSibling);
-                fillHeader(showInfo.previousElementSibling.id)
-                break;
-            case 39:
-                // 39 - right
-                moveItemTo(showInfo.nextElementSibling);
-                fillHeader(showInfo.nextElementSibling.id)
-                break;
+            case 37: // 37 - left
+                fillWithSelectedItem(showInfo.previousElementSibling);
+            break;
 
-            case 38: //up
-                document.querySelectorAll('.catalog__item').forEach(item => {
+            case 39: // 39 - right
+                fillWithSelectedItem(showInfo.nextElementSibling)
+            break;
+
+            case 38: // up
+                evt.preventDefault()
+                animeItems.forEach(item => {
                     let goal = (showInfo.offsetTop - showInfo.offsetHeight - 10)
-                    let counts = document.querySelectorAll('.catalog__item')
 
                     if (goal > 0 &&
-                        (closest(counts, goal) == item.offsetTop) &&
+                        (closest(animeItems, goal) == item.offsetTop) &&
                         (showInfo.offsetLeft == item.offsetLeft)
                     ) {
-                        moveItemTo(item);
-                        fillHeader(item.id)
+                        fillWithSelectedItem(item);
                     }
                 })
             break;
-            case 40: //Down
-                document.querySelectorAll('.catalog__item').forEach(item => {
+
+            case 40: // Down
+                evt.preventDefault()
+                animeItems.forEach(item => {
+                    let goal = (showInfo.offsetTop + showInfo.offsetHeight + 10)
                     if (
-                        ((showInfo.offsetTop + showInfo.offsetHeight + 10) == item.offsetTop) &&
-                        ((showInfo.offsetLeft ) == item.offsetLeft)
+                        (goal == item.offsetTop) &&
+                        (showInfo.offsetLeft == item.offsetLeft)
                     ) {
-                        moveItemTo(item);
-                        fillHeader(item.id)
+                        fillWithSelectedItem(item);
                     }
                 })
             break;
@@ -89,12 +85,12 @@ function closest(arr, target) {
     if (arr.length == 1)
         return arr[0];
 
-    for (var i = 1; i < arr.length; i++) {
+    for (let i = 1; i < arr.length; i++) {
         // As soon as a number bigger than target is found, return the previous or current
         // number depending on which has smaller difference to the target.
         if (arr[i].offsetTop > target) {
-            var p = arr[i - 1].offsetTop;
-            var c = arr[i].offsetTop
+            let p = arr[i - 1].offsetTop;
+            let c = arr[i].offsetTop
             return Math.abs(p - target) < Math.abs(c - target) ? p : c;
         }
     }

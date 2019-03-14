@@ -1,4 +1,4 @@
-let fillHeader = (elementId) => {
+const fillHeader = (elementId) => {
     // let elId = elementId.replace(/anime-/g, '');
     let el = document.querySelector(`#${elementId}`);
     let item = data[el.getAttribute('data-index')][el.getAttribute('data-position')]
@@ -35,4 +35,9 @@ const moveItemTo = (item) => {
     history.replaceState('', '', '#' + item.id)
     document.querySelector('.catalog__item--selected') ? document.querySelector('.catalog__item--selected').classList.remove('catalog__item--selected') : null;
     item.classList.add('catalog__item--selected')
+}
+
+const fillWithSelectedItem = ( item ) => {
+    moveItemTo(item);
+    fillHeader(item.id)
 }
