@@ -50,18 +50,19 @@
   <script type="text/javascript" src="./src/presentation/static/js/template.js"></script>
   <script type="text/javascript" src="./src/presentation/static/js/createCatalog.js"></script>
   <script type="text/javascript" src="./src/presentation/static/js/moreInfo.js"></script>
+  <script type="text/javascript" src="./src/presentation/static/js/listeners.js"></script>
   <script>
     if( window.location.hash){
       let hash = window.location.hash.slugify();
       let el = document.getElementById(hash);
       if(el){
         fillHeader(hash);
-        moveItem(el);
+        moveItemTo(el);
       }
     } else {
       let elName = `id-${dataOdering[Object.keys(dataOdering)[0]][0].name.slugify()}`
       fillHeader(elName);
-      moveItem(document.getElementById(elName));
+      moveItemTo(document.getElementById(elName));
     }
   </script>
 </html>

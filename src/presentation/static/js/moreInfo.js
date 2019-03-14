@@ -26,7 +26,7 @@ let fillHeader = (elementId) => {
     });
     header.querySelector('.header__info--obs').innerText = item.obs || '';
 }
-const moveItem = (item) => {
+const moveItemTo = (item) => {
     item.parentElement.scroll({
         top: item.offsetTop - 30 - document.defaultView.getComputedStyle(item.parentElement).paddingTop.replace("px", "") ,
         left: 0,
@@ -36,20 +36,3 @@ const moveItem = (item) => {
     document.querySelector('.catalog__item--selected') ? document.querySelector('.catalog__item--selected').classList.remove('catalog__item--selected') : null;
     item.classList.add('catalog__item--selected')
 }
-
-for (let item of document.querySelectorAll('.catalog__item')) {
-    item.addEventListener('click', (ev) => {
-        let selectedItem = ev.target.parentElement.parentElement;
-        fillHeader(selectedItem.id)
-        moveItem(selectedItem);
-    }, false)
-}
-
-document.querySelector('.header__info--othersSeasons')
-    .addEventListener('click', (ev) => {
-        if (ev.target.innerHTML.indexOf('<li>') == -1) {
-            let selectedItemName = ev.target.innerText.slugify()
-            moveItem(document.getElementById(`id-${selectedItemName}`));
-            fillHeader(`id-${selectedItemName}`)
-        }
-    }, false)
