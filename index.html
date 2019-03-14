@@ -52,14 +52,16 @@
   <script type="text/javascript" src="./src/presentation/static/js/moreInfo.js"></script>
   <script>
     if( window.location.hash){
-    let hash = window.location.hash.slugify();
-    let el = document.getElementById(hash);
+      let hash = window.location.hash.slugify();
+      let el = document.getElementById(hash);
       if(el){
         fillHeader(hash);
         moveItem(el);
       }
     } else {
-      fillHeader(`id-${dataOdering[Object.keys(dataOdering)[0]][0].name.slugify()}`);
+      let elName = `id-${dataOdering[Object.keys(dataOdering)[0]][0].name.slugify()}`
+      fillHeader(elName);
+      moveItem(document.getElementById(elName));
     }
   </script>
 </html>

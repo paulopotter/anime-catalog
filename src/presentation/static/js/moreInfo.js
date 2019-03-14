@@ -33,6 +33,8 @@ const moveItem = (item) => {
         behavior: 'smooth'
     });
     history.replaceState('', '', '#' + item.id)
+    document.querySelector('.catalog__item--selected') ? document.querySelector('.catalog__item--selected').classList.remove('catalog__item--selected') : null;
+    item.classList.add('catalog__item--selected')
 }
 
 for (let item of document.querySelectorAll('.catalog__item')) {

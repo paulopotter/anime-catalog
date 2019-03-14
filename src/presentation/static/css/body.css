@@ -101,11 +101,15 @@ tr {
     overflow-y: scroll;
     flex-wrap: wrap;
     height: 95vh;
+    padding-left: 1px;
     width: calc(100vw - 300px);
 }
 .catalog__item {
-    margin: 5px 3px;
+    margin: 5px;
     display: flex;
+}
+.catalog__item--selected {
+    box-shadow: 0px 0px 0px 5px #299dff
 }
 .catalog__item--picture {
     position: relative;
