@@ -1,7 +1,7 @@
 beautifulsoup4==4.6.0
 python-slugify==1.2.4
-requests==2.18.1
+requests>=2.20
 simplejson==3.10.0
-PyYAML==3.12
+PyYAML>=4
 prompt==0.4.1
 termcolor
