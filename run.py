@@ -77,4 +77,4 @@ if __name__ == "__main__":
         rename(**args_for_func)
 
     else:
-        print('Erro[1]: Invalid argument')
+        error_msg('Erro[1]: Invalid argument.')
