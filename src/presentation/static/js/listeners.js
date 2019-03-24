@@ -1,7 +1,12 @@
 document.querySelectorAll('.catalog__item').forEach(item => {
     item.addEventListener('click', (ev) => {
-        let selectedItem = ev.target.parentElement.parentElement;
-        fillWithSelectedItem(selectedItem);
+        if (document.getElementById('header').classList.contains('header__more-info--open')) {
+            document.getElementById('header').classList.remove('header__more-info--open')
+        } else {
+            let selectedItem = ev.target.parentElement.parentElement;
+            fillWithSelectedItem(selectedItem);
+            document.getElementById('header').classList.add('header__more-info--open')
+        }
     }, false)
 })
 
@@ -20,10 +25,10 @@ document.getElementById('header')
         }
     }, false)
 
-document.getElementById('catalog')
-    .addEventListener('click', () => {
-        document.getElementById('header').classList.remove('header__more-info--open')
-    }, false)
+// document.getElementById('catalog')
+//     .addEventListener('click', () => {
+//         document.getElementById('header').classList.remove('header__more-info--open')
+//     }, false)
 
 document.onkeydown = (evt) => {
     evt = evt || window.event;
@@ -38,23 +43,30 @@ document.onkeydown = (evt) => {
             case 27: // 27 - ESC
                 document.getElementById('header').classList.remove('header__more-info--open')
                 document.getElementById('search').classList.remove('open')
+                document.querySelector('input').blur()
             break;
 
             case 37: // 37 - left
-            if (!document.activeElement.classList.contains('search__input')){
-                    fillWithSelectedItem(getPreviousSibling(showInfo, ':not(.hidden)'));
-                }
+                let headerL = document.getElementById('header').classList.contains('header__more-info--open')
+                let serL = !document.activeElement.classList.contains('search__input')
+                let navL = headerL && serL ? false : headerL ? false : serL;
+
+                navL ? fillWithSelectedItem(getPreviousSibling(showInfo, ':not(.hidden)')) : null
             break;
 
             case 39: // 39 - right
-            if (!document.activeElement.classList.contains('search__input')){
-                    fillWithSelectedItem(getNextSibling(showInfo, ':not(.hidden)'))
-                }
+                let headerR = document.getElementById('header').classList.contains('header__more-info--open')
+                let serR = !document.activeElement.classList.contains('search__input')
+                let navR = headerR && serR ? false : headerR ? false : serR;
+                navR ? fillWithSelectedItem(getNextSibling(showInfo, ':not(.hidden)')) : null
             break;
 
             case 38: // up
                 evt.preventDefault()
-                if (document.activeElement.classList.contains('search__input')) {
+                 let headerU = document.getElementById('header').classList.contains('header__more-info--open')
+                 let serU = !document.activeElement.classList.contains('search__input')
+                 let navU = headerU && serU ? false : headerU ? false : serU;
+                if (!navU) {
                     evt.preventDefault()
                 } else {
 
@@ -76,7 +88,13 @@ document.onkeydown = (evt) => {
 
             case 40: // Down
                 evt.preventDefault()
-                if (isElementVisible(document.querySelector('input')) && document.activeElement.classList.contains('search__input')) {
+
+                let headerD = document.getElementById('header').classList.contains('header__more-info--open')
+                let serD = !document.activeElement.classList.contains('search__input')
+                let navD = headerD && serD ? false : headerD ? false : serD;
+
+
+                if (!navD) {
                     document.querySelector('input').blur()
                     if(showInfo){
                         fillWithSelectedItem(showInfo);
@@ -134,9 +152,12 @@ document.querySelector('.search__input')
             }
 
         } else {
-            animeItems.forEach(item => {
-                item.classList.remove('hidden');
-            })
-            fillWithSelectedItem(animeItems[0])
+            if ((!event.keyCode >= 37 && !event.keyCode <= 39 ) || event.keyCode == 8) {
+
+                animeItems.forEach(item => {
+                    item.classList.remove('hidden');
+                })
+                fillWithSelectedItem(animeItems[0])
+            }
         }
     })
