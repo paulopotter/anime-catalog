@@ -38,6 +38,8 @@ const moveItemTo = (item) => {
 }
 
 const fillWithSelectedItem = ( item ) => {
-    moveItemTo(item);
-    fillHeader(item.id)
+    if(item){
+        moveItemTo(item);
+        fillHeader(item.id)
+    }
 }

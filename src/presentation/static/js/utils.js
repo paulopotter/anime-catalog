@@ -31,3 +31,85 @@ if (!String.prototype.slugify) {
 
     };
 }
+
+function closest(arr, target) {
+    // Based on
+    // https://stackoverflow.com/a/25087661
+    if (!(arr) || arr.length == 0)
+        return null;
+    if (arr.length == 1)
+        return arr[0];
+
+    for (let i = 1; i < arr.length; i++) {
+        // As soon as a number bigger than target is found, return the previous or current
+        // number depending on which has smaller difference to the target.
+        if (arr[i].offsetTop > target) {
+            let p = arr[i - 1].offsetTop;
+            let c = arr[i].offsetTop
+            return Math.abs(p - target) < Math.abs(c - target) ? p : c;
+        }
+    }
+    // No number in array is bigger so return the last.
+    return arr[arr.length - 1];
+}
+
+
+function isElementVisible(el) {
+    // https://stackoverflow.com/a/15203639
+    var rect = el.getBoundingClientRect(),
+        vWidth = window.innerWidth || doc.documentElement.clientWidth,
+        vHeight = window.innerHeight || doc.documentElement.clientHeight,
+        efp = function (x, y) {
+            return document.elementFromPoint(x, y)
+        };
+
+    // Return false if it's not in the viewport
+    if (rect.right < 0 || rect.bottom < 0 ||
+        rect.left > vWidth || rect.top > vHeight)
+        return false;
+
+    // Return true if any of its four corners are visible
+    return (
+        el.contains(efp(rect.left, rect.top)) ||
+        el.contains(efp(rect.right, rect.top)) ||
+        el.contains(efp(rect.right, rect.bottom)) ||
+        el.contains(efp(rect.left, rect.bottom))
+    );
+}
+
+
+var getNextSibling = function (elem, selector) {
+    // https://gomakethings.com/finding-the-next-and-previous-sibling-elements-that-match-a-selector-with-vanilla-js/
+
+    // Get the next sibling element
+    var sibling = elem.nextElementSibling;
+
+    // If there's no selector, return the first sibling
+    if (!selector) return sibling;
+
+    // If the sibling matches our selector, use it
+    // If not, jump to the next sibling and continue the loop
+    while (sibling) {
+        if (sibling.matches(selector)) return sibling;
+        sibling = sibling.nextElementSibling
+    }
+
+};
+
+var getPreviousSibling = function (elem, selector) {
+    // https://gomakethings.com/finding-the-next-and-previous-sibling-elements-that-match-a-selector-with-vanilla-js/
+
+    // Get the next sibling element
+    var sibling = elem.previousElementSibling;
+
+    // If there's no selector, return the first sibling
+    if (!selector) return sibling;
+
+    // If the sibling matches our selector, use it
+    // If not, jump to the next sibling and continue the loop
+    while (sibling) {
+        if (sibling.matches(selector)) return sibling;
+        sibling = sibling.previousElementSibling;
+    }
+
+};

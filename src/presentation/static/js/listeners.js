@@ -27,8 +27,8 @@ document.getElementById('catalog')
 
 document.onkeydown = (evt) => {
     evt = evt || window.event;
-    const animeItems = document.querySelectorAll('.catalog__item');
-    let showInfo = document.querySelector('.catalog__item--selected');
+    const animeItems = document.querySelectorAll('.catalog__item:not(.hidden)');
+    let showInfo = document.querySelector('.catalog__item--selected:not(.hidden)');
 
         switch (evt.keyCode) {
             case 13: // 13 - Enter
@@ -37,20 +37,28 @@ document.onkeydown = (evt) => {
 
             case 27: // 27 - ESC
                 document.getElementById('header').classList.remove('header__more-info--open')
+                document.getElementById('search').classList.remove('open')
             break;
 
             case 37: // 37 - left
-                fillWithSelectedItem(showInfo.previousElementSibling);
+            if (!document.activeElement.classList.contains('search__input')){
+                    fillWithSelectedItem(getPreviousSibling(showInfo, ':not(.hidden)'));
+                }
             break;
 
             case 39: // 39 - right
-                fillWithSelectedItem(showInfo.nextElementSibling)
+            if (!document.activeElement.classList.contains('search__input')){
+                    fillWithSelectedItem(getNextSibling(showInfo, ':not(.hidden)'))
+                }
             break;
 
             case 38: // up
                 evt.preventDefault()
+                let goal = (showInfo.offsetTop - showInfo.offsetHeight - 10)
+                if (goal <=0 && isElementVisible(document.querySelector('input'))) {
+                        document.querySelector('input').focus()
+                }
                 animeItems.forEach(item => {
-                    let goal = (showInfo.offsetTop - showInfo.offsetHeight - 10)
 
                     if (goal > 0 &&
                         (closest(animeItems, goal) == item.offsetTop) &&
@@ -63,37 +71,67 @@ document.onkeydown = (evt) => {
 
             case 40: // Down
                 evt.preventDefault()
-                animeItems.forEach(item => {
-                    let goal = (showInfo.offsetTop + showInfo.offsetHeight + 10)
-                    if (
-                        (goal == item.offsetTop) &&
-                        (showInfo.offsetLeft == item.offsetLeft)
-                    ) {
-                        fillWithSelectedItem(item);
+                if (isElementVisible(document.querySelector('input')) && document.activeElement.classList.contains('search__input')) {
+                    document.querySelector('input').blur()
+                    if(showInfo){
+                        fillWithSelectedItem(showInfo);
+                    } else {
+
+                        fillWithSelectedItem(animeItems[0]);
                     }
-                })
+                } else {
+                    let goal = (showInfo.offsetTop + showInfo.offsetHeight + 10)
+                    animeItems.forEach(item => {
+                        if (
+                            (closest(animeItems, goal) == item.offsetTop) &&
+                            (showInfo.offsetLeft == item.offsetLeft)
+                        ) {
+                            fillWithSelectedItem(item);
+                        }
+                    })
+                }
             break;
+
+            case 70: // F
+                let search = document.getElementById('search')
+                if (!search.classList.contains('open')) {
+                    search.classList.add('open');
+                    search.querySelector('input').focus(evt.preventDefault())
+                }
+            break
         }
 };
 
-
-function closest(arr, target) {
-    // Based on
-    // https://stackoverflow.com/a/25087661
-    if (!(arr) || arr.length == 0)
-        return null;
-    if (arr.length == 1)
-        return arr[0];
-
-    for (let i = 1; i < arr.length; i++) {
-        // As soon as a number bigger than target is found, return the previous or current
-        // number depending on which has smaller difference to the target.
-        if (arr[i].offsetTop > target) {
-            let p = arr[i - 1].offsetTop;
-            let c = arr[i].offsetTop
-            return Math.abs(p - target) < Math.abs(c - target) ? p : c;
+document.querySelector('.search__button')
+    .addEventListener('click', () => {
+        let searchClass = document.getElementById('search').classList
+        if(searchClass.contains('open') ){
+            searchClass.remove('open')
+        }else {
+            searchClass.add('open')
         }
-    }
-    // No number in array is bigger so return the last.
-    return arr[arr.length - 1];
-}
+})
+
+document.querySelector('.search__input')
+    .addEventListener('keydown', evt => {
+        let value = evt.target.value
+        const animeItems = document.querySelectorAll('.catalog__item');
+        if (value.length >= 2){
+            if (event.keyCode >= 48 && event.keyCode <= 90 || event.keyCode == 8) {
+                let found = document.querySelectorAll(`[id*='${value.slugify()}']`)
+                animeItems.forEach(item => {
+                    item.classList.add('hidden')
+                })
+                found.forEach(item => {
+                    item.classList.remove('hidden')
+                })
+
+            }
+
+        } else {
+            animeItems.forEach(item => {
+                item.classList.remove('hidden');
+            })
+            fillWithSelectedItem(animeItems[0])
+        }
+    })
