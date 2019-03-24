@@ -54,6 +54,10 @@ document.onkeydown = (evt) => {
 
             case 38: // up
                 evt.preventDefault()
+                if (document.activeElement.classList.contains('search__input')) {
+                    evt.preventDefault()
+                } else {
+
                 let goal = (showInfo.offsetTop - showInfo.offsetHeight - 10)
                 if (goal <=0 && isElementVisible(document.querySelector('input'))) {
                         document.querySelector('input').focus()
@@ -67,6 +71,7 @@ document.onkeydown = (evt) => {
                         fillWithSelectedItem(item);
                     }
                 })
+            }
             break;
 
             case 40: // Down
