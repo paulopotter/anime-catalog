@@ -4,9 +4,9 @@
 import os
 import simplejson as json
 
-from src.msg import error_msg
-from src.createFile import CreateFile
-from src.utils import get_configs
+from .msg import error_msg
+from .createFile import CreateFile
+from .utils import get_configs
 
 
 class Cataloguer():

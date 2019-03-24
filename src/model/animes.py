@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- #
-from src.findAnime import PunchLib
-from src.utils import names_to_try
+from .findAnime import PunchLib
+from .utils import names_to_try
 
 
 class AnimeLib():

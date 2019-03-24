@@ -1,7 +1,7 @@
 import os
 import yaml
 
-from src.msg import error_msg
+from .msg import error_msg
 
 
 def get_configs():

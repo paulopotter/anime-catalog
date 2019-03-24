@@ -5,7 +5,7 @@ import io
 import os
 import simplejson as json
 
-from src.msg import warning_msg, info_msg
+from .msg import warning_msg, info_msg
 
 
 class CreateFile():

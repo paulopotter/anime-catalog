@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 from slugify import slugify
 
 # from src.msg import simple_msg
-from src.utils import get_configs, normalize_name
+from .utils import get_configs, normalize_name
 
 
 class FindAnime():

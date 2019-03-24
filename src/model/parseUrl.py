@@ -5,8 +5,8 @@ import requests
 from bs4 import BeautifulSoup
 from slugify import slugify
 
-from src.msg import error_msg, simple_msg, info_msg
-from src.utils import get_configs, names_to_try
+from .msg import error_msg, simple_msg, info_msg
+from .utils import get_configs, names_to_try
 
 
 class ParseUrl():
@@ -112,7 +112,7 @@ class AnbientParse():
                 if searching:
                     info_msg('Trying to find the anime < {} > '.format(anime), True)
 
-                    from src.findAnime import FindAnime
+                    from .findAnime import FindAnime
 
                     animes_names = names_to_try(anime)
 

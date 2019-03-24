@@ -1,10 +1,10 @@
 import io
 import requests
 
-from src.msg import warning_msg, simple_msg, error_msg
-from src.utils import get_configs, normalize_name
-from src.animes import Anime
-from src.parseUrl import ParseUrl
+from .msg import warning_msg, simple_msg, error_msg
+from .utils import get_configs, normalize_name
+from .animes import Anime
+from .parseUrl import ParseUrl
 
 
 class Parse():
@@ -79,7 +79,7 @@ class Parse():
 
         try:
             def creating_file(overrideData=[]):
-                from src.createFile import CreateFile
+                from .createFile import CreateFile
                 create_file = CreateFile()
                 create_file.create_json_file(data,
                                              folder_name=full_path,
