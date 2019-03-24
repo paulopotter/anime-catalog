@@ -59,7 +59,12 @@
     if( window.location.hash ){
       let hash = window.location.hash.slugify();
       let el = document.getElementById(hash);
-      el ? fillWithSelectedItem(el) : null
+      if(el){
+        fillWithSelectedItem(el)
+      }else{
+        let elName = `id-${dataOdering[Object.keys(dataOdering)[0]][0].name.slugify()}`
+        fillWithSelectedItem(document.getElementById(elName));
+      }
     } else {
       let elName = `id-${dataOdering[Object.keys(dataOdering)[0]][0].name.slugify()}`
       fillWithSelectedItem(document.getElementById(elName));
