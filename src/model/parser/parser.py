@@ -12,7 +12,6 @@ class Parser:
         self.create_folder, \
         self.ends_with, \
         self.file, \
-        _, \
         self.just_with, \
         self.list_type, \
         self.only, \

@@ -4,17 +4,16 @@
 import os
 import argparse
 import inspect
+import sys
 
 from src.model.msg import error_msg, info_msg
 from src.model.utils import normalize_name
-
 from src.model.parser.parser import Parser
+from src.model.cataloguer import Cataloguer
+from src.model.createFile import CreateFile
 
 
 def cataloguer(folder_name, description_file):
-    from src.model.cataloguer import Cataloguer
-    from src.model.createFile import CreateFile
-
     cataloguer = Cataloguer(folder_name, description_file)
     create_file = CreateFile()
     data = cataloguer.prepared_content()
@@ -47,7 +46,6 @@ if __name__ == "__main__":
     parser_cataloguer = subparsers.add_parser('cataloguer')
     parser_cataloguer.add_argument("--folder_name", default='../Animes')
     parser_cataloguer.add_argument("--description_file", default='description.json')
-    parser_cataloguer.set_defaults(func=cataloguer)
 
     parser_parse = subparsers.add_parser('parse')
     parser_parse.add_argument("--list_type", default='list')
@@ -59,19 +57,24 @@ if __name__ == "__main__":
     parser_parse.add_argument("--ends_with", default='')
     parser_parse.add_argument("--just_with", default='')
     parser_parse.add_argument("--create_folder", action='store_true', default=False)
-    parser_parse.set_defaults(func=parse)
 
     parser_rename = subparsers.add_parser('rename')
     parser_rename.add_argument("--folder_name", default='../Animes')
-    parser_rename.set_defaults(func=rename)
 
     args = parser.parse_args()
 
-    arg_spec = inspect.getargspec(args.func)
-    if arg_spec.keywords:
-        # # convert args to a dictionary
-        args_for_func = vars(args)
+    execute = sys.argv[1]
+
+    args_for_func = vars(args)
+
+    if execute == 'parse':
+        parse(**args_for_func)
+
+    elif execute == 'cataloguer':
+        cataloguer(**args_for_func)
+
+    elif execute == 'rename':
+        rename(**args_for_func)
+
     else:
-        # # get a subset of the dictionary containing just the arguments of func
-        args_for_func = {k: getattr(args, k) for k in arg_spec.args}
-    args.func(**args_for_func)
+        print('Erro[1]: Invalid argument')
