@@ -38,6 +38,8 @@ document.addEventListener('keydown', (evt) => {
             HEADER.classList.add('header__more-info--open');
         break;
 
+        case 461: // lg backButton
+            // http://webostv.developer.lge.com/develop/app-developer-guide/back-button/
         case 27: // 27 - ESC
             HEADER.classList.remove('header__more-info--open')
             SEARCH.classList.remove('open')
@@ -103,12 +105,17 @@ document.addEventListener('keydown', (evt) => {
                 SEARCH_INPUT.focus(evt.preventDefault())
             }
         break
+
+        case 405:
+            let searchClass = SEARCH.classList;
+            (searchClass.contains('open')) ? searchClass.remove('open'): searchClass.add('open')
+        break;
     }
 });
 
 SEARCH.querySelector('.search__button')
     .addEventListener('click', () => {
-        let searchClass = SEARCH.classList
+        let searchClass = SEARCH.classList;
         (searchClass.contains('open') ) ? searchClass.remove('open') : searchClass.add('open')
 })
 

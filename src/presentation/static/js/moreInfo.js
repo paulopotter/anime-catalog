@@ -27,11 +27,17 @@ const fillHeader = (elementId) => {
     header.querySelector('.header__info--obs').innerText = item.obs || '';
 }
 const moveItemTo = (item) => {
-    item.parentElement.scroll({
-        top: item.offsetTop - 30 - document.defaultView.getComputedStyle(item.parentElement).paddingTop.replace("px", "") ,
-        left: 0,
-        behavior: 'smooth'
-    });
+    if(item.scroll){
+        item.parentElement.scroll({
+            top: item.offsetTop - 30 - document.defaultView.getComputedStyle(item.parentElement).paddingTop.replace("px", "") ,
+            left: 0,
+            behavior: 'smooth'
+        });
+
+    } else {
+        item.parentElement.scrollTop =  item.offsetTop - 30 - document.defaultView.getComputedStyle(item.parentElement).paddingTop.replace("px", "");
+        item.parentElement.scrollLeft =  0;
+    }
     history.replaceState('', '', '#' + item.id)
     document.querySelector('.catalog__item--selected') ? document.querySelector('.catalog__item--selected').classList.remove('catalog__item--selected') : null;
     item.classList.add('catalog__item--selected')
