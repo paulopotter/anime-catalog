@@ -5,6 +5,7 @@ from ..msg import error_msg
 from ..cataloguer import Cataloguer
 from ..parse import Parse
 from ..animes import AnimeLib
+from ..utils import get_all_folders
 
 class Parser:
     def __init__(self, **kwargs):
@@ -38,10 +39,8 @@ class Parser:
                     anime_list.append(anime_name)
 
         elif self.list_type == 'folder':
-
             path = self.path + '/' if self.path and self.path[-1] != '/' else self.path
-            cataloguer = Cataloguer(path, 'dummy')
-            anime_list = cataloguer.get_all_folders(path)
+            anime_list = get_all_folders(path)
 
         return self._search_limit(anime_list)
 
