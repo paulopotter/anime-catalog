@@ -64,6 +64,9 @@ parse_folder_update:
 	@python run.py parse --list_type 'folder' --path $(folder) --override --only $(only) --starts_with $(starts_with) --ends_with $(ends_with) --just_with $(just_with)
 
 
+test:
+	@python -m unittest discover -s src
+
 
 # ------------------------------------------
 

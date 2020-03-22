@@ -2,6 +2,7 @@ host:
   anbient: 'https://www.anbient.com'
   myAnimeList: 'https://myanimelist.net'
   punchsub: 'https://punchsub.zlx.com.br'
+  kitsu: 'https://kitsu.io/api/edge'
 
 
 uris:
